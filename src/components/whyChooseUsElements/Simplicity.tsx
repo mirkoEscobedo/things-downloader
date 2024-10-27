@@ -2,7 +2,7 @@
 const  Simplicity: React.FC = () => {
     return(
 
-        <div id="topman" className="relative">
+        <div id="topman" className="rela">
             
             
                 

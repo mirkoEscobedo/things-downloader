@@ -1,16 +1,11 @@
-
-.relative h3{
-    font-weight: bolder;
-    font-size: 30px;
-    
+.rela h3 {
+  font-weight: bolder;
+  font-size: 30px;
 }
 
-.relative{
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    padding: 0px 20px;
-    
-    
-    
+.rela {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 0px 20px;
 }

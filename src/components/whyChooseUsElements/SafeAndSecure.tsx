@@ -1,7 +1,7 @@
 const  SafeAndSecure: React.FC = () => {
     return(
 
-        <div  className="relative">
+        <div  className="rela">
             
             
                 
