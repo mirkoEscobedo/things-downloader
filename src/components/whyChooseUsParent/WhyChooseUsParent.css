@@ -1,0 +1,13 @@
+
+section{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto;
+    
+}
+
+#whyHeading{
+    text-align: center;
+    margin-top: 200px;
+    font-size: 40px;
+}
