@@ -17,8 +17,8 @@ const Home: React.FC = () => {
       <SearchBox />
       <WhyChooseUsParent>
         <TextCard
-          title={translations.convinieceTitle}
-          description={translations.convinienceDescription}
+          title={translations.convenienceTitle}
+          description={translations.convenienceDescription}
         />
         <Simplicity />
         <SafeAndSecure />
