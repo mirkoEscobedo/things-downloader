@@ -6,7 +6,7 @@ import SafeAndSecure from "@/components/whyChooseUsElements/SafeAndSecure";
 import Simplicity from "@/components/whyChooseUsElements/Simplicity";
 import TextCard from "@/components/whyChooseUsElements/TextCard";
 import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
-import { useLanguage } from "@/hooks/LanguageContex";
+import { useLanguage } from "@/context/LanguageContex";
 
 const Home: React.FC = () => {
   const { translations } = useLanguage();

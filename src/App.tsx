@@ -1,4 +1,4 @@
-import { LanguageProvider } from "./hooks/LanguageContex";
+import { LanguageProvider } from "./context/LanguageContex";
 import Home from "./pages/Home/Home";
 
 function App() {

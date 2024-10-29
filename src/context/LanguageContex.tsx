@@ -1,13 +1,13 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import en from "../utils/lang/en.json";
-import it from "../utils/lang/it.json";
+import en from "../lang/en.json";
+import it from "../lang/it.json";
 
 type Language = "en" | "it";
 
 interface LanguageContextProps {
   language: Language;
   setLanguage: (lang: Language) => void;
-  translations: { [key: string]: any };
+  translations: { [key: string]: string };
 }
 
 const translationsMap = { en, it };
