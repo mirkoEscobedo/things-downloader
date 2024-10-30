@@ -3,8 +3,8 @@ import * as React from "react";
 const DownloadIcon: React.FC = (/*props*/) => (
   <svg
     fill="#393"
-    width={800}
-    height={800}
+    width={46}
+    height={46}
     viewBox="0 0 24 24"
     data-name="Line Color"
     xmlns="http://www.w3.org/2000/svg"

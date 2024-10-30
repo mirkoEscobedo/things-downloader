@@ -1,10 +1,13 @@
+import ConvenienceIcon from "@/components/convenienceIcon/ConvenienceIcon";
 import SearchBox from "@/components/searchBox/SearchBox";
+import ShieldIcon from "@/components/shieldIcon/ShieldIcon";
+import SimplicityIcon from "@/components/simplicityIcon/SimplicityIcon";
 import Title from "@/components/title/Title";
 import TopBar from "@/components/topBar/TopBar";
-import TextCard from "@/components/whyChooseUsElements/TextCard";
 import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
 import { useLanguage } from "@/context/LanguageContex";
 import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
+import TextCard from "@/shared/components/textCard/TextCard";
 
 const Home: React.FC = () => {
   const { translations } = useLanguage();
@@ -17,6 +20,7 @@ const Home: React.FC = () => {
         <TextCard
           title={translations.convenienceTitle}
           description={translations.convenienceDescription}
+          image={<ConvenienceIcon />}
         />
         <TextCard
           title={translations.qualityDownloadsTitle}
@@ -27,11 +31,13 @@ const Home: React.FC = () => {
         <TextCard
           description={translations.safeAndSecureDescription}
           title={translations.safeAndSecureTitle}
+          image={<ShieldIcon />}
         />
 
         <TextCard
-          title={translations.SimplicityTitle}
+          title={translations.simplicityTitle}
           description={translations.simplicityDescription}
+          image={<SimplicityIcon />}
         />
       </WhyChooseUsParent>
     </>
