@@ -34,8 +34,8 @@ const ElementCard: React.FC<ElementCardProps> = ({
   };
   return (
     <>
-      <div className="flex flex-col items-center m-4 rounded-md hover:shadow-lg transition-shadow">
-        <div className="w-full h-40 overflow-hidden rounded-mb mb-1">
+      <div className="flex flex-col items-center m-4 rounded-md hover:shadow-lg transition-shadow max-w-xs">
+        <div className="w-full overflow-hidden rounded-mb mb-1 aspect-w-16 aspect-h-9">
           <img
             src={thumbnail ? thumbnail : defaultImage}
             alt={title}
