@@ -8,15 +8,17 @@ interface CardData {
 }
 const CardGrid: React.FC<{ data: CardData[] }> = ({ data }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {data.map((item, index) => (
-        <ElementCard
-          key={index}
-          icon={item.icon}
-          thumbnail={item.thumbnail}
-          title={item.title}
-        />
-      ))}
+    <div className="flex justify-center p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mx-auto">
+        {data.map((item, index) => (
+          <ElementCard
+            key={index}
+            icon={item.icon}
+            thumbnail={item.thumbnail}
+            title={item.title}
+          />
+        ))}
+      </div>
     </div>
   );
 };
