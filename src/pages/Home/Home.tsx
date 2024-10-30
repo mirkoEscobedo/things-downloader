@@ -3,7 +3,7 @@ import Title from "@/components/title/Title";
 import TopBar from "@/components/topBar/TopBar";
 import TextCard from "@/components/whyChooseUsElements/TextCard";
 import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
-import { useLanguage } from "@/hooks/LanguageContex";
+import { useLanguage } from "@/context/LanguageContex";
 import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 
 const Home: React.FC = () => {
