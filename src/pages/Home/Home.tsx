@@ -1,12 +1,10 @@
 import SearchBox from "@/components/searchBox/SearchBox";
 import Title from "@/components/title/Title";
 import TopBar from "@/components/topBar/TopBar";
-import QualityDownloads from "@/components/whyChooseUsElements/QualityDownloads";
-import SafeAndSecure from "@/components/whyChooseUsElements/SafeAndSecure";
-import Simplicity from "@/components/whyChooseUsElements/Simplicity";
 import TextCard from "@/components/whyChooseUsElements/TextCard";
 import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
 import { useLanguage } from "@/hooks/LanguageContex";
+import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 
 const Home: React.FC = () => {
   const { translations } = useLanguage();
@@ -20,9 +18,21 @@ const Home: React.FC = () => {
           title={translations.convenienceTitle}
           description={translations.convenienceDescription}
         />
-        <Simplicity />
-        <SafeAndSecure />
-        <QualityDownloads />
+        <TextCard
+          title={translations.qualityDownloadsTitle}
+          description={translations.qualityDownloadsDescription}
+          image={<DownloadIcon />}
+        />
+
+        <TextCard
+          description={translations.safeAndSecureDescription}
+          title={translations.safeAndSecureTitle}
+        />
+
+        <TextCard
+          title={translations.SimplicityTitle}
+          description={translations.simplicityDescription}
+        />
       </WhyChooseUsParent>
     </>
   );
