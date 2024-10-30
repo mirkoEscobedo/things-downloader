@@ -1,17 +1,16 @@
-
-import Home from './pages/Home/Home'
-
+import { LanguageProvider } from "./context/LanguageContex";
+import Home from "./pages/Home/Home";
 
 function App() {
-  
-
   return (
     <>
-      <div className=''>
-       <Home/>
-      </div>
+      <LanguageProvider>
+        <div className="">
+          <Home />
+        </div>
+      </LanguageProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
