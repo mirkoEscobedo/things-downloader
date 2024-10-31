@@ -17,7 +17,6 @@ const Home: React.FC = () => {
       <TopBar></TopBar>
       <Title />
       <SearchBox />
-      <CardGrid data={sampleData}></CardGrid>
       <WhyChooseUsParent>
         <TextCard
           title={translations.convenienceTitle}
