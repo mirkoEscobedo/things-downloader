@@ -1,4 +1,5 @@
 import ConvenienceIcon from '@/components/convenienceIcon/ConvenienceIcon';
+import DonwloadCard from '@/components/downloadCard/DownloadCard';
 import SearchBox from '@/components/searchBox/SearchBox';
 import ShieldIcon from '@/components/shieldIcon/ShieldIcon';
 import SimplicityIcon from '@/components/simplicityIcon/SimplicityIcon';
@@ -16,6 +17,10 @@ const Home: React.FC = () => {
       <TopBar></TopBar>
       <Title />
       <SearchBox />
+      <DonwloadCard
+        selectText={translations.downloadCardSelectText}
+        buttonText={translations.downloadCardButtonText}
+      ></DonwloadCard>
       <WhyChooseUsParent>
         <TextCard
           title={translations.convenienceTitle}
