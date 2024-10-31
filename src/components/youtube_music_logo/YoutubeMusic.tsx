@@ -1,12 +1,26 @@
-import * as React from 'react';
-import type { SVGProps } from 'react';
-const YoutubeMusic = (props: SVGProps<SVGSVGElement>) => (
+import type { SVGProps } from "react";
+/*interface musicProps {
+  itemWidth?: string;
+  height?: string;
+  title: string;
+}*/
+
+interface musicProps extends SVGProps<SVGSVGElement> {
+  itemWidth?: string;
+  itemHeight?: string;
+}
+
+const YoutubeMusic: React.FC<musicProps> = ({
+  itemHeight = "1em",
+  itemWidth = "1em",
+  ...props
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
     viewBox="0 0 192 192"
-    width="1em"
-    height="1em"
+    width={itemWidth}
+    height={itemHeight}
     {...props}
   >
     <path fill="none" d="M0 0h192v192H0z" />

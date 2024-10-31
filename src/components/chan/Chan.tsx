@@ -1,6 +1,14 @@
-import { SVGProps } from 'react';
+import { SVGProps } from "react";
+interface musicProps extends SVGProps<SVGSVGElement> {
+  itemWidth?: string;
+  itemHeight?: string;
+}
 
-const Chan: React.FC = (props: SVGProps<SVGSVGElement>) => {
+const Chan: React.FC<musicProps> = ({
+  itemHeight = "1em",
+  itemWidth = "1em",
+  ...props
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
