@@ -7,6 +7,7 @@ import Chan from '@/components/chan/Chan';
 import { ElementCardType } from '@/typedef/typedef';
 
 interface ElementCardProps extends ElementCardType {}
+
 const ElementCard: React.FC<ElementCardProps> = ({
   extraClasses,
   icon,
@@ -15,15 +16,15 @@ const ElementCard: React.FC<ElementCardProps> = ({
 }) => {
   const toDisplay = (icon?: string) => {
     switch (icon) {
-      case "youtube":
+      case 'youtube':
         return <YouTube className="mr-1"></YouTube>;
-      case "youtubeMusic":
+      case 'youtubeMusic':
         return <YoutubeMusic className="mr-1"></YoutubeMusic>;
-      case "twitter":
+      case 'twitter':
         return <Twitter className="mr-1"></Twitter>;
-      case "x":
+      case 'x':
         return <XformerlyTwitter className="mr-1"></XformerlyTwitter>;
-      case "4chan":
+      case '4chan':
         return <Chan></Chan>;
       default:
         return null;

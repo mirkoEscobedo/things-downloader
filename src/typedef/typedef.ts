@@ -5,3 +5,11 @@ export type ElementCardType = {
   icon?: string;
   onClick?: () => void;
 }
+
+export type DownloadCardType = {
+  
+  elementCardProps: ElementCardType;
+  selectText: string;
+  onClick?: () => void;
+  buttonText: string;
+}
