@@ -1,9 +1,9 @@
-import YouTube from '@/components/youtube_logo/YoutubeLogo';
-import YoutubeMusic from '@/components/youtube_music_logo/YoutubeMusic';
-import Twitter from '@/components/twitter/Twitter';
-import XformerlyTwitter from '@/components/x/X';
-import defaultImage from '@/assets/default_image.png';
-import Chan from '@/components/chan/Chan';
+import defaultImage from "@/assets/default_image.png";
+import Chan from "@/components/chan/Chan";
+import Twitter from "@/components/twitter/Twitter";
+import XformerlyTwitter from "@/components/x/X";
+import YouTube from "@/components/youtube_logo/YoutubeLogo";
+import YoutubeMusic from "@/components/youtube_music_logo/YoutubeMusic";
 
 interface ElementCardProps {
   icon?: string;
@@ -18,15 +18,15 @@ const ElementCard: React.FC<ElementCardProps> = ({
 }) => {
   const toDisplay = (icon?: string) => {
     switch (icon) {
-      case 'youtube':
+      case "youtube":
         return <YouTube className="mr-1"></YouTube>;
-      case 'youtubeMusic':
+      case "youtubeMusic":
         return <YoutubeMusic className="mr-1"></YoutubeMusic>;
-      case 'twitter':
+      case "twitter":
         return <Twitter className="mr-1"></Twitter>;
-      case 'x':
+      case "x":
         return <XformerlyTwitter className="mr-1"></XformerlyTwitter>;
-      case '4chan':
+      case "4chan":
         return <Chan></Chan>;
       default:
         return null;

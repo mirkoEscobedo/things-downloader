@@ -1,10 +1,18 @@
-import * as React from 'react';
-import type { SVGProps } from 'react';
-const Twitter = (props: SVGProps<SVGSVGElement>) => (
+import type { SVGProps } from "react";
+
+interface musicProps extends SVGProps<SVGSVGElement> {
+  itemWidth?: string;
+  itemHeight?: string;
+}
+const Twitter: React.FC<musicProps> = ({
+  itemHeight = "1em",
+  itemWidth = "1em",
+  ...props
+}) => (
   <svg
     viewBox="0 0 256 209"
-    width="1em"
-    height="1em"
+    width={itemWidth}
+    height={itemHeight}
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="xMidYMid"
     {...props}

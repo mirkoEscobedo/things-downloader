@@ -1,13 +1,14 @@
-import ConvenienceIcon from '@/components/convenienceIcon/ConvenienceIcon';
-import SearchBox from '@/components/searchBox/SearchBox';
-import ShieldIcon from '@/components/shieldIcon/ShieldIcon';
-import SimplicityIcon from '@/components/simplicityIcon/SimplicityIcon';
-import Title from '@/components/title/Title';
-import TopBar from '@/components/topBar/TopBar';
-import WhyChooseUsParent from '@/components/whyChooseUsParent/WhyChooseUsParent';
-import { useLanguage } from '@/context/LanguageContex';
-import DownloadIcon from '@/shared/components/downloadIcon/DownloadIcon';
-import TextCard from '@/shared/components/textCard/TextCard';
+import ConvenienceIcon from "@/components/convenienceIcon/ConvenienceIcon";
+import OrbitingCircle from "@/components/orbitingCircles/OrbitingCircle";
+import SearchBox from "@/components/searchBox/SearchBox";
+import ShieldIcon from "@/components/shieldIcon/ShieldIcon";
+import SimplicityIcon from "@/components/simplicityIcon/SimplicityIcon";
+import Title from "@/components/title/Title";
+import TopBar from "@/components/topBar/TopBar";
+import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
+import { useLanguage } from "@/context/LanguageContex";
+import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
+import TextCard from "@/shared/components/textCard/TextCard";
 
 const Home: React.FC = () => {
   const { translations } = useLanguage();
@@ -16,6 +17,7 @@ const Home: React.FC = () => {
       <TopBar></TopBar>
       <Title />
       <SearchBox />
+      <OrbitingCircle />
       <WhyChooseUsParent>
         <TextCard
           title={translations.convenienceTitle}
