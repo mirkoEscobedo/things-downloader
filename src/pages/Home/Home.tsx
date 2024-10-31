@@ -1,5 +1,4 @@
 import ConvenienceIcon from '@/components/convenienceIcon/ConvenienceIcon';
-import DonwloadCard from '@/components/downloadCard/DownloadCard';
 import SearchBox from '@/components/searchBox/SearchBox';
 import ShieldIcon from '@/components/shieldIcon/ShieldIcon';
 import SimplicityIcon from '@/components/simplicityIcon/SimplicityIcon';
