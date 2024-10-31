@@ -17,10 +17,6 @@ const Home: React.FC = () => {
       <TopBar></TopBar>
       <Title />
       <SearchBox />
-      <DonwloadCard
-        selectText={translations.downloadCardSelectText}
-        buttonText={translations.downloadCardButtonText}
-      ></DonwloadCard>
       <WhyChooseUsParent>
         <TextCard
           title={translations.convenienceTitle}
