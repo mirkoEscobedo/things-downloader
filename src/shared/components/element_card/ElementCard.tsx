@@ -4,14 +4,9 @@ import Twitter from '@/components/twitter/Twitter';
 import XformerlyTwitter from '@/components/x/X';
 import defaultImage from '@/assets/default_image.png';
 import Chan from '@/components/chan/Chan';
+import { ElementCardType } from '@/typedef/typedef';
 
-interface ElementCardProps {
-  extraClasses?: string;
-  icon?: string;
-  thumbnail?: string;
-  title: string;
-  onClick?: () => void;
-}
+interface ElementCardProps extends ElementCardType {}
 const ElementCard: React.FC<ElementCardProps> = ({
   extraClasses,
   icon,

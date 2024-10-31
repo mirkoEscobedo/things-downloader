@@ -4,21 +4,30 @@ import React from 'react';
 
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
+import { ElementCardType } from '@/typedef/typedef';
 
 interface DonwloadCardProps {
+  elementCardProps: ElementCardType;
   selectText: string;
-
+  onClick?: () => void;
   buttonText: string;
 }
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
   selectText,
-
+  elementCardProps,
+  onClick,
   buttonText,
 }) => {
   return (
     <>
       <div className="flex items-center gap-4">
-        <ElementCard title="text" icon="youtube" extraClasses=""></ElementCard>
+        <ElementCard
+          title={elementCardProps.title}
+          icon={elementCardProps.icon}
+          thumbnail={elementCardProps.thumbnail}
+          onClick={onClick}
+          extraClasses=""
+        ></ElementCard>
         <ConvertSelector selectText={selectText}></ConvertSelector>
         <input type="checkbox"></input>
         <GeneralButton className="gap-1">
