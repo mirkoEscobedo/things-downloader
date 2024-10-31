@@ -1,4 +1,3 @@
-import CardGrid, { sampleData } from '@/components/card_grid/CardGrid';
 import ConvenienceIcon from '@/components/convenienceIcon/ConvenienceIcon';
 import SearchBox from '@/components/searchBox/SearchBox';
 import ShieldIcon from '@/components/shieldIcon/ShieldIcon';
