@@ -4,14 +4,11 @@ import Twitter from '@/components/twitter/Twitter';
 import XformerlyTwitter from '@/components/x/X';
 import defaultImage from '@/assets/default_image.png';
 import Chan from '@/components/chan/Chan';
+import { ElementCardType } from '@/typedef/typedef';
 
-interface ElementCardProps {
-  icon?: string;
-  thumbnail?: string;
-  title: string;
-  onClick?: () => void;
-}
+interface ElementCardProps extends ElementCardType {}
 const ElementCard: React.FC<ElementCardProps> = ({
+  extraClasses,
   icon,
   thumbnail,
   title,
@@ -34,7 +31,9 @@ const ElementCard: React.FC<ElementCardProps> = ({
   };
   return (
     <>
-      <div className="flex flex-col items-center m-4 rounded-md hover:shadow-lg transition-shadow max-w-xs">
+      <div
+        className={`flex flex-col items-center m-4 rounded-md hover:shadow-lg transition-shadow max-w-xs ${extraClasses}`}
+      >
         <div className="w-full overflow-hidden rounded-mb mb-1 aspect-w-16 aspect-h-9">
           <img
             src={thumbnail ? thumbnail : defaultImage}
