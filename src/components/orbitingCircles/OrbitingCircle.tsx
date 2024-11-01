@@ -9,7 +9,7 @@ interface OrbitingCircleProps {
 const OrbitingCircle: React.FC<OrbitingCircleProps> = ({ className }) => {
   return (
     <div
-      className={` flex h-[500px] w-full flex-col items-center justify-center overflow-hidden ${className}`}
+      className={`relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden ${className}`}
     >
       {/* Chan Circles */}
       <OrbitingCircles

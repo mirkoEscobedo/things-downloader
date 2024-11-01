@@ -19,7 +19,7 @@ const Home: React.FC = () => {
       <Title />
       <SearchBox className="z-50" />
       <div className="static">
-        <OrbitingCircle className=" absolute -z-9 bottom-20" />
+        <OrbitingCircle className=" absolute -z-9" />
       </div>
 
       <WhyChooseUsParent>
