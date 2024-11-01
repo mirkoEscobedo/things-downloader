@@ -4,14 +4,9 @@ import React from 'react';
 
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
-import { ElementCardType } from '@/typedef/typedef';
+import { DownloadCardType } from '@/typedef/typedef';
 
-interface DonwloadCardProps {
-  elementCardProps: ElementCardType;
-  selectText: string;
-  onClick?: () => void;
-  buttonText: string;
-}
+interface DonwloadCardProps extends DownloadCardType {}
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
   selectText,
   elementCardProps,

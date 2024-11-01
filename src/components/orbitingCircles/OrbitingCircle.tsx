@@ -1,12 +1,16 @@
-import Chan from "../chan/Chan";
-import OrbitingCircles from "../ui/orbiting-circles";
-import XformerlyTwitter from "../x/X";
-import YouTube from "../youtube_logo/YoutubeLogo";
-import YoutubeMusic from "../youtube_music_logo/YoutubeMusic";
-
-const OrbitingCircle: React.FC = () => {
+import Chan from '../chan/Chan';
+import OrbitingCircles from '../ui/orbiting-circles';
+import XformerlyTwitter from '../x/X';
+import YouTube from '../youtube_logo/YoutubeLogo';
+import YoutubeMusic from '../youtube_music_logo/YoutubeMusic';
+interface OrbitingCircleProps {
+  className?: string;
+}
+const OrbitingCircle: React.FC<OrbitingCircleProps> = ({ className }) => {
   return (
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden">
+    <div
+      className={`relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden ${className}`}
+    >
       {/* Chan Circles */}
       <OrbitingCircles
         className="size-[40px] border-none bg-transparent"
@@ -14,7 +18,7 @@ const OrbitingCircle: React.FC = () => {
         delay={20}
         radius={80}
       >
-        <Chan itemHeight="8em" itemWidth="8em" />
+        <Chan itemHeight="15em" itemWidth="15em" />
       </OrbitingCircles>
 
       {/*x icon */}
