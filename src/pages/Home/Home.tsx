@@ -22,6 +22,11 @@ const Home: React.FC = () => {
 
       <WhyChooseUsParent>
         <TextCard
+          title={translations.simplicityTitle}
+          description={translations.simplicityDescription}
+          image={<SimplicityIcon />}
+        />
+        <TextCard
           title={translations.convenienceTitle}
           description={translations.convenienceDescription}
           image={<ConvenienceIcon />}
@@ -36,12 +41,6 @@ const Home: React.FC = () => {
           description={translations.safeAndSecureDescription}
           title={translations.safeAndSecureTitle}
           image={<ShieldIcon />}
-        />
-
-        <TextCard
-          title={translations.simplicityTitle}
-          description={translations.simplicityDescription}
-          image={<SimplicityIcon />}
         />
       </WhyChooseUsParent>
     </>
