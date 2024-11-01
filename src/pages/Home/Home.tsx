@@ -10,17 +10,16 @@ import { useLanguage } from '@/context/LanguageContex';
 import DownloadIcon from '@/shared/components/downloadIcon/DownloadIcon';
 import TextCard from '@/shared/components/textCard/TextCard';
 
-
 const Home: React.FC = () => {
   const { translations } = useLanguage();
-  
+
   return (
     <>
       <TopBar></TopBar>
       <Title />
       <SearchBox />
       <OrbitingCircle />
-      
+
       <WhyChooseUsParent>
         <TextCard
           title={translations.convenienceTitle}

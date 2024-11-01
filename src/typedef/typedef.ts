@@ -8,8 +8,7 @@ export type ElementCardType = {
   onClick?: () => void;
 }
 
-export type DownloadCardType = {
-  
+export type DownloadCardType = {  
   elementCardProps: ElementCardType;
   selectText: string;
   onClick?: () => void;

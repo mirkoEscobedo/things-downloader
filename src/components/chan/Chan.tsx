@@ -8,8 +8,8 @@ const Chan: React.FC<logoProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
+      width={itemWidth}
+      height={itemHeight}
       viewBox="0 0 24 24"
       fill="none"
       stroke="#339933"
