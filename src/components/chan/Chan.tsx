@@ -1,12 +1,8 @@
-import { SVGProps } from "react";
-interface musicProps extends SVGProps<SVGSVGElement> {
-  itemWidth?: string;
-  itemHeight?: string;
-}
+import { logoProps } from '@/typedef/typedef';
 
-const Chan: React.FC<musicProps> = ({
-  itemHeight = "1em",
-  itemWidth = "1em",
+const Chan: React.FC<logoProps> = ({
+  itemHeight = '1em',
+  itemWidth = '1em',
   ...props
 }) => {
   return (

@@ -1,3 +1,5 @@
+import { SVGProps } from "react";
+
 export type ElementCardType = {
     title?: string,
     thumbnail?: string,
@@ -12,4 +14,9 @@ export type DownloadCardType = {
   selectText: string;
   onClick?: () => void;
   buttonText: string;
+}
+
+export interface logoProps extends SVGProps<SVGSVGElement> {
+  itemWidth?: string;
+  itemHeight?: string;
 }
