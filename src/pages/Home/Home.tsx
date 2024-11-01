@@ -17,8 +17,10 @@ const Home: React.FC = () => {
     <>
       <TopBar></TopBar>
       <Title />
-      <SearchBox />
-      <OrbitingCircle />
+      <SearchBox className="z-50" />
+      <div className="static">
+        <OrbitingCircle className=" absolute -z-9 -top-40" />
+      </div>
 
       <WhyChooseUsParent>
         <TextCard

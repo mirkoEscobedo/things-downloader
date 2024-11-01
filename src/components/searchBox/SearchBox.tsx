@@ -1,8 +1,10 @@
 import ShineBorder from '@/components/ui/shine-border';
 import { useEffect, useRef, useState } from 'react';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-
-const SearchBox: React.FC = () => {
+interface SearchBoxProps {
+  className?: string;
+}
+const SearchBox: React.FC<SearchBoxProps> = ({ className }) => {
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -10,7 +12,9 @@ const SearchBox: React.FC = () => {
   }, []);
   return (
     <>
-      <div className="flex justify-center mt-20 w-full max-w-full md:max-w-xl lg:max-w-2xl mx-auto px-4">
+      <div
+        className={`flex justify-center mt-20 w-full max-w-full md:max-w-xl lg:max-w-2xl mx-auto px-4 ${className}`}
+      >
         <ShineBorder
           className="flex p-0 w-full"
           color={['#A07CFE', '#FE8FB5', '#FFBE7B']}
