@@ -1,5 +1,9 @@
 import * as React from 'react';
-const EnLogo: React.FC = (props) => (
+interface EnLogoProps {
+  opacity?: number; // Optional opacity prop
+  style?: React.CSSProperties; // Optional additional style
+}
+const EnLogo: React.FC<EnLogoProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"

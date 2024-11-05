@@ -18,8 +18,8 @@ const Home: React.FC = () => {
       <TopBar></TopBar>
       <Title />
       <SearchBox className="z-50" />
-      <div className="static">
-        <OrbitingCircle className=" absolute -z-9" />
+      <div className="relative">
+        <OrbitingCircle className=" absolute -top-20 -z-9" />
       </div>
 
       <WhyChooseUsParent>

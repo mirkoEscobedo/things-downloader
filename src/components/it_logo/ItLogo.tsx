@@ -1,5 +1,9 @@
-import * as React from "react";
-const ItLogo : React.FC = (props) => (
+import * as React from 'react';
+interface ItLogoProps {
+  opacity?: number; // Optional opacity prop
+  style?: React.CSSProperties; // Optional additional style
+}
+const ItLogo: React.FC<ItLogoProps> = (props) => (
   <svg
     width={24}
     height={24}

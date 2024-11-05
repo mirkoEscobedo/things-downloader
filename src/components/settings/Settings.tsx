@@ -6,15 +6,22 @@ import EnLogo from '../en_logo/EnLogo';
 import ItLogo from '../it_logo/ItLogo';
 
 const Settings: React.FC = () => {
-  const { translations } = useLanguage();
+  const { translations, setLanguage, language } = useLanguage();
+  function toggleLanguage() {
+    setLanguage(language === 'en' ? 'it' : 'en');
+  }
   return (
     <>
       <div className="text-white text-black flex items-center mb-2">
         <h2 className="mr-2">{translations.settingsLanguage}</h2>
-        <GeneralButton>
-          <EnLogo></EnLogo>
+        <GeneralButton onClick={toggleLanguage}>
+          <EnLogo
+            style={language === 'en' ? { opacity: 1 } : { opacity: 0.5 }}
+          ></EnLogo>
           <span className="mx-2">/</span>
-          <ItLogo></ItLogo>
+          <ItLogo
+            style={language === 'it' ? { opacity: 1 } : { opacity: 0.5 }}
+          ></ItLogo>
         </GeneralButton>
       </div>
       <div className="text-white text-black flex items-center mb-2">
