@@ -8,5 +8,9 @@
   "simplicityTitle": "Simplicity",
   "simplicityDescription": "Paste your URL, choose your format, and hit download. It’s that simple.",
   "downloadCardSelectText": "Convert",
-  "downloadCardButtonText": "Download"
+  "downloadCardButtonText": "Download",
+  "settingsButton": "Settings",
+  "settingsExportData": "Donwload history as CSV:",
+  "settingsDeleteData": "Delete your download history:",
+  "settingsLanguage": "Language:"
 }
