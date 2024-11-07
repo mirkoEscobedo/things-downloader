@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 interface SearchBoxProps {
   className?: string;
+  onClick?: () => void;
 }
-const SearchBox: React.FC<SearchBoxProps> = ({ className }) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ className, onClick }) => {
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -28,7 +29,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className }) => {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
-          <GeneralButton className="text-lg px-4 py-2 mr-2">
+          <GeneralButton onClick={onClick} className="text-lg px-4 py-2 mr-2">
             Start
           </GeneralButton>
         </ShineBorder>
