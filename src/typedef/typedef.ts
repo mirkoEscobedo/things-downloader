@@ -8,11 +8,6 @@ export type ElementCardType = {
   onClick?: () => void;
 };
 
-export type DownloadCardType = {
-  elementCardProps: ElementCardType;
-  onClick?: () => void;
-};
-
 export interface logoProps extends SVGProps<SVGSVGElement> {
   itemWidth?: string;
   itemHeight?: string;

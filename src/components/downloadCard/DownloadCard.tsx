@@ -4,12 +4,19 @@ import React from 'react';
 
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
-import { DownloadCardType } from '@/typedef/typedef';
 import { useLanguage } from '@/context/LanguageContex';
 
-interface DonwloadCardProps extends DownloadCardType {}
+interface DonwloadCardProps {
+  elementCardTitle?: string;
+  elementCardIcon?: string;
+  elementCardThumbnail?: string;
+  onClick?: () => void;
+}
+
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
-  elementCardProps,
+  elementCardIcon,
+  elementCardTitle,
+  elementCardThumbnail,
   onClick,
 }) => {
   const { translations } = useLanguage();
@@ -17,9 +24,9 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
     <>
       <div className="flex items-center gap-4">
         <ElementCard
-          title={elementCardProps.title}
-          icon={elementCardProps.icon}
-          thumbnail={elementCardProps.thumbnail}
+          title={elementCardTitle}
+          icon={elementCardIcon}
+          thumbnail={elementCardThumbnail}
           onClick={onClick}
           extraClasses=""
         ></ElementCard>
