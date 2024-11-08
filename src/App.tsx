@@ -1,5 +1,5 @@
-import { LanguageProvider } from "./context/LanguageContex";
-import Home from "./pages/Home/Home";
+import { LanguageProvider } from './context/LanguageContex';
+import Home from './pages/Home/Home';
 
 function App() {
   return (
