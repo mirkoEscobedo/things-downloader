@@ -14,8 +14,6 @@ const DownloadCardList: React.FC<DownloadCardListProsp> = ({
         <DonwloadCard
           key={index}
           elementCardProps={downloadCard.elementCardProps}
-          selectText={downloadCard.selectText}
-          buttonText={downloadCard.buttonText}
         ></DonwloadCard>
       ))}
     </>
