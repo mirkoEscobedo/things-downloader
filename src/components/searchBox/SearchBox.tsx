@@ -1,20 +1,42 @@
 import ShineBorder from '@/components/ui/shine-border';
 import { useEffect, useRef, useState } from 'react';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
+import { ArrowRight, LoaderCircle } from 'lucide-react';
+import { fetchData } from '@/services/fetchService';
+
 interface SearchBoxProps {
   className?: string;
-  onClick?: () => void;
+  onSearch: (data: any) => void;
 }
-const SearchBox: React.FC<SearchBoxProps> = ({ className, onClick }) => {
+
+const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<null | string>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  const handleSearch = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await fetchData(search);
+      onSearch(data);
+    } catch (e) {
+      setError('Failed to fetch data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div
-        className={`flex justify-center mt-20 w-full max-w-full md:max-w-xl lg:max-w-2xl mx-auto px-4 ${className}`}
+        className={`z-20 flex justify-center mt-20 w-full max-w-full md:max-w-xl lg:max-w-2xl mx-auto px-4 ${className}`}
       >
         <ShineBorder
           className="flex p-0 w-full"
@@ -29,13 +51,26 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onClick }) => {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
-          <GeneralButton onClick={onClick} className="text-lg px-4 py-2 mr-2">
-            Start
+          <GeneralButton
+            onClick={handleSearch}
+            className="z-30 text-lg px-4 py-2 mr-2"
+          >
+            {!loading ? (
+              <ArrowRight></ArrowRight>
+            ) : (
+              <LoaderCircle></LoaderCircle>
+            )}
           </GeneralButton>
         </ShineBorder>
       </div>
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </>
   );
 };
 
 export default SearchBox;
+
+// export const elementToRender: ElementCardType[] = [
+//   { title: 'kitti cat', icon: 'youtube' },
+//   { title: 'kitti cat', icon: 'youtube' },
+// ];
