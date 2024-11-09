@@ -20,6 +20,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
   }, []);
 
   const handleSearch = async () => {
+    
     setLoading(true);
     setError(null);
 
@@ -52,7 +53,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
             onChange={(event) => setSearch(event.target.value)}
           />
           <GeneralButton
-            onClick={handleSearch}
+            onClick={ handleSearch}
             className="z-30 text-lg px-4 py-2 mr-2"
           >
             {!loading ? (
