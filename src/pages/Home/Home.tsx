@@ -1,5 +1,6 @@
 import ConvenienceIcon from '@/components/convenienceIcon/ConvenienceIcon';
 import OrbitingCircle from '@/components/orbitingCircles/OrbitingCircle';
+import ResultCard from '@/components/resultCard/ResulCard';
 import SearchBox from '@/components/searchBox/SearchBox';
 import ShieldIcon from '@/components/shieldIcon/ShieldIcon';
 import SimplicityIcon from '@/components/simplicityIcon/SimplicityIcon';
@@ -9,19 +10,31 @@ import WhyChooseUsParent from '@/components/whyChooseUsParent/WhyChooseUsParent'
 import { useLanguage } from '@/context/LanguageContex';
 import DownloadIcon from '@/shared/components/downloadIcon/DownloadIcon';
 import TextCard from '@/shared/components/textCard/TextCard';
+import { ElementCardType } from '@/typedef/typedef';
+import { constructElementCards } from '@/utils/constructElementCards';
+import { useState } from 'react';
 
 const Home: React.FC = () => {
   const { translations } = useLanguage();
+  const [downloadCardList, setDownloadCardList] = useState<ElementCardType[]>(
+    []
+  );
 
+  const handleSearch = async (response: any) => {
+    const formattedData = constructElementCards(response);
+    setDownloadCardList(formattedData);
+  };
   return (
     <>
       <TopBar></TopBar>
       <Title />
-      <SearchBox className="z-50" />
+      <SearchBox onSearch={handleSearch} className="z-50" />
       <div className="relative">
         <OrbitingCircle className=" absolute -top-20 -z-9" />
       </div>
-
+      {downloadCardList.length > 0 && (
+        <ResultCard downloadCardList={downloadCardList} />
+      )}
       <WhyChooseUsParent>
         <TextCard
           title={translations.simplicityTitle}
