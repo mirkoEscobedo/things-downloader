@@ -14,21 +14,29 @@ const ResultCard: React.FC<ResultCardProps> = ({
   className,
 }) => {
   const { translations } = useLanguage();
+  console.log(downloadCardList.length);
   return (
     <>
       <GeneralCard className={`justify-self-center ${className || ''}`}>
         {downloadCardList.length > 1 && (
-          <div className="flex items-center">
-            <h2 className="text-white">
-              the '<span className="text-red-600 font-bold">THINGS</span>'
-            </h2>
-            <ConvertSelector
-              selectText={translations.resultCardConvertAll}
-            ></ConvertSelector>
-            <GeneralButton className="gap-1">
-              <DownloadIcon></DownloadIcon>
-              {translations.resultCardDownloadAll}
-            </GeneralButton>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full mt-4 mb-2">
+            <div className="flex items-center justify-center text-xl">
+              <h2 className="text-white">
+                the '
+                <span className="text-red-600 font-bold text-2xl">THINGS</span>'
+              </h2>
+            </div>
+            <div className="flex items-center justify-center">
+              <ConvertSelector
+                selectText={translations.resultCardConvertAll}
+              ></ConvertSelector>
+            </div>
+            <div className="flex items-center justify-center">
+              <GeneralButton className="gap-1">
+                <DownloadIcon></DownloadIcon>
+                {translations.resultCardDownloadAll}
+              </GeneralButton>
+            </div>
           </div>
         )}
         <DownloadCardList dowloadcardList={downloadCardList}></DownloadCardList>

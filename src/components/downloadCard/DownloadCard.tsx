@@ -22,22 +22,28 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   const { translations } = useLanguage();
   return (
     <>
-      <div className="flex items-center gap-4">
-        <ElementCard
-          title={elementCardTitle}
-          icon={elementCardIcon}
-          thumbnail={elementCardThumbnail}
-          onClick={onClick}
-          extraClasses=""
-        ></ElementCard>
-        <ConvertSelector
-          selectText={translations.downloadCardSelectText}
-        ></ConvertSelector>
-        <input type="checkbox"></input>
-        <GeneralButton className="gap-1">
-          <DownloadIcon></DownloadIcon>
-          {translations.downloadCardButtonText}
-        </GeneralButton>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full">
+        <div className="flex items-center justify-center">
+          <ElementCard
+            title={elementCardTitle}
+            icon={elementCardIcon}
+            thumbnail={elementCardThumbnail}
+            onClick={onClick}
+            extraClasses=""
+          ></ElementCard>
+        </div>
+        <div className="flex items-center justify-center">
+          <ConvertSelector
+            selectText={translations.downloadCardSelectText}
+          ></ConvertSelector>
+        </div>
+        <div className="flex items-center justify-center">
+          <input className="mr-4" type="checkbox"></input>
+          <GeneralButton className="gap-1">
+            <DownloadIcon></DownloadIcon>
+            {translations.downloadCardButtonText}
+          </GeneralButton>
+        </div>
       </div>
     </>
   );
