@@ -1,4 +1,4 @@
-import SparklesText from '../ui/sparkles-text';
+import SparklesText from "../ui/sparkles-text";
 
 const Title: React.FC = () => {
   return (
@@ -8,16 +8,16 @@ const Title: React.FC = () => {
       </span>
       downloader <span> - </span>
       <span>
-        {' '}
-        cit.{' '}
+        {" "}
+        cit.{" "}
         <a
           href="https://www.youtube.com/@t3dotgg"
           target="_blank"
-          rel="nooperner noreferrer"
+          rel="noopener noreferrer"
         >
           <span>Theo</span>
         </a>
-      </span>{' '}
+      </span>{" "}
       ❤️
     </h1>
   );

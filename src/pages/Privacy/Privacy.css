@@ -1,0 +1,25 @@
+section{
+    padding: 20px 15px;
+    margin-top: 50px;
+}
+
+section h2{
+    margin-top: 20px;
+    text-align: center;
+}
+
+#linkSpan{
+    display: flex;
+    
+
+}
+
+.linkR{
+    color: blueviolet;
+    font-size: 22px;
+}
+
+ol li{
+    list-style-type: circle;
+    margin-left: 20px;
+}
