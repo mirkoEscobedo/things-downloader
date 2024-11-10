@@ -1,10 +1,10 @@
-import ElementCard from '@/shared/components/element_card/ElementCard';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import React from 'react';
+import ElementCard from "@/shared/components/element_card/ElementCard";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import React from "react";
 
-import { DownloadIcon } from 'lucide-react';
-import ConvertSelector from '../convertSelector/ConvertSelector';
-import { DownloadCardType } from '@/typedef/typedef';
+import { DownloadCardType } from "@/typedef/typedef";
+import { DownloadIcon } from "lucide-react";
+import ConvertSelector from "../convertSelector/ConvertSelector";
 
 interface DonwloadCardProps extends DownloadCardType {}
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
