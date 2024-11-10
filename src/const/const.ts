@@ -1,0 +1,1 @@
+export const CHAN = '4chan';

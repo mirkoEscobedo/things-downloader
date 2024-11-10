@@ -1,9 +1,9 @@
-import { DownloadCardType } from '@/typedef/typedef';
+import { ElementCardType } from '@/typedef/typedef';
 import React from 'react';
 import DonwloadCard from '../downloadCard/DownloadCard';
 
 interface DownloadCardListProsp {
-  dowloadcardList: DownloadCardType[];
+  dowloadcardList: ElementCardType[];
 }
 const DownloadCardList: React.FC<DownloadCardListProsp> = ({
   dowloadcardList,
@@ -13,9 +13,10 @@ const DownloadCardList: React.FC<DownloadCardListProsp> = ({
       {dowloadcardList.map((downloadCard, index) => (
         <DonwloadCard
           key={index}
-          elementCardProps={downloadCard.elementCardProps}
-          selectText={downloadCard.selectText}
-          buttonText={downloadCard.buttonText}
+          elementCardIcon={downloadCard.icon}
+          elementCardThumbnail={downloadCard.thumbnail}
+          elementCardTitle={downloadCard.title}
+          onClick={downloadCard.onClick}
         ></DonwloadCard>
       ))}
     </>
