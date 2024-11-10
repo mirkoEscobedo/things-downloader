@@ -1,4 +1,5 @@
 import ConvenienceIcon from '@/components/convenienceIcon/ConvenienceIcon';
+import Footer from '@/components/footer/Footer';
 import OrbitingCircle from '@/components/orbitingCircles/OrbitingCircle';
 import ResultCard from '@/components/resultCard/ResulCard';
 import SearchBox from '@/components/searchBox/SearchBox';
@@ -28,36 +29,37 @@ const Home: React.FC = () => {
     <>
       <TopBar></TopBar>
       <Title />
-      <SearchBox onSearch={handleSearch} className="z-50" />
-      <div className="relative">
-        <OrbitingCircle className=" absolute -top-20 -z-9" />
+      <div className=''>
+        <SearchBox onSearch={handleSearch} className="sz-50 z-10" />
+        <OrbitingCircle className="-z-7" />
+        
+        {downloadCardList.length > 0 && (
+          <ResultCard downloadCardList={downloadCardList} />
+        )}
+        <WhyChooseUsParent>
+          <TextCard
+            title={translations.simplicityTitle}
+            description={translations.simplicityDescription}
+            image={<SimplicityIcon />}
+          />
+          <TextCard
+            title={translations.convenienceTitle}
+            description={translations.convenienceDescription}
+            image={<ConvenienceIcon />}
+          />
+          <TextCard
+            title={translations.qualityDownloadsTitle}
+            description={translations.qualityDownloadsDescription}
+            image={<DownloadIcon />}
+          />
+          <TextCard
+            description={translations.safeAndSecureDescription}
+            title={translations.safeAndSecureTitle}
+            image={<ShieldIcon />}
+          />
+        </WhyChooseUsParent>
       </div>
-      {downloadCardList.length > 0 && (
-        <ResultCard downloadCardList={downloadCardList} />
-      )}
-      <WhyChooseUsParent>
-        <TextCard
-          title={translations.simplicityTitle}
-          description={translations.simplicityDescription}
-          image={<SimplicityIcon />}
-        />
-        <TextCard
-          title={translations.convenienceTitle}
-          description={translations.convenienceDescription}
-          image={<ConvenienceIcon />}
-        />
-        <TextCard
-          title={translations.qualityDownloadsTitle}
-          description={translations.qualityDownloadsDescription}
-          image={<DownloadIcon />}
-        />
-
-        <TextCard
-          description={translations.safeAndSecureDescription}
-          title={translations.safeAndSecureTitle}
-          image={<ShieldIcon />}
-        />
-      </WhyChooseUsParent>
+      <Footer />
     </>
   );
 };
