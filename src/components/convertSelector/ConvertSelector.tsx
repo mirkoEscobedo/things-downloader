@@ -14,8 +14,8 @@ interface ConvertSelectorProps {
 const ConvertSelector: React.FC<ConvertSelectorProps> = ({ selectText }) => {
   return (
     <Select>
-      <SelectTrigger className="w-[280px] bg-neutral-900">
-        <SelectValue className="" placeholder={selectText} />
+      <SelectTrigger className="w-[280px] bg-neutral-900 text-white">
+        <SelectValue className="text-white" placeholder={selectText} />
       </SelectTrigger>
       <SelectContent className="bg-neutral-900 text-white">
         <SelectGroup>
