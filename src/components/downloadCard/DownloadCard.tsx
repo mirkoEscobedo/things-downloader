@@ -1,6 +1,6 @@
-import ElementCard from "@/shared/components/element_card/ElementCard";
-import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import React from "react";
+import ElementCard from '@/shared/components/element_card/ElementCard';
+import GeneralButton from '@/shared/components/generalButton/GeneralButton';
+import React from 'react';
 
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
@@ -38,7 +38,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
           ></ConvertSelector>
         </div>
         <div className="flex items-center justify-center">
-          <input className="mr-4" type="checkbox"></input>
+          <input className="mr-4 size-5" type="checkbox"></input>
           <GeneralButton className="gap-1">
             <DownloadIcon></DownloadIcon>
             {translations.downloadCardButtonText}
