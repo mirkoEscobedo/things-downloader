@@ -2,7 +2,7 @@ import { SVGProps } from 'react';
 
 export type ElementCardType = {
   title?: string;
-  thumbnail?: string;
+  thumbnail?: string | null;
   extraClasses?: string;
   icon?: string;
   onClick?: () => void;

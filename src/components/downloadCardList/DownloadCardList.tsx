@@ -14,7 +14,9 @@ const DownloadCardList: React.FC<DownloadCardListProsp> = ({
         <DonwloadCard
           key={index}
           elementCardIcon={downloadCard.icon}
-          elementCardThumbnail={downloadCard.thumbnail}
+          elementCardThumbnail={
+            downloadCard.thumbnail === null ? '' : downloadCard.thumbnail
+          }
           elementCardTitle={downloadCard.title}
           onClick={downloadCard.onClick}
         ></DonwloadCard>

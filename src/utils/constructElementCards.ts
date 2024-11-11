@@ -3,6 +3,9 @@ import { ElementCardType } from '@/typedef/typedef';
 interface MediaItem {
   filename: string;
   url: string;
+  board: string;
+  tim: string;
+  thumbnail: string | null;
 }
 
 interface MediaResponse {
@@ -27,7 +30,8 @@ export function constructElementCards(
     ) {
       icon = 'youtube';
     }
-    return { title: item.filename, thumbnail: item.url, icon };
+
+    return { title: item.filename, thumbnail: item.thumbnail, icon };
   });
 
   return cards;
