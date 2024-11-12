@@ -23,3 +23,37 @@ export async function fetchData(url: string) {
     throw error;
   }
 }
+
+export async function callConvertAndDownloadMedia(
+  mediaUrls: string[],
+  format: string
+) {
+  try {
+    const endpoint = `http://localhost:4000/trpc/media.convertAndDownloadMedia`;
+    const response = await fetch(
+      `${endpoint}?input=${encodeURIComponent(
+        JSON.stringify({ mediaUrls, format })
+      )}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status ${response.status}`);
+    }
+
+    const data = await response.blob();
+    const filename =
+      format !== 'default' ? `convert_media.${format}` : `downloaded_media.zip`;
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(data);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  } catch (error) {
+    console.error('Failed to convert and download media: ', error);
+  }
+}

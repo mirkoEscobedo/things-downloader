@@ -6,6 +6,7 @@ export type ElementCardType = {
   extraClasses?: string;
   icon?: string;
   onClick?: () => void;
+  url: string;
 };
 
 export interface logoProps extends SVGProps<SVGSVGElement> {

@@ -5,6 +5,7 @@ import ConvertSelector from '../convertSelector/ConvertSelector';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import { DownloadIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContex';
+import { callConvertAndDownloadMedia } from '@/services/fetchService';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -15,6 +16,17 @@ const ResultCard: React.FC<ResultCardProps> = ({
 }) => {
   const { translations } = useLanguage();
   console.log(downloadCardList.length);
+
+  const handleDownloadAll = () => {
+    const allMediaUrls = downloadCardList.map((card) => card.url);
+    const formatSelectElement = document.querySelector(
+      '[name="convertAll"]'
+    ) as HTMLSelectElement;
+
+    const format = formatSelectElement?.value || 'default';
+
+    callConvertAndDownloadMedia(allMediaUrls, format);
+  };
   return (
     <>
       <GeneralCard className={`justify-self-center ${className || ''}`}>
@@ -27,12 +39,12 @@ const ResultCard: React.FC<ResultCardProps> = ({
               </h2>
             </div>
             <div className="flex items-center justify-center">
-              <ConvertSelector
+              <ConvertSelector name='convertAll'
                 selectText={translations.resultCardConvertAll}
               ></ConvertSelector>
             </div>
             <div className="flex items-center justify-center">
-              <GeneralButton className="gap-1">
+              <GeneralButton onClick={handleDownloadAll} className="gap-1">
                 <DownloadIcon></DownloadIcon>
                 {translations.resultCardDownloadAll}
               </GeneralButton>
