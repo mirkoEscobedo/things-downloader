@@ -1,4 +1,5 @@
 import ShineBorder from "@/components/ui/shine-border";
+import { useLanguage } from "@/context/LanguageContex";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import { ArrowLeft } from "lucide-react";
 import React, {
@@ -12,6 +13,7 @@ import { Link } from "react-router-dom";
 import "./Contact.css";
 
 const Contact: React.FC = () => {
+  const { translations } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,14 +46,14 @@ const Contact: React.FC = () => {
       <span id="linkSpan">
         <ArrowLeft size={35} color="blueviolet" />
         <Link className="linkR" to="/">
-          Go Back To Home Page
+          {translations.backHomeLinkText}
         </Link>
       </span>
       <div className="contact-page">
-        <h1>Contact Us</h1>
+        <h1>{translations.contactUsTitle}</h1>
         <form onSubmit={handleSubmit}>
           <div className="nameDiv">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">{translations.contactUsInputName}</label>
 
             <input
               type="text"
@@ -64,7 +66,7 @@ const Contact: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">{translations.contactUsInputEmail}</label>
             <input
               type="email"
               id="email"
@@ -78,7 +80,9 @@ const Contact: React.FC = () => {
           <div
             className={`messageDiv flex justify-center  w-full max-w-full md:max-w-xl lg:max-w-2xl mx-auto px-4 `}
           >
-            <label htmlFor="message">Message:</label>
+            <label htmlFor="message">
+              {translations.contactUsInputMessage}
+            </label>
             <ShineBorder
               className="z-1 message p-0 flex"
               color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
@@ -97,7 +101,7 @@ const Contact: React.FC = () => {
           </div>
 
           <GeneralButton>
-            <span className="text-white">Submit</span>
+            <span className="text-white">{translations.contactSubmitText}</span>
           </GeneralButton>
         </form>
       </div>
