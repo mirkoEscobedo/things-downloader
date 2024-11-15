@@ -46,10 +46,28 @@ export async function callConvertAndDownloadMedia(
       throw new Error(`HTTP error! status ${response.status}`);
     }
 
-    const data = await response.blob();
-    
+    const responseJson = await response.json();
+    const fileData = responseJson.result?.data;
+
+    if (!fileData) {
+      throw new Error('Invalid response structure from the server');
+    }
+
+    let downloadUrl = fileData.file || fileData.zipFile;
+
+    const downloadResponse = await fetch(downloadUrl);
+    if (!downloadResponse.ok) {
+      throw new Error(
+        `Failed to download file: ${downloadResponse.statusText}`
+      );
+    }
+
+    const data = await downloadResponse.blob();
+
     const filename =
-      format !== 'default' ? `convert_media.${format}` : `downloaded_media.zip`;
+      format !== 'default' && fileData.file
+        ? `convert_media.${format}`
+        : `downloaded_media.zip`;
 
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(data);
