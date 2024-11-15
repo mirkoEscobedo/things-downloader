@@ -1,5 +1,4 @@
 import { CHAN } from '@/const/const';
-import { input } from 'framer-motion/client';
 
 export async function fetchData(url: string) {
   try {
