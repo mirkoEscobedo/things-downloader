@@ -17,7 +17,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   const { translations } = useLanguage();
   console.log(downloadCardList.length);
 
-  const handleDownloadAll = () => {
+  const handleDownloadAll = async () => {
     const allMediaUrls = downloadCardList.map((card) => card.url);
     const formatSelectElement = document.querySelector(
       '[name="convertAll"]'
@@ -25,7 +25,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
 
     const format = formatSelectElement?.value || 'default';
 
-    callConvertAndDownloadMedia(allMediaUrls, format);
+    await callConvertAndDownloadMedia(allMediaUrls, format);
   };
   return (
     <>

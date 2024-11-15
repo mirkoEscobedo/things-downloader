@@ -1,4 +1,5 @@
 import { CHAN } from '@/const/const';
+import { input } from 'framer-motion/client';
 
 export async function fetchData(url: string) {
   try {
@@ -28,17 +29,18 @@ export async function callConvertAndDownloadMedia(
   mediaUrls: string[],
   format: string
 ) {
+  const input = {
+    mediaUrls,
+    format,
+  };
   try {
+    console.log('fetchService starting call', input);
     const endpoint = `http://localhost:4000/trpc/media.convertAndDownloadMedia`;
-    const response = await fetch(
-      `${endpoint}?input=${encodeURIComponent(
-        JSON.stringify({ mediaUrls, format })
-      )}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status ${response.status}`);
     }

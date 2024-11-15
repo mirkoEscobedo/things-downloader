@@ -24,13 +24,13 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
 }) => {
   const { translations } = useLanguage();
 
-  const handleDownloadSingle = () => {
+  const handleDownloadSingle = async () => {
     const mediaUrl = [url];
     const formatSelectElement = document.querySelector(
       '[name="convertSingle"]'
     ) as HTMLSelectElement;
     const format = formatSelectElement?.value || 'default';
-    callConvertAndDownloadMedia(mediaUrl, format);
+    await callConvertAndDownloadMedia(mediaUrl, format);
   };
 
   return (
