@@ -34,17 +34,20 @@ export async function callConvertAndDownloadMedia(
   };
   try {
     console.log('fetchService starting call', input);
+
     const endpoint = `http://localhost:4000/trpc/media.convertAndDownloadMedia`;
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),
     });
+
     if (!response.ok) {
       throw new Error(`HTTP error! status ${response.status}`);
     }
 
     const data = await response.blob();
+    
     const filename =
       format !== 'default' ? `convert_media.${format}` : `downloaded_media.zip`;
 
