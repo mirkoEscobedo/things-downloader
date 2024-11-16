@@ -39,7 +39,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
               </h2>
             </div>
             <div className="flex items-center justify-center">
-              <ConvertSelector name='convertAll'
+              <ConvertSelector
+                name="convertAll"
                 selectText={translations.resultCardConvertAll}
               ></ConvertSelector>
             </div>
@@ -51,7 +52,11 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
           </div>
         )}
-        <DownloadCardList dowloadcardList={downloadCardList}></DownloadCardList>
+        <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
+          <DownloadCardList
+            dowloadcardList={downloadCardList}
+          ></DownloadCardList>
+        </div>
       </GeneralCard>
     </>
   );
