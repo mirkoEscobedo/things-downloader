@@ -27,9 +27,9 @@ const Home: React.FC = () => {
   };
   return (
     <>
+      <TopBar></TopBar>
       <div className="relative">
-        <TopBar></TopBar>
-        <Title className="relative z-10" />
+        <Title className="relative z-10 " />
         <SearchBox onSearch={handleSearch} className="sz-50 z-10 relative" />
         <OrbitingCircle className=" absolute top-14 -z-1 h-full left-1/2 transform -translate-x-1/2" />
 
@@ -58,8 +58,8 @@ const Home: React.FC = () => {
             image={<ShieldIcon />}
           />
         </WhyChooseUsParent>
-      </div>
-      <Footer />
+        
+      </div><Footer />
     </>
   );
 };

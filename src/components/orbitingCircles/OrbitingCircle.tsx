@@ -16,7 +16,7 @@ const OrbitingCircle: React.FC<OrbitingCircleProps> = ({ className }) => {
         className="size-[40px] border-none bg-transparent"
         duration={20}
         delay={20}
-        radius={200}
+        radius={150}
       >
         <Chan itemHeight="15em" itemWidth="15em" />
       </OrbitingCircles>
@@ -26,7 +26,7 @@ const OrbitingCircle: React.FC<OrbitingCircleProps> = ({ className }) => {
         className="size-[40px] border-none bg-transparent"
         duration={20}
         delay={10}
-        radius={200}
+        radius={150}
       >
         <XformerlyTwitter itemHeight="8em" itemWidth="8em" />
       </OrbitingCircles>
@@ -36,7 +36,7 @@ const OrbitingCircle: React.FC<OrbitingCircleProps> = ({ className }) => {
         className="size-[80px] border-none bg-transparent"
         duration={20}
         delay={20}
-        radius={400}
+        radius={300}
         reverse
       >
         <YouTube itemWidth="15em" itemHeight="15em" />
@@ -47,7 +47,7 @@ const OrbitingCircle: React.FC<OrbitingCircleProps> = ({ className }) => {
         className="size-[50px] border-none bg-transparent"
         duration={20}
         delay={10}
-        radius={400}
+        radius={300}
         reverse
       >
         <YoutubeMusic itemWidth="10em" itemHeight="10em" />
