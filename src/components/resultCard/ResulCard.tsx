@@ -29,7 +29,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
   return (
     <>
-      <GeneralCard className={`justify-self-center ${className || ''}`}>
+      <GeneralCard className={`mt-6 justify-self-center ${className || ''}`}>
         {downloadCardList.length > 1 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full mt-4 mb-2">
             <div className="flex items-center justify-center text-xl">

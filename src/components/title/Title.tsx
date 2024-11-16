@@ -1,8 +1,10 @@
 import SparklesText from "../ui/sparkles-text";
-
-const Title: React.FC = () => {
+interface TitleProps {
+  className?:string
+}
+const Title: React.FC<TitleProps> = ({className}) => {
   return (
-    <h1 className="text-center mt-32 flex flex-wrap justify-center gap-x-3">
+    <h1 className={`text-center mt-32 flex flex-wrap justify-center gap-x-3 ${className}`}>
       <span className="flex">
         '{<SparklesText text="THINGS" className="text-red-600" />}'
       </span>

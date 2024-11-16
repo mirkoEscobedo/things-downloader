@@ -27,16 +27,16 @@ const Home: React.FC = () => {
   };
   return (
     <>
-      <TopBar></TopBar>
-      <Title />
-      <div className=''>
-        <SearchBox onSearch={handleSearch} className="sz-50 z-10" />
-        <OrbitingCircle className="-z-7" />
-        
+      <div className="relative">
+        <TopBar></TopBar>
+        <Title className="relative z-10" />
+        <SearchBox onSearch={handleSearch} className="sz-50 z-10 relative" />
+        <OrbitingCircle className=" absolute top-14 -z-1 h-full left-1/2 transform -translate-x-1/2" />
+
         {downloadCardList.length > 0 && (
           <ResultCard downloadCardList={downloadCardList} />
         )}
-        <WhyChooseUsParent>
+        <WhyChooseUsParent className="relative z-10">
           <TextCard
             title={translations.simplicityTitle}
             description={translations.simplicityDescription}
