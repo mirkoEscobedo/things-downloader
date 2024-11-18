@@ -45,24 +45,18 @@ export async function callConvertAndDownloadMedia(
     if (!response.ok) {
       throw new Error(`HTTP error! status ${response.status}`);
     }
-    const contentDisposition = response.headers.get('Content-Disposition');
-    let filename = 'downloaded_media';
-
-    if (contentDisposition) {
-      const match = contentDisposition.match(/filename="(.+)"/);
-      if (match && match[1]) {
-        filename = match[1];
-      }
+    const responseData = await response.json();
+    console.log(responseData);
+    const filePath = responseData.result?.data?.filePath;
+    if (!filePath) {
+      throw new Error('File path not found in the response');
     }
+    console.log(filePath);
 
-    const blob = await response.blob();
-
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
+    const downloadEndopoint = `http://localhost:4000/download?path=${encodeURIComponent(
+      filePath
+    )}`;
+    window.location.href = downloadEndopoint;
   } catch (error) {
     console.error('Failed to convert and download media: ', error);
   }
