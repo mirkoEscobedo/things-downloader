@@ -6,6 +6,7 @@ import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import { DownloadIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContex';
 import { callConvertAndDownloadMedia } from '@/services/fetchService';
+import { addDownloadToHistory } from '@/utils/downloadHistory';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -26,6 +27,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
     const format = formatSelectElement?.value || 'default';
 
     await callConvertAndDownloadMedia(allMediaUrls, format);
+
+    downloadCardList.map((card) => addDownloadToHistory(card));
   };
   return (
     <>

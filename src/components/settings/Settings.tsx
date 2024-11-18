@@ -1,15 +1,38 @@
 import { useLanguage } from '@/context/LanguageContex';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import { DownloadIcon, TrashIcon } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import EnLogo from '../en_logo/EnLogo';
 import ItLogo from '../it_logo/ItLogo';
+import { ElementCardType } from '@/typedef/typedef';
+import {
+  deleteDownloadHistory,
+  downloadHistoryAsJson,
+  getDownloadHistory,
+} from '@/utils/downloadHistory';
 
 const Settings: React.FC = () => {
   const { translations, setLanguage, language } = useLanguage();
+  const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>([]);
+
+  useEffect(() => {
+    const history = getDownloadHistory();
+    setDownloadHistory(history);
+  }, []);
+
   function toggleLanguage() {
     setLanguage(language === 'en' ? 'it' : 'en');
   }
+
+  const handleExportData = () => {
+    downloadHistoryAsJson();
+  };
+
+  const handleDeleteData = () => {
+    deleteDownloadHistory();
+    setDownloadHistory([]);
+  };
+
   return (
     <>
       <div className="grid grid-col-2 grid-rows-3 items-center gap-1">
@@ -27,13 +50,13 @@ const Settings: React.FC = () => {
         </div>
         <div className="text-white  flex items-center justify-between">
           <h2 className="mr-2">{translations.settingsExportData}</h2>
-          <GeneralButton>
+          <GeneralButton onClick={handleExportData}>
             <DownloadIcon></DownloadIcon>
           </GeneralButton>
         </div>
         <div className="text-white text-black flex items-center justify-between">
           <h2 className="mr-2">{translations.settingsDeleteData}</h2>
-          <GeneralButton>
+          <GeneralButton onClick={handleDeleteData}>
             <TrashIcon></TrashIcon>
           </GeneralButton>
         </div>

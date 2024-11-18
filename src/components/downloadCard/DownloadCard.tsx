@@ -6,6 +6,7 @@ import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
 import { useLanguage } from '@/context/LanguageContex';
 import { callConvertAndDownloadMedia } from '@/services/fetchService';
+import { addDownloadToHistory } from '@/utils/downloadHistory';
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -31,6 +32,13 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
     ) as HTMLSelectElement;
     const format = formatSelectElement?.value || 'default';
     await callConvertAndDownloadMedia(mediaUrl, format);
+
+    addDownloadToHistory({
+      title: elementCardTitle,
+      icon: elementCardIcon,
+      thumbnail: elementCardThumbnail,
+      url,
+    });
   };
 
   return (
