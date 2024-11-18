@@ -14,7 +14,7 @@
   "resultCardConvertSelected": "Converti Selezionati",
   "resultCardDownloadSelected": "Scarica Selezionati",
   "settingsButton": "Impostazioni",
-  "settingsExportData": "Scarica lo storico come CSV:",
+  "settingsExportData": "Scarica lo storico come JSON:",
   "settingsDeleteData": "Cancella lo storico dei scaricamenti:",
   "settingsLanguage": "Lingua:",
   "aboutUsTitle": "Chi Siamo",
@@ -53,5 +53,6 @@
   "linkContactTitle": "Contatto",
   "linkPrivacyTitle": "Privacy",
   "backHomeLinkText": "Torna alla Pagina Iniziale",
-  "whyUsText": "Perché Sceglierci?"
+  "whyUsText": "Perché Sceglierci?",
+  "downloadHistory": "Storico Scaricamenti"
 }

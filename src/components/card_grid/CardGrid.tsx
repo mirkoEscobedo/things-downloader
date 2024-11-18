@@ -1,21 +1,19 @@
 import React from 'react';
 import ElementCard from '../../shared/components/element_card/ElementCard';
+import { ElementCardType } from '@/typedef/typedef';
 
-interface CardData {
-  icon?: string;
-  thumbnail?: string;
-  title: string;
-}
-const CardGrid: React.FC<{ data: CardData[] }> = ({ data }) => {
+const CardGrid: React.FC<{ data: ElementCardType[] }> = ({ data }) => {
   return (
-    <div className="flex justify-center p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mx-auto">
+    <div className="flex justify-center p-4 z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mx-auto z-10">
         {data.map((item, index) => (
           <ElementCard
             key={index}
             icon={item.icon}
             thumbnail={item.thumbnail}
             title={item.title}
+            url={item.url}
+            onClick={item.onClick}
           />
         ))}
       </div>
@@ -24,10 +22,3 @@ const CardGrid: React.FC<{ data: CardData[] }> = ({ data }) => {
 };
 
 export default CardGrid;
-
-export const sampleData: CardData[] = [
-  { icon: 'youtube', title: 'YouTube Video 1' },
-  { icon: 'twitter', title: 'Twitter Post' },
-  { title: 'Kitty cat video', icon: '4chan' }, // This will use the default thumbnail
-  // Add more items as needed
-];
