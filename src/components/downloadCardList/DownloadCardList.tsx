@@ -11,10 +11,12 @@ const DownloadCardList: React.FC<DownloadCardListProsp> = ({
   return (
     <>
       {dowloadcardList.map((downloadCard, index) => (
-        <DonwloadCard
+        <DonwloadCard url={downloadCard.url}
           key={index}
           elementCardIcon={downloadCard.icon}
-          elementCardThumbnail={downloadCard.thumbnail}
+          elementCardThumbnail={
+            downloadCard.thumbnail === null ? '' : downloadCard.thumbnail
+          }
           elementCardTitle={downloadCard.title}
           onClick={downloadCard.onClick}
         ></DonwloadCard>

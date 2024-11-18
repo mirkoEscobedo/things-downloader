@@ -23,3 +23,41 @@ export async function fetchData(url: string) {
     throw error;
   }
 }
+
+export async function callConvertAndDownloadMedia(
+  mediaUrls: string[],
+  format: string
+) {
+  const input = {
+    mediaUrls,
+    format,
+  };
+  try {
+    console.log('fetchService starting call', input);
+
+    const endpoint = `http://localhost:4000/trpc/media.convertAndDownloadMedia`;
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status ${response.status}`);
+    }
+    const responseData = await response.json();
+    console.log(responseData);
+    const filePath = responseData.result?.data?.filePath;
+    if (!filePath) {
+      throw new Error('File path not found in the response');
+    }
+    console.log(filePath);
+
+    const downloadEndopoint = `http://localhost:4000/download?path=${encodeURIComponent(
+      filePath
+    )}`;
+    window.location.href = downloadEndopoint;
+  } catch (error) {
+    console.error('Failed to convert and download media: ', error);
+  }
+}

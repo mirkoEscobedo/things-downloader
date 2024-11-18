@@ -10,10 +10,11 @@ import {
 import React from 'react';
 interface ConvertSelectorProps {
   selectText: string;
+  name: string;
 }
-const ConvertSelector: React.FC<ConvertSelectorProps> = ({ selectText }) => {
+const ConvertSelector: React.FC<ConvertSelectorProps> = ({ selectText , name}) => {
   return (
-    <Select>
+    <Select name={name}>
       <SelectTrigger className="w-[280px] bg-neutral-900 text-white">
         <SelectValue className="text-white" placeholder={selectText} />
       </SelectTrigger>

@@ -42,7 +42,7 @@ const ElementCard: React.FC<ElementCardProps> = ({
             className="w-full h-full object-cover rounded-md"
           ></img>
         </div>
-        <h3 className="flex text-left items-center font-semibold text-lg mb-1">
+        <h3 className="flex text-white text-left items-center font-semibold text-lg mb-1">
           {toDisplay(icon)}
           {title}
         </h3>

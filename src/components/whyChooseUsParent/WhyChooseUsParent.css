@@ -1,12 +1,10 @@
-
-section{
-    display: grid;
-    grid-template-columns: auto;
-    
+section {
+  display: grid;
+  grid-template-columns: auto;
 }
 
-#whyHeading{
-    
-    text-align: center;
-    font-size: 40px;
+#whyHeading {
+  margin-top: 100px;
+  text-align: center;
+  font-size: 40px;
 }
