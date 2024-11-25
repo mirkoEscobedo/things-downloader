@@ -5,7 +5,10 @@ import ConvertSelector from '../convertSelector/ConvertSelector';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import { DownloadIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContex';
-import { callConvertAndDownloadMedia } from '@/services/fetchService';
+import {
+  callConvertAndDownloadMedia,
+  getNewTask,
+} from '@/services/fetchService';
 import { addDownloadToHistory } from '@/utils/downloadHistory';
 import { useState } from 'react';
 interface ResultCardProps {
@@ -33,17 +36,14 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
 
   const handleDownloadAll = async () => {
+    const { taskId } = await getNewTask();
+
     const urlsToDownload =
       selectedUrls.length > 0
         ? selectedUrls
         : downloadCardList.map((card) => card.url);
-    // const formatSelectElement = document.querySelector(
-    //   '[name="convertAll"]'
-    // ) as HTMLSelectElement;
 
-    // const format = formatSelectElement?.value || 'default';
-
-    await callConvertAndDownloadMedia(urlsToDownload, selectedFormat);
+    await callConvertAndDownloadMedia(taskId, urlsToDownload, selectedFormat);
     selectedUrls.forEach((url) => {
       const card = downloadCardList.find((card) => card.url === url);
       if (card) {

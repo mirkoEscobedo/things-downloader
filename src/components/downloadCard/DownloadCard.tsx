@@ -5,7 +5,10 @@ import React, { useState } from 'react';
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
 import { useLanguage } from '@/context/LanguageContex';
-import { callConvertAndDownloadMedia } from '@/services/fetchService';
+import {
+  callConvertAndDownloadMedia,
+  getNewTask,
+} from '@/services/fetchService';
 import { addDownloadToHistory } from '@/utils/downloadHistory';
 
 interface DonwloadCardProps {
@@ -33,12 +36,12 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   };
 
   const handleDownloadSingle = async () => {
+    
+    const taskId =  await getNewTask();
+    console.log(taskId);
     const mediaUrl = [url];
-    // const formatSelectElement = document.querySelector(
-    //   '[name="convertSingle"]'
-    // ) as HTMLSelectElement;
-    // const format = formatSelectElement?.value || 'default';
-    await callConvertAndDownloadMedia(mediaUrl, selectedFormat);
+
+    await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
 
     addDownloadToHistory({
       title: elementCardTitle,
