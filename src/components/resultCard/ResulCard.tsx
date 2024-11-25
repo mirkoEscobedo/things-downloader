@@ -23,8 +23,6 @@ const ResultCard: React.FC<ResultCardProps> = ({
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
-  console.log(selectedFormat);
-  console.log(downloadCardList.length);
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
       if (checked) {
@@ -36,7 +34,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
 
   const handleDownloadAll = async () => {
-    const { taskId } = await getNewTask();
+    const taskId = await getNewTask();
+    console.log(taskId);
 
     const urlsToDownload =
       selectedUrls.length > 0
