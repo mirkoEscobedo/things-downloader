@@ -14,6 +14,7 @@ interface DonwloadCardProps {
   elementCardThumbnail?: string;
   url: string;
   onClick?: () => void;
+  onCheckboxChange: (url: string, checked: boolean) => void;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
@@ -22,8 +23,13 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   url,
   elementCardThumbnail,
   onClick,
+  onCheckboxChange,
 }) => {
   const { translations } = useLanguage();
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onCheckboxChange(url, event.target.checked);
+  };
 
   const handleDownloadSingle = async () => {
     const mediaUrl = [url];
@@ -61,7 +67,11 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
           ></ConvertSelector>
         </div>
         <div className="flex items-center justify-center">
-          <input className="mr-4 size-5" type="checkbox"></input>
+          <input
+            className="mr-4 size-5"
+            type="checkbox"
+            onChange={handleCheckboxChange}
+          ></input>
           <GeneralButton onClick={handleDownloadSingle} className="gap-1">
             <DownloadIcon></DownloadIcon>
             {translations.downloadCardButtonText}

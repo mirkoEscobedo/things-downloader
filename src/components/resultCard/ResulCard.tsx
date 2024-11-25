@@ -7,6 +7,7 @@ import { DownloadIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContex';
 import { callConvertAndDownloadMedia } from '@/services/fetchService';
 import { addDownloadToHistory } from '@/utils/downloadHistory';
+import { useState } from 'react';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -16,17 +17,31 @@ const ResultCard: React.FC<ResultCardProps> = ({
   className,
 }) => {
   const { translations } = useLanguage();
+  const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
+
   console.log(downloadCardList.length);
+  const handleCheckboxChange = (url: string, checked: boolean) => {
+    setSelectedUrls((prev) => {
+      if (checked) {
+        return [...prev, url];
+      } else {
+        return prev.filter((selectedUrls) => selectedUrls !== url);
+      }
+    });
+  };
 
   const handleDownloadAll = async () => {
-    const allMediaUrls = downloadCardList.map((card) => card.url);
+    const urlsToDownload =
+      selectedUrls.length > 0
+        ? selectedUrls
+        : downloadCardList.map((card) => card.url);
     const formatSelectElement = document.querySelector(
       '[name="convertAll"]'
     ) as HTMLSelectElement;
 
     const format = formatSelectElement?.value || 'default';
 
-    await callConvertAndDownloadMedia(allMediaUrls, format);
+    await callConvertAndDownloadMedia(urlsToDownload, format);
 
     downloadCardList.map((card) => addDownloadToHistory(card));
   };
@@ -44,19 +59,26 @@ const ResultCard: React.FC<ResultCardProps> = ({
             <div className="flex items-center justify-center">
               <ConvertSelector
                 name="convertAll"
-                selectText={translations.resultCardConvertAll}
+                selectText={
+                  selectedUrls.length > 0
+                    ? translations.resultCardConvertSelected
+                    : translations.resultCardConvertAll
+                }
               ></ConvertSelector>
             </div>
             <div className="flex items-center justify-center">
               <GeneralButton onClick={handleDownloadAll} className="gap-1">
                 <DownloadIcon></DownloadIcon>
-                {translations.resultCardDownloadAll}
+                {selectedUrls.length > 0
+                  ? translations.resultCardDownloadSelected
+                  : translations.resultCardDownloadAll}
               </GeneralButton>
             </div>
           </div>
         )}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
           <DownloadCardList
+            onCheckboxChange={handleCheckboxChange}
             dowloadcardList={downloadCardList}
           ></DownloadCardList>
         </div>

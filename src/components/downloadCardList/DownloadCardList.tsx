@@ -4,14 +4,18 @@ import DonwloadCard from '../downloadCard/DownloadCard';
 
 interface DownloadCardListProsp {
   dowloadcardList: ElementCardType[];
+  onCheckboxChange: (url: string, checked: boolean) => void;
 }
 const DownloadCardList: React.FC<DownloadCardListProsp> = ({
+  onCheckboxChange,
   dowloadcardList,
 }) => {
   return (
     <>
       {dowloadcardList.map((downloadCard, index) => (
-        <DonwloadCard url={downloadCard.url}
+        <DonwloadCard
+          onCheckboxChange={onCheckboxChange}
+          url={downloadCard.url}
           key={index}
           elementCardIcon={downloadCard.icon}
           elementCardThumbnail={
