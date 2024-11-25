@@ -1,6 +1,6 @@
 import ElementCard from '@/shared/components/element_card/ElementCard';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
@@ -26,6 +26,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   onCheckboxChange,
 }) => {
   const { translations } = useLanguage();
+  const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onCheckboxChange(url, event.target.checked);
@@ -33,11 +34,11 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
 
   const handleDownloadSingle = async () => {
     const mediaUrl = [url];
-    const formatSelectElement = document.querySelector(
-      '[name="convertSingle"]'
-    ) as HTMLSelectElement;
-    const format = formatSelectElement?.value || 'default';
-    await callConvertAndDownloadMedia(mediaUrl, format);
+    // const formatSelectElement = document.querySelector(
+    //   '[name="convertSingle"]'
+    // ) as HTMLSelectElement;
+    // const format = formatSelectElement?.value || 'default';
+    await callConvertAndDownloadMedia(mediaUrl, selectedFormat);
 
     addDownloadToHistory({
       title: elementCardTitle,
@@ -62,6 +63,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
         </div>
         <div className="flex items-center justify-center">
           <ConvertSelector
+            onFormatChange={setSelectedFormat}
             name="convertSingle"
             selectText={translations.downloadCardSelectText}
           ></ConvertSelector>

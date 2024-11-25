@@ -18,7 +18,9 @@ const ResultCard: React.FC<ResultCardProps> = ({
 }) => {
   const { translations } = useLanguage();
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
+  const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
+  console.log(selectedFormat);
   console.log(downloadCardList.length);
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
@@ -35,15 +37,20 @@ const ResultCard: React.FC<ResultCardProps> = ({
       selectedUrls.length > 0
         ? selectedUrls
         : downloadCardList.map((card) => card.url);
-    const formatSelectElement = document.querySelector(
-      '[name="convertAll"]'
-    ) as HTMLSelectElement;
+    // const formatSelectElement = document.querySelector(
+    //   '[name="convertAll"]'
+    // ) as HTMLSelectElement;
 
-    const format = formatSelectElement?.value || 'default';
+    // const format = formatSelectElement?.value || 'default';
 
-    await callConvertAndDownloadMedia(urlsToDownload, format);
-
-    downloadCardList.map((card) => addDownloadToHistory(card));
+    await callConvertAndDownloadMedia(urlsToDownload, selectedFormat);
+    selectedUrls.forEach((url) => {
+      const card = downloadCardList.find((card) => card.url === url);
+      if (card) {
+        addDownloadToHistory(card);
+      }
+    });
+    // downloadCardList.map((card) => addDownloadToHistory(card));
   };
   return (
     <>
@@ -58,6 +65,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
             <div className="flex items-center justify-center">
               <ConvertSelector
+                onFormatChange={setSelectedFormat}
                 name="convertAll"
                 selectText={
                   selectedUrls.length > 0
