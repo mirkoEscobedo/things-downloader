@@ -9,8 +9,12 @@ import {
   callConvertAndDownloadMedia,
   getNewTask,
 } from '@/services/fetchService';
-import { addDownloadToHistory } from '@/utils/downloadHistory';
+import {
+  addDownloadToHistory,
+  getDownloadHistory,
+} from '@/utils/downloadHistory';
 import { useState } from 'react';
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -20,6 +24,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   className,
 }) => {
   const { translations } = useLanguage();
+  const { setDownloadHistory } = useDownloadHistory();
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
@@ -48,8 +53,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
       if (card) {
         addDownloadToHistory(card);
       }
+      setDownloadHistory(getDownloadHistory());
     });
-    
   };
   return (
     <>

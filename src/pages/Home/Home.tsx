@@ -9,36 +9,41 @@ import SimplicityIcon from '@/components/simplicityIcon/SimplicityIcon';
 import Title from '@/components/title/Title';
 import TopBar from '@/components/topBar/TopBar';
 import WhyChooseUsParent from '@/components/whyChooseUsParent/WhyChooseUsParent';
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
 import { useLanguage } from '@/context/LanguageContex';
 import DownloadIcon from '@/shared/components/downloadIcon/DownloadIcon';
 import TextCard from '@/shared/components/textCard/TextCard';
 import { ElementCardType } from '@/typedef/typedef';
 import { constructElementCards } from '@/utils/constructElementCards';
-import { getDownloadHistory } from '@/utils/downloadHistory';
-import { useEffect, useState } from 'react';
+// import { getDownloadHistory } from '@/utils/downloadHistory';
+import {  useState } from 'react';
 
 const Home: React.FC = () => {
   const { translations } = useLanguage();
   const [downloadCardList, setDownloadCardList] = useState<ElementCardType[]>(
     []
   );
-  const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>([]);
+  const { downloadHistory } = useDownloadHistory();
+  // const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>(
+  //   () => getDownloadHistory()
+  // );
+  // const handleStorageChange = () => {
+  //   console.log('storage has changed');
+  //   const updatedHistory = getDownloadHistory();
+  //   setDownloadHistory(updatedHistory);
+  // };
+  // useEffect(() => {
+  //   // const history = getDownloadHistory();
+  //   // if (history == downloadHistory) {
+  //   //   setDownloadHistory(history);
+  //   // }
 
-  useEffect(() => {
-    const history = getDownloadHistory();
-    setDownloadHistory(history);
+  //   window.addEventListener('storage', handleStorageChange);
 
-    const handleStorageChange = () => {
-      const updatedHistory = getDownloadHistory();
-      setDownloadHistory(updatedHistory);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, [downloadHistory]);
+  //   return () => {
+  //     window.removeEventListener('storage', handleStorageChange);
+  //   };
+  // }, []);
 
   const handleSearch = async (response: any) => {
     const formattedData = constructElementCards(response);

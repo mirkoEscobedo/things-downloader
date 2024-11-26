@@ -9,7 +9,11 @@ import {
   callConvertAndDownloadMedia,
   getNewTask,
 } from '@/services/fetchService';
-import { addDownloadToHistory } from '@/utils/downloadHistory';
+import {
+  addDownloadToHistory,
+  getDownloadHistory,
+} from '@/utils/downloadHistory';
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -29,6 +33,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   onCheckboxChange,
 }) => {
   const { translations } = useLanguage();
+  const { setDownloadHistory } = useDownloadHistory();
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,8 +41,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   };
 
   const handleDownloadSingle = async () => {
-    
-    const taskId =  await getNewTask();
+    const taskId = await getNewTask();
     console.log(taskId);
     const mediaUrl = [url];
 
@@ -49,6 +53,8 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
       thumbnail: elementCardThumbnail,
       url,
     });
+
+    setDownloadHistory(getDownloadHistory());
   };
 
   return (
