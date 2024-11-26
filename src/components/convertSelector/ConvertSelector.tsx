@@ -29,6 +29,7 @@ const ConvertSelector: React.FC<ConvertSelectorProps> = ({
       </SelectTrigger>
       <SelectContent className="bg-neutral-900 text-white">
         <SelectGroup>
+          <SelectItem value="default">Do Not Convert</SelectItem>
           <SelectLabel>Video Formats</SelectLabel>
           <SelectItem value="mp4">MP4</SelectItem>
           <SelectItem value="webm">WEBM</SelectItem>

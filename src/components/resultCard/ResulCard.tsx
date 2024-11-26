@@ -49,7 +49,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
         addDownloadToHistory(card);
       }
     });
-    // downloadCardList.map((card) => addDownloadToHistory(card));
+    
   };
   return (
     <>
