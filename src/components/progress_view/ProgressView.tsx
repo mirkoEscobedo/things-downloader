@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { FakeAd } from '../fake_ad/FakeAd';
 
 export const ProgessView = ({ taskId }: { taskId: string }) => {
+   
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState('Pending');
 

@@ -15,6 +15,8 @@ import {
 } from '@/utils/downloadHistory';
 import { useState } from 'react';
 import { useDownloadHistory } from '@/context/DownloadHistoryContext';
+import { useDownload } from '@/context/DownloadContext';
+import { ProgessView } from '../progress_view/ProgressView';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -27,6 +29,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   const { setDownloadHistory } = useDownloadHistory();
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
+  const {isDownloading, startDownload, finishDownload} = useDownload();
 
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
@@ -37,17 +40,18 @@ const ResultCard: React.FC<ResultCardProps> = ({
       }
     });
   };
-
+let taskId;
   const handleDownloadAll = async () => {
-    const taskId = await getNewTask();
+     taskId = await getNewTask();
     console.log(taskId);
 
     const urlsToDownload =
       selectedUrls.length > 0
         ? selectedUrls
         : downloadCardList.map((card) => card.url);
-
+    startDownload()
     await callConvertAndDownloadMedia(taskId, urlsToDownload, selectedFormat);
+
     selectedUrls.forEach((url) => {
       const card = downloadCardList.find((card) => card.url === url);
       if (card) {
@@ -88,6 +92,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
           </div>
         )}
+        {isDownloading && (<ProgessView taskId={taskId!}/>)}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
           <DownloadCardList
             onCheckboxChange={handleCheckboxChange}
