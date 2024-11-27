@@ -29,8 +29,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
   const { setDownloadHistory } = useDownloadHistory();
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
-  const {isDownloading, startDownload, finishDownload} = useDownload();
-
+  const { isDownloading, startDownload, finishDownload } = useDownload();
+  const [taskId, setTaskId] = useState('');
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
       if (checked) {
@@ -40,16 +40,16 @@ const ResultCard: React.FC<ResultCardProps> = ({
       }
     });
   };
-let taskId;
+  // let taskId;
   const handleDownloadAll = async () => {
-     taskId = await getNewTask();
+    const taskId = await getNewTask();
     console.log(taskId);
-
+    setTaskId(taskId);
     const urlsToDownload =
       selectedUrls.length > 0
         ? selectedUrls
         : downloadCardList.map((card) => card.url);
-    startDownload()
+    startDownload();
     await callConvertAndDownloadMedia(taskId, urlsToDownload, selectedFormat);
 
     selectedUrls.forEach((url) => {
@@ -92,7 +92,7 @@ let taskId;
             </div>
           </div>
         )}
-        {isDownloading && (<ProgessView taskId={taskId!}/>)}
+        {isDownloading && <ProgessView taskId={taskId!} />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
           <DownloadCardList
             onCheckboxChange={handleCheckboxChange}
