@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { FakeAd } from '../fake_ad/FakeAd';
+import { useDownload } from '@/context/DownloadContext';
 
 export const ProgessView = ({ taskId }: { taskId: string }) => {
-   
+  const { isDownloading, finishDownload } = useDownload();
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState('Pending');
 
@@ -18,6 +19,11 @@ export const ProgessView = ({ taskId }: { taskId: string }) => {
         const data = JSON.parse(event.data);
         setProgress(data.progress);
         setStatus(data.status);
+
+        if (data.progress === 100 || data.status === 'Done') {
+          finishDownload();
+          eventSource.close();
+        }
       } catch (error) {
         console.error('error parsing progress data: ', error);
       }
@@ -31,6 +37,9 @@ export const ProgessView = ({ taskId }: { taskId: string }) => {
     };
   }, [taskId]);
 
+  if (!isDownloading) {
+    return null;
+  }
   return (
     <div className="flex flex-col items-center w-full max-w-md mx-auto p-5">
       <FakeAd></FakeAd>

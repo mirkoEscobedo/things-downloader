@@ -33,7 +33,6 @@ const ConvertSelector: React.FC<ConvertSelectorProps> = ({
           <SelectLabel>Video Formats</SelectLabel>
           <SelectItem value="mp4">MP4</SelectItem>
           <SelectItem value="webm">WEBM</SelectItem>
-          <SelectItem value="mkv">MKV</SelectItem>
           <SelectItem value="avi">AVI</SelectItem>
         </SelectGroup>
         <SelectGroup>
