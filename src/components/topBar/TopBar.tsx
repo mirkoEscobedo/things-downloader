@@ -1,7 +1,7 @@
-import TransformingButton from '@/shared/components/transforming_button/TransformingButton';
-import { useLanguage } from '@/context/LanguageContex';
-import Settings from '../settings/Settings';
-import { SettingsIcon } from 'lucide-react';
+import { useLanguage } from "@/context/LanguageContext";
+import TransformingButton from "@/shared/components/transforming_button/TransformingButton";
+import { SettingsIcon } from "lucide-react";
+import Settings from "../settings/Settings";
 
 const TopBar: React.FC = () => {
   const { translations } = useLanguage();

@@ -1,5 +1,5 @@
-import { useLanguage } from '@/context/LanguageContex';
-import './WhyChooseUsParent.css';
+import { useLanguage } from "@/context/LanguageContext";
+import "./WhyChooseUsParent.css";
 type WhyChooseUsParentProps = {
   children: React.ReactNode;
   className?: string;

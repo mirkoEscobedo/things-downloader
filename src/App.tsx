@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { LanguageProvider } from './context/LanguageContex';
 import AboutUs from './pages/AboutUs/AboutUs';
 import Contact from './pages/Contact/Contact';
 import Home from './pages/Home/Home';
 import Privacy from './pages/Privacy/Privacy';
 import { DownloadHistoryProvider } from './context/DownloadHistoryContext';
 import { DownloadProvider } from './context/DownloadContext';
+import { LanguageProvider } from './context/LanguageContext';
 
 function App() {
   return (

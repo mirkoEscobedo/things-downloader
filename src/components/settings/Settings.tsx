@@ -1,14 +1,14 @@
-import { useLanguage } from '@/context/LanguageContex';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import { DownloadIcon, TrashIcon } from 'lucide-react';
-import React from 'react';
-import EnLogo from '../en_logo/EnLogo';
-import ItLogo from '../it_logo/ItLogo';
+import { useDownloadHistory } from "@/context/DownloadHistoryContext";
+import { useLanguage } from "@/context/LanguageContext";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import {
   deleteDownloadHistory,
   downloadHistoryAsJson,
-} from '@/utils/downloadHistory';
-import { useDownloadHistory } from '@/context/DownloadHistoryContext';
+} from "@/utils/downloadHistory";
+import { DownloadIcon, TrashIcon } from "lucide-react";
+import React from "react";
+import EnLogo from "../en_logo/EnLogo";
+import ItLogo from "../it_logo/ItLogo";
 
 const Settings: React.FC = () => {
   const { translations, setLanguage, language } = useLanguage();
@@ -21,7 +21,7 @@ const Settings: React.FC = () => {
   // }, []);
 
   function toggleLanguage() {
-    setLanguage(language === 'en' ? 'it' : 'en');
+    setLanguage(language === "en" ? "it" : "en");
   }
 
   const handleExportData = () => {
@@ -40,11 +40,11 @@ const Settings: React.FC = () => {
           <h2 className="mr-2">{translations.settingsLanguage}</h2>
           <GeneralButton onClick={toggleLanguage}>
             <EnLogo
-              style={language === 'en' ? { opacity: 1 } : { opacity: 0.5 }}
+              style={language === "en" ? { opacity: 1 } : { opacity: 0.5 }}
             ></EnLogo>
             <span className="mx-2">/</span>
             <ItLogo
-              style={language === 'it' ? { opacity: 1 } : { opacity: 0.5 }}
+              style={language === "it" ? { opacity: 1 } : { opacity: 0.5 }}
             ></ItLogo>
           </GeneralButton>
         </div>

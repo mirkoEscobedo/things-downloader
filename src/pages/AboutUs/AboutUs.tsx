@@ -1,4 +1,4 @@
-import { useLanguage } from "@/context/LanguageContex";
+import { useLanguage } from "@/context/LanguageContext";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./About.css";

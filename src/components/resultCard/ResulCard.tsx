@@ -1,22 +1,22 @@
-import GeneralCard from '@/shared/components/general_card/General_Card';
-import DownloadCardList from '../downloadCardList/DownloadCardList';
-import { ElementCardType } from '@/typedef/typedef';
-import ConvertSelector from '../convertSelector/ConvertSelector';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import { DownloadIcon } from 'lucide-react';
-import { useLanguage } from '@/context/LanguageContex';
+import { useDownloadHistory } from "@/context/DownloadHistoryContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   callConvertAndDownloadMedia,
   getNewTask,
-} from '@/services/fetchService';
+} from "@/services/fetchService";
+import GeneralCard from "@/shared/components/general_card/General_Card";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import { ElementCardType } from "@/typedef/typedef";
 import {
   addDownloadToHistory,
   getDownloadHistory,
 } from '@/utils/downloadHistory';
 import { useState } from 'react';
-import { useDownloadHistory } from '@/context/DownloadHistoryContext';
 import { useDownload } from '@/context/DownloadContext';
 import { ProgessView } from '../progress_view/ProgressView';
+import { DownloadIcon } from "lucide-react";
+import ConvertSelector from "../convertSelector/ConvertSelector";
+import DownloadCardList from "../downloadCardList/DownloadCardList";
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -62,7 +62,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
   return (
     <>
-      <GeneralCard className={`mt-6 justify-self-center ${className || ''}`}>
+      <GeneralCard className={`mt-6 justify-self-center ${className || ""}`}>
         {downloadCardList.length > 1 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full mt-4 mb-2">
             <div className="flex items-center justify-center text-xl">
