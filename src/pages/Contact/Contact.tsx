@@ -65,7 +65,7 @@ const Contact: React.FC = () => {
             />
           </div>
 
-          <div>
+          <div className="emailDiv">
             <label htmlFor="email">{translations.contactUsInputEmail}</label>
             <input
               type="email"
@@ -80,9 +80,9 @@ const Contact: React.FC = () => {
           <div
             className={`messageDiv flex justify-center  w-full max-w-full md:max-w-xl lg:max-w-2xl mx-auto px-4 `}
           >
-            <label htmlFor="message">
+            {/*<label htmlFor="message">
               {translations.contactUsInputMessage}
-            </label>
+            </label>*/}
             <ShineBorder
               className="z-1 message p-0 flex"
               color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
@@ -96,6 +96,7 @@ const Contact: React.FC = () => {
                 required
                 className="z-10 flex-1 px-4 py-2 text-lg outline-none bg-transparent"
                 ref={inputRefContact}
+                placeholder="Message"
               />
             </ShineBorder>
           </div>

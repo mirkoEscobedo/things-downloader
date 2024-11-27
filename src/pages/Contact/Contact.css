@@ -22,11 +22,15 @@
 
 
 #email, #name{
-    width: 260px;
+    width: 300px;
     height: 35px;
     color: black;
     border: 2px solid blueviolet;
     border-radius: 10px;
+}
+
+.nameDiv, .emailDiv{
+    margin-right: 40px;
 }
 
 .nameDiv{
@@ -36,7 +40,7 @@
 #message{
     height: 80px;
     width: 250px;
-    margin-right: 12px;
+
     
 }
 
@@ -45,3 +49,5 @@
     text-align: center;
     
 }
+
+
