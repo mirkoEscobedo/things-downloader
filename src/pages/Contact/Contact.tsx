@@ -1,5 +1,5 @@
 import ShineBorder from "@/components/ui/shine-border";
-import { useLanguage } from "@/context/LanguageContex";
+import { useLanguage } from "@/context/LanguageContext";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import { ArrowLeft } from "lucide-react";
 import React, {

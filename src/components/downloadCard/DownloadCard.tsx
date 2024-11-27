@@ -1,19 +1,19 @@
-import ElementCard from '@/shared/components/element_card/ElementCard';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import React, { useState } from 'react';
+import ElementCard from "@/shared/components/element_card/ElementCard";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import React, { useState } from "react";
 
-import { DownloadIcon } from 'lucide-react';
-import ConvertSelector from '../convertSelector/ConvertSelector';
-import { useLanguage } from '@/context/LanguageContex';
+import { useDownloadHistory } from "@/context/DownloadHistoryContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   callConvertAndDownloadMedia,
   getNewTask,
-} from '@/services/fetchService';
+} from "@/services/fetchService";
 import {
   addDownloadToHistory,
   getDownloadHistory,
-} from '@/utils/downloadHistory';
-import { useDownloadHistory } from '@/context/DownloadHistoryContext';
+} from "@/utils/downloadHistory";
+import { DownloadIcon } from "lucide-react";
+import ConvertSelector from "../convertSelector/ConvertSelector";
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -34,7 +34,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
 }) => {
   const { translations } = useLanguage();
   const { setDownloadHistory } = useDownloadHistory();
-  const [selectedFormat, setSelectedFormat] = useState<string>('default');
+  const [selectedFormat, setSelectedFormat] = useState<string>("default");
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onCheckboxChange(url, event.target.checked);

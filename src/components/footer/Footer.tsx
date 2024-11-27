@@ -1,6 +1,6 @@
-import { useLanguage } from '@/context/LanguageContex';
-import { Link } from 'react-router-dom';
-import './footer.css';
+import { useLanguage } from "@/context/LanguageContext";
+import { Link } from "react-router-dom";
+import "./footer.css";
 
 const Footer: React.FC = () => {
   const { translations } = useLanguage();
