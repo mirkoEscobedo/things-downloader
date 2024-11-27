@@ -11,27 +11,37 @@ import React from 'react';
 interface ConvertSelectorProps {
   selectText: string;
   name: string;
+  onFormatChange: (value: string) => void;
 }
-const ConvertSelector: React.FC<ConvertSelectorProps> = ({ selectText , name}) => {
+const ConvertSelector: React.FC<ConvertSelectorProps> = ({
+  selectText,
+  name,
+  onFormatChange,
+}) => {
+  const handleOnFormatChange = (value: string) => {
+    onFormatChange(value);
+  };
+
   return (
-    <Select name={name}>
+    <Select name={name} onValueChange={handleOnFormatChange}>
       <SelectTrigger className="w-[280px] bg-neutral-900 text-white">
         <SelectValue className="text-white" placeholder={selectText} />
       </SelectTrigger>
       <SelectContent className="bg-neutral-900 text-white">
         <SelectGroup>
-          <SelectLabel>Video MP4</SelectLabel>
-          <SelectItem value="1080p">1080p</SelectItem>
-          <SelectItem value="720p">720p</SelectItem>
-          <SelectItem value="420p">420p</SelectItem>
-          <SelectItem value="320p">320p</SelectItem>
+          <SelectItem value="default">Do Not Convert</SelectItem>
+          <SelectLabel>Video Formats</SelectLabel>
+          <SelectItem value="mp4">MP4</SelectItem>
+          <SelectItem value="webm">WEBM</SelectItem>
+          <SelectItem value="mkv">MKV</SelectItem>
+          <SelectItem value="avi">AVI</SelectItem>
         </SelectGroup>
         <SelectGroup>
-          <SelectLabel>Audio MP3</SelectLabel>
-          <SelectItem value="320kbps">320kbps</SelectItem>
-          <SelectItem value="192kbps">192kbps</SelectItem>
-          <SelectItem value="128kbps">128kbps</SelectItem>
-          <SelectItem value="64kbps">64kbps</SelectItem>
+          <SelectLabel>Audio Formats</SelectLabel>
+          <SelectItem value="mp3">MP3</SelectItem>
+          <SelectItem value="acc">ACC</SelectItem>
+          <SelectItem value="wav">WAV</SelectItem>
+          <SelectItem value="ogg">OGG</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

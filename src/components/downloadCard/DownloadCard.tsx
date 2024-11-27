@@ -1,12 +1,19 @@
 import ElementCard from '@/shared/components/element_card/ElementCard';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
 import { useLanguage } from '@/context/LanguageContex';
-import { callConvertAndDownloadMedia } from '@/services/fetchService';
-import { addDownloadToHistory } from '@/utils/downloadHistory';
+import {
+  callConvertAndDownloadMedia,
+  getNewTask,
+} from '@/services/fetchService';
+import {
+  addDownloadToHistory,
+  getDownloadHistory,
+} from '@/utils/downloadHistory';
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -14,6 +21,7 @@ interface DonwloadCardProps {
   elementCardThumbnail?: string;
   url: string;
   onClick?: () => void;
+  onCheckboxChange: (url: string, checked: boolean) => void;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
@@ -22,16 +30,22 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   url,
   elementCardThumbnail,
   onClick,
+  onCheckboxChange,
 }) => {
   const { translations } = useLanguage();
+  const { setDownloadHistory } = useDownloadHistory();
+  const [selectedFormat, setSelectedFormat] = useState<string>('default');
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onCheckboxChange(url, event.target.checked);
+  };
 
   const handleDownloadSingle = async () => {
+    const taskId = await getNewTask();
+    console.log(taskId);
     const mediaUrl = [url];
-    const formatSelectElement = document.querySelector(
-      '[name="convertSingle"]'
-    ) as HTMLSelectElement;
-    const format = formatSelectElement?.value || 'default';
-    await callConvertAndDownloadMedia(mediaUrl, format);
+
+    await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
 
     addDownloadToHistory({
       title: elementCardTitle,
@@ -39,6 +53,8 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
       thumbnail: elementCardThumbnail,
       url,
     });
+
+    setDownloadHistory(getDownloadHistory());
   };
 
   return (
@@ -56,12 +72,17 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
         </div>
         <div className="flex items-center justify-center">
           <ConvertSelector
+            onFormatChange={setSelectedFormat}
             name="convertSingle"
             selectText={translations.downloadCardSelectText}
           ></ConvertSelector>
         </div>
         <div className="flex items-center justify-center">
-          <input className="mr-4 size-5" type="checkbox"></input>
+          <input
+            className="mr-4 size-5"
+            type="checkbox"
+            onChange={handleCheckboxChange}
+          ></input>
           <GeneralButton onClick={handleDownloadSingle} className="gap-1">
             <DownloadIcon></DownloadIcon>
             {translations.downloadCardButtonText}

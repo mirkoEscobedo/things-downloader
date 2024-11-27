@@ -5,8 +5,16 @@ import ConvertSelector from '../convertSelector/ConvertSelector';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import { DownloadIcon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContex';
-import { callConvertAndDownloadMedia } from '@/services/fetchService';
-import { addDownloadToHistory } from '@/utils/downloadHistory';
+import {
+  callConvertAndDownloadMedia,
+  getNewTask,
+} from '@/services/fetchService';
+import {
+  addDownloadToHistory,
+  getDownloadHistory,
+} from '@/utils/downloadHistory';
+import { useState } from 'react';
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -16,19 +24,37 @@ const ResultCard: React.FC<ResultCardProps> = ({
   className,
 }) => {
   const { translations } = useLanguage();
-  console.log(downloadCardList.length);
+  const { setDownloadHistory } = useDownloadHistory();
+  const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
+  const [selectedFormat, setSelectedFormat] = useState<string>('default');
+
+  const handleCheckboxChange = (url: string, checked: boolean) => {
+    setSelectedUrls((prev) => {
+      if (checked) {
+        return [...prev, url];
+      } else {
+        return prev.filter((selectedUrls) => selectedUrls !== url);
+      }
+    });
+  };
 
   const handleDownloadAll = async () => {
-    const allMediaUrls = downloadCardList.map((card) => card.url);
-    const formatSelectElement = document.querySelector(
-      '[name="convertAll"]'
-    ) as HTMLSelectElement;
+    const taskId = await getNewTask();
+    console.log(taskId);
 
-    const format = formatSelectElement?.value || 'default';
+    const urlsToDownload =
+      selectedUrls.length > 0
+        ? selectedUrls
+        : downloadCardList.map((card) => card.url);
 
-    await callConvertAndDownloadMedia(allMediaUrls, format);
-
-    downloadCardList.map((card) => addDownloadToHistory(card));
+    await callConvertAndDownloadMedia(taskId, urlsToDownload, selectedFormat);
+    selectedUrls.forEach((url) => {
+      const card = downloadCardList.find((card) => card.url === url);
+      if (card) {
+        addDownloadToHistory(card);
+      }
+      setDownloadHistory(getDownloadHistory());
+    });
   };
   return (
     <>
@@ -43,20 +69,28 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
             <div className="flex items-center justify-center">
               <ConvertSelector
+                onFormatChange={setSelectedFormat}
                 name="convertAll"
-                selectText={translations.resultCardConvertAll}
+                selectText={
+                  selectedUrls.length > 0
+                    ? translations.resultCardConvertSelected
+                    : translations.resultCardConvertAll
+                }
               ></ConvertSelector>
             </div>
             <div className="flex items-center justify-center">
               <GeneralButton onClick={handleDownloadAll} className="gap-1">
                 <DownloadIcon></DownloadIcon>
-                {translations.resultCardDownloadAll}
+                {selectedUrls.length > 0
+                  ? translations.resultCardDownloadSelected
+                  : translations.resultCardDownloadAll}
               </GeneralButton>
             </div>
           </div>
         )}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
           <DownloadCardList
+            onCheckboxChange={handleCheckboxChange}
             dowloadcardList={downloadCardList}
           ></DownloadCardList>
         </div>

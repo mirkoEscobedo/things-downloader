@@ -25,10 +25,12 @@ export async function fetchData(url: string) {
 }
 
 export async function callConvertAndDownloadMedia(
+  taskId: string,
   mediaUrls: string[],
   format: string
 ) {
   const input = {
+    taskId,
     mediaUrls,
     format,
   };
@@ -59,5 +61,17 @@ export async function callConvertAndDownloadMedia(
     window.location.href = downloadEndopoint;
   } catch (error) {
     console.error('Failed to convert and download media: ', error);
+  }
+}
+
+export async function getNewTask() {
+  try {
+    console.log('fetching new task');
+    const response = await fetch('http://localhost:4000/task');
+    const data = await response.json();
+    console.log('task fetched: ', data.taskId);
+    return data.taskId;
+  } catch (error) {
+    console.error('failed to get New task', error);
   }
 }
