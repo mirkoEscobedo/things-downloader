@@ -1,23 +1,23 @@
-import ShineBorder from "@/components/ui/shine-border";
-import { useLanguage } from "@/context/LanguageContext";
-import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import { ArrowLeft } from "lucide-react";
+import ShineBorder from '@/components/ui/shine-border';
+import { useLanguage } from '@/context/LanguageContext';
+import GeneralButton from '@/shared/components/generalButton/GeneralButton';
+import { ArrowLeft } from 'lucide-react';
 import React, {
   ChangeEvent,
   FormEvent,
   useEffect,
   useRef,
   useState,
-} from "react";
-import { Link } from "react-router-dom";
-import "./Contact.css";
+} from 'react';
+import { Link } from 'react-router-dom';
+import './Contact.css';
 
 const Contact: React.FC = () => {
   const { translations } = useLanguage();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: '',
   });
 
   const handleChange = (
@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log("Form data submitted:", formData);
+    console.log('Form data submitted:', formData);
   };
 
   const inputRefContact = useRef<HTMLTextAreaElement>(null);
@@ -51,9 +51,9 @@ const Contact: React.FC = () => {
       </span>
       <div className="contact-page">
         <h1>{translations.contactUsTitle}</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center">
           <div className="nameDiv">
-            <label htmlFor="name">{translations.contactUsInputName}</label>
+            {/* <label htmlFor="name">{translations.contactUsInputName}</label> */}
 
             <input
               type="text"
@@ -61,16 +61,18 @@ const Contact: React.FC = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="   Name"
               required
             />
           </div>
 
-          <div className="emailDiv">
-            <label htmlFor="email">{translations.contactUsInputEmail}</label>
+          <div className="emailDiv ">
+            {/* <label htmlFor="email">{translations.contactUsInputEmail}</label> */}
             <input
               type="email"
               id="email"
               name="email"
+              placeholder="   Email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -85,7 +87,7 @@ const Contact: React.FC = () => {
             </label>*/}
             <ShineBorder
               className="z-1 message p-0 flex"
-              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+              color={['#A07CFE', '#FE8FB5', '#FFBE7B']}
               borderWidth={4}
             >
               <textarea
