@@ -18,7 +18,7 @@ import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
 import DownloadCardList from '../downloadCardList/DownloadCardList';
 import './resultCard.css';
- 
+
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -64,6 +64,10 @@ const ResultCard: React.FC<ResultCardProps> = ({
     });
   };
 
+  function handleTaskIdGenerated(taskId: string) {
+    setTaskId(taskId);
+  }
+
   const handleResetSelection = () => {
     setSelectedUrls([]);
   };
@@ -108,6 +112,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
         {isDownloading && <ProgessView taskId={taskId!} />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
+            onTaskIdGenerated={handleTaskIdGenerated}
             selectedUrls={selectedUrls}
             onCheckboxChange={handleCheckboxChange}
             dowloadcardList={downloadCardList}
