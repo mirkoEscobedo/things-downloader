@@ -1,53 +1,47 @@
-.contact-page form{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top: 50px;
-    gap: 20px;
-    
+.contact-page form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 50px;
+  gap: 20px;
 }
 
-.contact-page{
-    margin-top: 80px;
+.contact-page {
+  margin-top: 80px;
 }
 
-.contact-page h1{
-    text-align: center;
-    margin-top: 30px;
-    padding-left: 40px;
+.contact-page h1 {
+  text-align: center;
+  margin-top: 30px;
+  /* padding-left: 40px; */
 }
 
-
-
-#email, #name{
-    width: 300px;
-    height: 35px;
-    color: black;
-    border: 2px solid blueviolet;
-    border-radius: 10px;
+#email,
+#name {
+  width: 300px;
+  height: 35px;
+  color: black;
+  border: 2px solid blueviolet;
+  border-radius: 10px;
 }
 
-.nameDiv, .emailDiv{
-    margin-right: 40px;
+/* .nameDiv,
+.emailDiv {
+  margin-right: 40px;
+} */
+
+.nameDiv {
+  display: flex;
 }
 
-.nameDiv{
-    display: flex;
+#message {
+  height: 80px;
+  width: 250px;
 }
 
-#message{
-    height: 80px;
-    width: 250px;
-
-    
+.contact-page .link {
+  margin-top: 30px;
+  text-align: center;
 }
-
-.contact-page .link{
-    margin-top: 30px;
-    text-align: center;
-    
-}
-
-
