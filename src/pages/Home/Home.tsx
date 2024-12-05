@@ -24,26 +24,7 @@ const Home: React.FC = () => {
     []
   );
   const { downloadHistory } = useDownloadHistory();
-  // const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>(
-  //   () => getDownloadHistory()
-  // );
-  // const handleStorageChange = () => {
-  //   console.log('storage has changed');
-  //   const updatedHistory = getDownloadHistory();
-  //   setDownloadHistory(updatedHistory);
-  // };
-  // useEffect(() => {
-  //   // const history = getDownloadHistory();
-  //   // if (history == downloadHistory) {
-  //   //   setDownloadHistory(history);
-  //   // }
-
-  //   window.addEventListener('storage', handleStorageChange);
-
-  //   return () => {
-  //     window.removeEventListener('storage', handleStorageChange);
-  //   };
-  // }, []);
+  
 
   const handleSearch = async (response: any) => {
     const formattedData = constructElementCards(response);
