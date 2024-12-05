@@ -54,5 +54,6 @@
   "linkPrivacyTitle": "Privacy",
   "backHomeLinkText": "Go Back To Home Page",
   "whyUsText": "Why Choose Us?",
-  "downloadHistory": "Download History"
+  "downloadHistory": "Download History",
+  "resetCheckbox" : "Deselect All"
 }

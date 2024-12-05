@@ -2,7 +2,7 @@ import CardGrid from "@/components/card_grid/CardGrid";
 import ConvenienceIcon from "@/components/convenienceIcon/ConvenienceIcon";
 import Footer from "@/components/footer/Footer";
 import OrbitingCircle from "@/components/orbitingCircles/OrbitingCircle";
-import ResultCard from "@/components/resultCard/ResulCard";
+import ResultCard from "@/components/resultCard/ResultCard";
 import SearchBox from "@/components/searchBox/SearchBox";
 import ShieldIcon from "@/components/shieldIcon/ShieldIcon";
 import SimplicityIcon from "@/components/simplicityIcon/SimplicityIcon";
@@ -15,7 +15,6 @@ import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 import TextCard from "@/shared/components/textCard/TextCard";
 import { ElementCardType } from "@/typedef/typedef";
 import { constructElementCards } from "@/utils/constructElementCards";
-// import { getDownloadHistory } from '@/utils/downloadHistory';
 import { useState } from "react";
 
 const Home: React.FC = () => {
@@ -24,26 +23,6 @@ const Home: React.FC = () => {
     []
   );
   const { downloadHistory } = useDownloadHistory();
-  // const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>(
-  //   () => getDownloadHistory()
-  // );
-  // const handleStorageChange = () => {
-  //   console.log('storage has changed');
-  //   const updatedHistory = getDownloadHistory();
-  //   setDownloadHistory(updatedHistory);
-  // };
-  // useEffect(() => {
-  //   // const history = getDownloadHistory();
-  //   // if (history == downloadHistory) {
-  //   //   setDownloadHistory(history);
-  //   // }
-
-  //   window.addEventListener('storage', handleStorageChange);
-
-  //   return () => {
-  //     window.removeEventListener('storage', handleStorageChange);
-  //   };
-  // }, []);
 
   const handleSearch = async (response: any) => {
     const formattedData = constructElementCards(response);
