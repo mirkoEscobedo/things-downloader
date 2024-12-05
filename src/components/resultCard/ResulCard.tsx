@@ -29,7 +29,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   const { setDownloadHistory } = useDownloadHistory();
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
-  const { isDownloading, startDownload, finishDownload } = useDownload();
+  const { isDownloading, startDownload } = useDownload();
   const [taskId, setTaskId] = useState('');
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
