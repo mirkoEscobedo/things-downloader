@@ -1,19 +1,19 @@
-import ElementCard from "@/shared/components/element_card/ElementCard";
-import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import React, { useState } from "react";
+import ElementCard from '@/shared/components/element_card/ElementCard';
+import GeneralButton from '@/shared/components/generalButton/GeneralButton';
+import React, { useState } from 'react';
 
-import { useDownloadHistory } from "@/context/DownloadHistoryContext";
-import { useLanguage } from "@/context/LanguageContext";
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
+import { useLanguage } from '@/context/LanguageContext';
 import {
   callConvertAndDownloadMedia,
   getNewTask,
-} from "@/services/fetchService";
+} from '@/services/fetchService';
 import {
   addDownloadToHistory,
   getDownloadHistory,
-} from "@/utils/downloadHistory";
-import { DownloadIcon } from "lucide-react";
-import ConvertSelector from "../convertSelector/ConvertSelector";
+} from '@/utils/downloadHistory';
+import { DownloadIcon } from 'lucide-react';
+import ConvertSelector from '../convertSelector/ConvertSelector';
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -22,6 +22,7 @@ interface DonwloadCardProps {
   url: string;
   onClick?: () => void;
   onCheckboxChange: (url: string, checked: boolean) => void;
+  checked: boolean;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
@@ -31,10 +32,11 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   elementCardThumbnail,
   onClick,
   onCheckboxChange,
+  checked,
 }) => {
   const { translations } = useLanguage();
   const { setDownloadHistory } = useDownloadHistory();
-  const [selectedFormat, setSelectedFormat] = useState<string>("default");
+  const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onCheckboxChange(url, event.target.checked);
@@ -82,6 +84,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
             className="mr-4 size-5"
             type="checkbox"
             onChange={handleCheckboxChange}
+            checked={checked}
           ></input>
           <GeneralButton onClick={handleDownloadSingle} className="gap-1">
             <DownloadIcon></DownloadIcon>

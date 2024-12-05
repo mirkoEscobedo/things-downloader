@@ -5,10 +5,12 @@ import DonwloadCard from '../downloadCard/DownloadCard';
 interface DownloadCardListProsp {
   dowloadcardList: ElementCardType[];
   onCheckboxChange: (url: string, checked: boolean) => void;
+  selectedUrls: string[];
 }
 const DownloadCardList: React.FC<DownloadCardListProsp> = ({
   onCheckboxChange,
   dowloadcardList,
+  selectedUrls,
 }) => {
   return (
     <>
@@ -23,6 +25,7 @@ const DownloadCardList: React.FC<DownloadCardListProsp> = ({
           }
           elementCardTitle={downloadCard.title}
           onClick={downloadCard.onClick}
+          checked={selectedUrls.includes(downloadCard.url)}
         ></DonwloadCard>
       ))}
     </>

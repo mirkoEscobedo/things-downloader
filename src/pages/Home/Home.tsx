@@ -15,7 +15,6 @@ import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 import TextCard from "@/shared/components/textCard/TextCard";
 import { ElementCardType } from "@/typedef/typedef";
 import { constructElementCards } from "@/utils/constructElementCards";
-// import { getDownloadHistory } from '@/utils/downloadHistory';
 import { useState } from "react";
 
 const Home: React.FC = () => {
@@ -24,7 +23,6 @@ const Home: React.FC = () => {
     []
   );
   const { downloadHistory } = useDownloadHistory();
-  
 
   const handleSearch = async (response: any) => {
     const formattedData = constructElementCards(response);

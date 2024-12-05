@@ -1,12 +1,12 @@
-import { useDownloadHistory } from "@/context/DownloadHistoryContext";
-import { useLanguage } from "@/context/LanguageContext";
+import { useDownloadHistory } from '@/context/DownloadHistoryContext';
+import { useLanguage } from '@/context/LanguageContext';
 import {
   callConvertAndDownloadMedia,
   getNewTask,
-} from "@/services/fetchService";
-import GeneralCard from "@/shared/components/general_card/General_Card";
-import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import { ElementCardType } from "@/typedef/typedef";
+} from '@/services/fetchService';
+import GeneralCard from '@/shared/components/general_card/General_Card';
+import GeneralButton from '@/shared/components/generalButton/GeneralButton';
+import { ElementCardType } from '@/typedef/typedef';
 import {
   addDownloadToHistory,
   getDownloadHistory,
@@ -14,9 +14,9 @@ import {
 import { useState } from 'react';
 import { useDownload } from '@/context/DownloadContext';
 import { ProgessView } from '../progress_view/ProgressView';
-import { DownloadIcon } from "lucide-react";
-import ConvertSelector from "../convertSelector/ConvertSelector";
-import DownloadCardList from "../downloadCardList/DownloadCardList";
+import { DownloadIcon } from 'lucide-react';
+import ConvertSelector from '../convertSelector/ConvertSelector';
+import DownloadCardList from '../downloadCardList/DownloadCardList';
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -31,6 +31,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
   const { isDownloading, startDownload } = useDownload();
   const [taskId, setTaskId] = useState('');
+
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
       if (checked) {
@@ -40,7 +41,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
       }
     });
   };
-  // let taskId;
+
   const handleDownloadAll = async () => {
     const taskId = await getNewTask();
     console.log(taskId);
@@ -60,9 +61,14 @@ const ResultCard: React.FC<ResultCardProps> = ({
       setDownloadHistory(getDownloadHistory());
     });
   };
+
+  const handleResetSelection = () => {
+    setSelectedUrls([]);
+  };
+
   return (
     <>
-      <GeneralCard className={`mt-6 justify-self-center ${className || ""}`}>
+      <GeneralCard className={`mt-6 justify-self-center ${className || ''}`}>
         {downloadCardList.length > 1 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full mt-4 mb-2">
             <div className="flex items-center justify-center text-xl">
@@ -83,6 +89,11 @@ const ResultCard: React.FC<ResultCardProps> = ({
               ></ConvertSelector>
             </div>
             <div className="flex items-center justify-center">
+              {selectedUrls.length > 0 && (
+                <GeneralButton className="mr-2" onClick={handleResetSelection}>
+                  {translations.resetCheckbox}
+                </GeneralButton>
+              )}
               <GeneralButton onClick={handleDownloadAll} className="gap-1">
                 <DownloadIcon></DownloadIcon>
                 {selectedUrls.length > 0
@@ -95,6 +106,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
         {isDownloading && <ProgessView taskId={taskId!} />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
           <DownloadCardList
+            selectedUrls={selectedUrls}
             onCheckboxChange={handleCheckboxChange}
             dowloadcardList={downloadCardList}
           ></DownloadCardList>
