@@ -17,6 +17,8 @@ import { ProgessView } from '../progress_view/ProgressView';
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
 import DownloadCardList from '../downloadCardList/DownloadCardList';
+import './resultCard.css';
+ 
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -104,7 +106,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
           </div>
         )}
         {isDownloading && <ProgessView taskId={taskId!} />}
-        <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded">
+        <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
             selectedUrls={selectedUrls}
             onCheckboxChange={handleCheckboxChange}

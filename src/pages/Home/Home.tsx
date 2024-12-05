@@ -2,7 +2,7 @@ import CardGrid from "@/components/card_grid/CardGrid";
 import ConvenienceIcon from "@/components/convenienceIcon/ConvenienceIcon";
 import Footer from "@/components/footer/Footer";
 import OrbitingCircle from "@/components/orbitingCircles/OrbitingCircle";
-import ResultCard from "@/components/resultCard/ResulCard";
+import ResultCard from "@/components/resultCard/ResultCard";
 import SearchBox from "@/components/searchBox/SearchBox";
 import ShieldIcon from "@/components/shieldIcon/ShieldIcon";
 import SimplicityIcon from "@/components/simplicityIcon/SimplicityIcon";
