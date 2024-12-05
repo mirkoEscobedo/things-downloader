@@ -6,16 +6,19 @@ interface DownloadCardListProsp {
   dowloadcardList: ElementCardType[];
   onCheckboxChange: (url: string, checked: boolean) => void;
   selectedUrls: string[];
+  onTaskIdGenerated: (taskId: string) => void;
 }
 const DownloadCardList: React.FC<DownloadCardListProsp> = ({
   onCheckboxChange,
   dowloadcardList,
   selectedUrls,
+  onTaskIdGenerated,
 }) => {
   return (
     <>
       {dowloadcardList.map((downloadCard, index) => (
         <DonwloadCard
+          onTaskIdGenerated={onTaskIdGenerated}
           onCheckboxChange={onCheckboxChange}
           url={downloadCard.url}
           key={index}

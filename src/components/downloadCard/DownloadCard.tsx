@@ -14,6 +14,7 @@ import {
 } from '@/utils/downloadHistory';
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
+import { useDownload } from '@/context/DownloadContext';
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -23,6 +24,7 @@ interface DonwloadCardProps {
   onClick?: () => void;
   onCheckboxChange: (url: string, checked: boolean) => void;
   checked: boolean;
+  onTaskIdGenerated: (taskId: string) => void;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
@@ -33,9 +35,11 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   onClick,
   onCheckboxChange,
   checked,
+  onTaskIdGenerated,
 }) => {
   const { translations } = useLanguage();
   const { setDownloadHistory } = useDownloadHistory();
+  const { startDownload } = useDownload();
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +49,9 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   const handleDownloadSingle = async () => {
     const taskId = await getNewTask();
     console.log(taskId);
+    onTaskIdGenerated(taskId);
     const mediaUrl = [url];
-
+    startDownload();
     await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
 
     addDownloadToHistory({
