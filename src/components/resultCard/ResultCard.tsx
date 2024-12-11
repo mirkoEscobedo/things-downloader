@@ -14,7 +14,7 @@ import {
 import { useState } from 'react';
 import { useDownload } from '@/context/DownloadContext';
 import { ProgessView } from '../progress_view/ProgressView';
-import { DownloadIcon } from 'lucide-react';
+import { DownloadIcon, X } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
 import DownloadCardList from '../downloadCardList/DownloadCardList';
 import './resultCard.css';
@@ -97,7 +97,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             <div className="flex items-center justify-center">
               {selectedUrls.length > 0 && (
                 <GeneralButton className="mr-2" onClick={handleResetSelection}>
-                  {translations.resetCheckbox}
+                  {/* {translations.resetCheckbox} */}<X></X>
                 </GeneralButton>
               )}
               <GeneralButton onClick={handleDownloadAll} className="gap-1">
