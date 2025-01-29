@@ -1,23 +1,23 @@
-import { useDownloadHistory } from '@/context/DownloadHistoryContext';
-import { useLanguage } from '@/context/LanguageContext';
 import {
   callConvertAndDownloadMedia,
   getNewTask,
-} from '@/services/fetchService';
-import GeneralCard from '@/shared/components/general_card/General_Card';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import { ElementCardType } from '@/typedef/typedef';
+} from "@/services/fetchService";
+import GeneralCard from "@/shared/components/general_card/General_Card";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import { ElementCardType } from "@/typedef/typedef";
 import {
   addDownloadToHistory,
   getDownloadHistory,
-} from '@/utils/downloadHistory';
-import { useState } from 'react';
-import { useDownload } from '@/context/DownloadContext';
-import { ProgessView } from '../progress_view/ProgressView';
-import { DownloadIcon, X } from 'lucide-react';
-import ConvertSelector from '../convertSelector/ConvertSelector';
-import DownloadCardList from '../downloadCardList/DownloadCardList';
-import './resultCard.css';
+} from "@/utils/downloadHistory";
+import { useState } from "react";
+import { ProgessView } from "../progress_view/ProgressView";
+import { DownloadIcon, X } from "lucide-react";
+import ConvertSelector from "../convertSelector/ConvertSelector";
+import DownloadCardList from "../downloadCardList/DownloadCardList";
+import "./resultCard.css";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setTrue } from "@/state/reducers/downloadSlice";
+import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
@@ -27,12 +27,12 @@ const ResultCard: React.FC<ResultCardProps> = ({
   downloadCardList,
   className,
 }) => {
-  const { translations } = useLanguage();
-  const { setDownloadHistory } = useDownloadHistory();
+  const dispatch = useAppDispatch();
+  const isDownloading = useAppSelector((state) => state.download.value);
+  const translations = useAppSelector((state) => state.language.translations);
   const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
-  const [selectedFormat, setSelectedFormat] = useState<string>('default');
-  const { isDownloading, startDownload } = useDownload();
-  const [taskId, setTaskId] = useState('');
+  const [selectedFormat, setSelectedFormat] = useState<string>("default");
+  const [taskId, setTaskId] = useState("");
 
   const handleCheckboxChange = (url: string, checked: boolean) => {
     setSelectedUrls((prev) => {
@@ -52,7 +52,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
       selectedUrls.length > 0
         ? selectedUrls
         : downloadCardList.map((card) => card.url);
-    startDownload();
+    dispatch(setTrue());
     await callConvertAndDownloadMedia(taskId, urlsToDownload, selectedFormat);
 
     selectedUrls.forEach((url) => {
@@ -60,7 +60,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
       if (card) {
         addDownloadToHistory(card);
       }
-      setDownloadHistory(getDownloadHistory());
+      dispatch(setDownloadHistory(getDownloadHistory()));
     });
   };
 
@@ -74,7 +74,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
 
   return (
     <>
-      <GeneralCard className={`mt-6 justify-self-center ${className || ''}`}>
+      <GeneralCard className={`mt-6 justify-self-center ${className || ""}`}>
         {downloadCardList.length > 1 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full mt-4 mb-2">
             <div className="flex items-center justify-center text-xl">
@@ -97,7 +97,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
             <div className="flex items-center justify-center">
               {selectedUrls.length > 0 && (
                 <GeneralButton className="mr-2" onClick={handleResetSelection}>
-                  {/* {translations.resetCheckbox} */}<X></X>
+                  {/* {translations.resetCheckbox} */}
+                  <X></X>
                 </GeneralButton>
               )}
               <GeneralButton onClick={handleDownloadAll} className="gap-1">
