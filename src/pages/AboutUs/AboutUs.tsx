@@ -1,10 +1,11 @@
-import { useLanguage } from "@/context/LanguageContext";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./About.css";
+import { useAppSelector } from "@/hooks/hooks";
 
 const AboutUs: React.FC = () => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state) => state.language.translations);
+
   return (
     <>
       <span id="linkSpan">

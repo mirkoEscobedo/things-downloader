@@ -9,24 +9,25 @@ import SimplicityIcon from "@/components/simplicityIcon/SimplicityIcon";
 import Title from "@/components/title/Title";
 import TopBar from "@/components/topBar/TopBar";
 import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
-import { useDownloadHistory } from "@/context/DownloadHistoryContext";
-import { useAppSelector } from "@/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 import TextCard from "@/shared/components/textCard/TextCard";
-import { ElementCardType } from "@/typedef/typedef";
+import { setDownloadCardList } from "@/state/reducers/downloadCardListSlice";
 import { constructElementCards } from "@/utils/constructElementCards";
-import { useState } from "react";
 
 const Home: React.FC = () => {
-  const translations = useAppSelector((state)=> state.language.translations)
-  const [downloadCardList, setDownloadCardList] = useState<ElementCardType[]>(
-    []
+  const translations = useAppSelector((state) => state.language.translations);
+  const downloadHistory = useAppSelector(
+    (state) => state.downloadHistory.value
   );
-  const { downloadHistory } = useDownloadHistory();
+  const downloadCardList = useAppSelector(
+    (state) => state.downloadCardList.value
+  );
+  const dispatch = useAppDispatch();
 
   const handleSearch = async (response: any) => {
     const formattedData = constructElementCards(response);
-    setDownloadCardList(formattedData);
+    dispatch(setDownloadCardList(formattedData));
   };
   return (
     <>
