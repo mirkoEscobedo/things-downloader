@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GeneralCard from '../general_card/General_Card';
 import GeneralButton from '../generalButton/GeneralButton';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { cardFalse, cardTrue } from '@/state/reducers/transformingButtonSlice';
 
 interface TransformingButtonProps {
   card_children: React.ReactNode;
@@ -12,15 +14,16 @@ const TransformingButton: React.FC<TransformingButtonProps> = ({
   button_children,
   className,
 }) => {
-  const [isCard, setIsCard] = useState(false);
-
+  // const [isCard, setIsCard] = useState(false);
+const cardState = useAppSelector((state) => state.isCard.value);
+  const dispatch = useAppDispatch();
   return (
     <>
-      {isCard && (
+      {cardState && (
         <>
           <div
             onClick={() => {
-              setIsCard(false);
+             dispatch(cardFalse()); 
             }}
             className={`opacity-10 fixed z-30 w-full h-screen flex justify-end  bg-black`}
           ></div>
@@ -31,7 +34,7 @@ const TransformingButton: React.FC<TransformingButtonProps> = ({
           </div>
         </>
       )}
-      <GeneralButton className="m-4" onClick={() => setIsCard(true)}>
+      <GeneralButton className="m-4" onClick={() => dispatch(cardTrue())}>
         {button_children}
       </GeneralButton>
     </>
