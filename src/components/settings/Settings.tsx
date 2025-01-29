@@ -1,5 +1,3 @@
-import { useDownloadHistory } from "@/context/DownloadHistoryContext";
-import { useLanguage } from "@/context/LanguageContext";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import {
   deleteDownloadHistory,
@@ -9,19 +7,18 @@ import { DownloadIcon, TrashIcon } from "lucide-react";
 import React from "react";
 import EnLogo from "../en_logo/EnLogo";
 import ItLogo from "../it_logo/ItLogo";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setLanguage } from "@/state/reducers/languageSlice";
+import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 
 const Settings: React.FC = () => {
-  const { translations, setLanguage, language } = useLanguage();
-  const { setDownloadHistory } = useDownloadHistory();
-  // const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>([]);
+  const language = useAppSelector((state) => state.language.language);
+  const translations = useAppSelector((state) => state.language.translations);
 
-  // useEffect(() => {
-  //   const history = getDownloadHistory();
-  //   setDownloadHistory(history);
-  // }, []);
+  const dispatch = useAppDispatch();
 
   function toggleLanguage() {
-    setLanguage(language === "en" ? "it" : "en");
+    dispatch(setLanguage(language === "en" ? "it" : "en"));
   }
 
   const handleExportData = () => {
@@ -30,7 +27,7 @@ const Settings: React.FC = () => {
 
   const handleDeleteData = () => {
     deleteDownloadHistory();
-    setDownloadHistory([]);
+    dispatch(setDownloadHistory([]));
   };
 
   return (
@@ -54,7 +51,7 @@ const Settings: React.FC = () => {
             <DownloadIcon></DownloadIcon>
           </GeneralButton>
         </div>
-        <div className="text-white text-black flex items-center justify-between">
+        <div className="text-white flex items-center justify-between">
           <h2 className="mr-2">{translations.settingsDeleteData}</h2>
           <GeneralButton onClick={handleDeleteData}>
             <TrashIcon></TrashIcon>

@@ -1,23 +1,23 @@
-import ShineBorder from '@/components/ui/shine-border';
-import { useLanguage } from '@/context/LanguageContext';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import { ArrowLeft } from 'lucide-react';
+import ShineBorder from "@/components/ui/shine-border";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import { ArrowLeft } from "lucide-react";
 import React, {
   ChangeEvent,
   FormEvent,
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { Link } from 'react-router-dom';
-import './Contact.css';
+} from "react";
+import { Link } from "react-router-dom";
+import "./Contact.css";
+import { useAppSelector } from "@/hooks/hooks";
 
 const Contact: React.FC = () => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state) => state.language.translations);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (
@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Form data submitted:', formData);
+    console.log("Form data submitted:", formData);
   };
 
   const inputRefContact = useRef<HTMLTextAreaElement>(null);
@@ -87,7 +87,7 @@ const Contact: React.FC = () => {
             </label>*/}
             <ShineBorder
               className="z-1 message p-0 flex"
-              color={['#A07CFE', '#FE8FB5', '#FFBE7B']}
+              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
               borderWidth={4}
             >
               <textarea

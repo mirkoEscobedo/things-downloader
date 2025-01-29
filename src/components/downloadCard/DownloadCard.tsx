@@ -1,9 +1,6 @@
 import ElementCard from '@/shared/components/element_card/ElementCard';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import React, { useState } from 'react';
-
-import { useDownloadHistory } from '@/context/DownloadHistoryContext';
-import { useLanguage } from '@/context/LanguageContext';
 import {
   callConvertAndDownloadMedia,
   getNewTask,
@@ -14,7 +11,9 @@ import {
 } from '@/utils/downloadHistory';
 import { DownloadIcon } from 'lucide-react';
 import ConvertSelector from '../convertSelector/ConvertSelector';
-import { useDownload } from '@/context/DownloadContext';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { setDownloadHistory } from '@/state/reducers/downloadHistorySlice';
+import { setTrue } from '@/state/reducers/downloadSlice';
 
 interface DonwloadCardProps {
   elementCardTitle?: string;
@@ -37,9 +36,8 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   checked,
   onTaskIdGenerated,
 }) => {
-  const { translations } = useLanguage();
-  const { setDownloadHistory } = useDownloadHistory();
-  const { startDownload } = useDownload();
+  const dispatch = useAppDispatch();
+  const translations = useAppSelector((state) => state.language.translations);
   const [selectedFormat, setSelectedFormat] = useState<string>('default');
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +49,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
     console.log(taskId);
     onTaskIdGenerated(taskId);
     const mediaUrl = [url];
-    startDownload();
+   dispatch(setTrue()); 
     await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
 
     addDownloadToHistory({
@@ -61,7 +59,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
       url,
     });
 
-    setDownloadHistory(getDownloadHistory());
+  dispatch(setDownloadHistory(getDownloadHistory()))
   };
 
   return (

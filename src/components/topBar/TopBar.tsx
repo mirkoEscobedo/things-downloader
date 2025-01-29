@@ -1,10 +1,10 @@
-import { useLanguage } from "@/context/LanguageContext";
 import TransformingButton from "@/shared/components/transforming_button/TransformingButton";
 import { SettingsIcon } from "lucide-react";
 import Settings from "../settings/Settings";
+import { useAppSelector } from "@/hooks/hooks";
 
 const TopBar: React.FC = () => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state) => state.language.translations);
   return (
     <>
       <div className="flex justify-end ">
