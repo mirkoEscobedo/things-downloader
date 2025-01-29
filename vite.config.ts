@@ -9,7 +9,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      devOptions: { enabled: true },
       manifest: {
         name: "Things-Downloader",
         short_name: "TD",
