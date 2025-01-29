@@ -1,4 +1,3 @@
-import { useDownloadHistory } from "@/context/DownloadHistoryContext";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import {
   deleteDownloadHistory,
@@ -10,14 +9,13 @@ import EnLogo from "../en_logo/EnLogo";
 import ItLogo from "../it_logo/ItLogo";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setLanguage } from "@/state/reducers/languageSlice";
+import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 
 const Settings: React.FC = () => {
-
   const language = useAppSelector((state) => state.language.language);
   const translations = useAppSelector((state) => state.language.translations);
 
   const dispatch = useAppDispatch();
-  const { setDownloadHistory } = useDownloadHistory();
 
   function toggleLanguage() {
     dispatch(setLanguage(language === "en" ? "it" : "en"));
@@ -29,7 +27,7 @@ const Settings: React.FC = () => {
 
   const handleDeleteData = () => {
     deleteDownloadHistory();
-    setDownloadHistory([]);
+    dispatch(setDownloadHistory([]));
   };
 
   return (
