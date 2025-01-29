@@ -1,9 +1,9 @@
-import { useLanguage } from "@/context/LanguageContext";
 import { Link } from "react-router-dom";
 import "./footer.css";
+import { useAppSelector } from "@/hooks/hooks";
 
 const Footer: React.FC = () => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state) => state.language.translations);
   return (
     <footer className="  mb-4 mt-80">
       <h2>

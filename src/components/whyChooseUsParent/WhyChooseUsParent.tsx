@@ -1,5 +1,5 @@
-import { useLanguage } from "@/context/LanguageContext";
 import "./WhyChooseUsParent.css";
+import { useAppSelector } from "@/hooks/hooks";
 type WhyChooseUsParentProps = {
   children: React.ReactNode;
   className?: string;
@@ -9,7 +9,7 @@ const WhyChooseUsParent: React.FC<WhyChooseUsParentProps> = ({
   children,
   className,
 }) => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state) => state.language.translations);
   return (
     <>
       <h2 id="whyHeading" className={`${className}`}>

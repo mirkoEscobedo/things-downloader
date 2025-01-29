@@ -53,7 +53,7 @@ const Settings: React.FC = () => {
             <DownloadIcon></DownloadIcon>
           </GeneralButton>
         </div>
-        <div className="text-white text-black flex items-center justify-between">
+        <div className="text-white flex items-center justify-between">
           <h2 className="mr-2">{translations.settingsDeleteData}</h2>
           <GeneralButton onClick={handleDeleteData}>
             <TrashIcon></TrashIcon>
