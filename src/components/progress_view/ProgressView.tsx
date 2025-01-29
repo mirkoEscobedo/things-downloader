@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
-import { FakeAd } from '../fake_ad/FakeAd';
-import { useDownload } from '@/context/DownloadContext';
+import { useEffect, useState } from "react";
+import { FakeAd } from "../fake_ad/FakeAd";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setFalse } from "@/state/reducers/downloadSlice";
 
 export const ProgessView = ({ taskId }: { taskId: string }) => {
-  const { isDownloading, finishDownload } = useDownload();
+  const dispatch = useAppDispatch();
+  const isDownloading = useAppSelector((state) => state.download.value);
   const [progress, setProgress] = useState(0);
-  const [status, setStatus] = useState('Pending');
+  const [status, setStatus] = useState("Pending");
 
   useEffect(() => {
     if (!taskId) return;
@@ -20,16 +22,16 @@ export const ProgessView = ({ taskId }: { taskId: string }) => {
         setProgress(data.progress);
         setStatus(data.status);
 
-        if (data.progress === 100 || data.status === 'Done') {
-          finishDownload();
+        if (data.progress === 100 || data.status === "Done") {
+          dispatch(setFalse());
           eventSource.close();
         }
       } catch (error) {
-        console.error('error parsing progress data: ', error);
+        console.error("error parsing progress data: ", error);
       }
     };
     eventSource.onerror = () => {
-      console.error('an error has occurred while receiving data: ');
+      console.error("an error has occurred while receiving data: ");
       eventSource.close();
     };
     return () => {
