@@ -10,7 +10,7 @@ import Title from "@/components/title/Title";
 import TopBar from "@/components/topBar/TopBar";
 import WhyChooseUsParent from "@/components/whyChooseUsParent/WhyChooseUsParent";
 import { useDownloadHistory } from "@/context/DownloadHistoryContext";
-import { useLanguage } from "@/context/LanguageContext";
+import { useAppSelector } from "@/hooks/hooks";
 import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 import TextCard from "@/shared/components/textCard/TextCard";
 import { ElementCardType } from "@/typedef/typedef";
@@ -18,7 +18,7 @@ import { constructElementCards } from "@/utils/constructElementCards";
 import { useState } from "react";
 
 const Home: React.FC = () => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state)=> state.language.translations)
   const [downloadCardList, setDownloadCardList] = useState<ElementCardType[]>(
     []
   );

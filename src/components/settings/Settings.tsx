@@ -1,5 +1,4 @@
 import { useDownloadHistory } from "@/context/DownloadHistoryContext";
-import { useLanguage } from "@/context/LanguageContext";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import {
   deleteDownloadHistory,
@@ -9,19 +8,19 @@ import { DownloadIcon, TrashIcon } from "lucide-react";
 import React from "react";
 import EnLogo from "../en_logo/EnLogo";
 import ItLogo from "../it_logo/ItLogo";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setLanguage } from "@/state/reducers/languageSlice";
 
 const Settings: React.FC = () => {
-  const { translations, setLanguage, language } = useLanguage();
-  const { setDownloadHistory } = useDownloadHistory();
-  // const [downloadHistory, setDownloadHistory] = useState<ElementCardType[]>([]);
 
-  // useEffect(() => {
-  //   const history = getDownloadHistory();
-  //   setDownloadHistory(history);
-  // }, []);
+  const language = useAppSelector((state) => state.language.language);
+  const translations = useAppSelector((state) => state.language.translations);
+
+  const dispatch = useAppDispatch();
+  const { setDownloadHistory } = useDownloadHistory();
 
   function toggleLanguage() {
-    setLanguage(language === "en" ? "it" : "en");
+    dispatch(setLanguage(language === "en" ? "it" : "en"));
   }
 
   const handleExportData = () => {

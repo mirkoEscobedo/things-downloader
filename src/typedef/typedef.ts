@@ -13,3 +13,5 @@ export interface logoProps extends SVGProps<SVGSVGElement> {
   itemWidth?: string;
   itemHeight?: string;
 }
+
+export type Language = 'en' | 'it';
