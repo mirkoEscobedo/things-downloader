@@ -1,15 +1,17 @@
-import { CHAN } from '@/const/const';
+import { CHAN } from "@/const/const";
+import { isUrl } from "@/utils/utils";
+import { getChan } from "./getChan";
 
 export async function fetchData(url: string) {
   try {
     const urlString = String(url);
     console.log(urlString);
-    let endpoint: string = '';
-    console.log('fetching in fetchData');
+    let endpoint: string = "";
+    console.log("fetching in fetchData");
     if (urlString.includes(CHAN)) {
       endpoint = `http://localhost:4000/trpc/media.getChanMediaList?input={"link":"${urlString}"}`;
     } else {
-      throw new Error('Unsupported platform link.');
+      throw new Error("Unsupported platform link.");
     }
 
     const response = await fetch(endpoint);
@@ -17,10 +19,25 @@ export async function fetchData(url: string) {
       throw new Error(`HTTP error! status ${response.status}`);
     }
     const data = await response.json();
-    console.log('almost returning data', data);
+    console.log("almost returning data", data);
     return data;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function fetchMedia(url: string) {
+  try {
+    if (isUrl(url)) {
+      if (url.includes(CHAN)) {
+        const mediaList = await getChan(url);
+        return mediaList;
+      }
+    } else {
+      throw new Error("not a valid url");
+    }
+  } catch (e) {
+    throw new Error("failed to fetch media");
   }
 }
 
@@ -35,12 +52,12 @@ export async function callConvertAndDownloadMedia(
     format,
   };
   try {
-    console.log('fetchService starting call', input);
+    console.log("fetchService starting call", input);
 
     const endpoint = `http://localhost:4000/trpc/media.convertAndDownloadMedia`;
     const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
     });
 
@@ -51,7 +68,7 @@ export async function callConvertAndDownloadMedia(
     console.log(responseData);
     const filePath = responseData.result?.data?.filePath;
     if (!filePath) {
-      throw new Error('File path not found in the response');
+      throw new Error("File path not found in the response");
     }
     console.log(filePath);
 
@@ -60,18 +77,18 @@ export async function callConvertAndDownloadMedia(
     )}`;
     window.location.href = downloadEndopoint;
   } catch (error) {
-    console.error('Failed to convert and download media: ', error);
+    console.error("Failed to convert and download media: ", error);
   }
 }
 
 export async function getNewTask() {
   try {
-    console.log('fetching new task');
-    const response = await fetch('http://localhost:4000/task');
+    console.log("fetching new task");
+    const response = await fetch("http://localhost:4000/task");
     const data = await response.json();
-    console.log('task fetched: ', data.taskId);
+    console.log("task fetched: ", data.taskId);
     return data.taskId;
   } catch (error) {
-    console.error('failed to get New task', error);
+    console.error("failed to get New task", error);
   }
 }
