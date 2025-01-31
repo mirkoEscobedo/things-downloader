@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import DownloadIcon from "@/shared/components/downloadIcon/DownloadIcon";
 import TextCard from "@/shared/components/textCard/TextCard";
 import { setDownloadCardList } from "@/state/reducers/downloadCardListSlice";
+import { MediaItem } from "@/typedef/typedef";
 import { constructElementCards } from "@/utils/constructElementCards";
 
 const Home: React.FC = () => {
@@ -25,7 +26,7 @@ const Home: React.FC = () => {
   );
   const dispatch = useAppDispatch();
 
-  const handleSearch = async (response: any) => {
+  const handleSearch = async (response: MediaItem[]) => {
     const formattedData = constructElementCards(response);
     dispatch(setDownloadCardList(formattedData));
   };

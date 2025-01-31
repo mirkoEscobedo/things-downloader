@@ -15,3 +15,12 @@ export interface logoProps extends SVGProps<SVGSVGElement> {
 }
 
 export type Language = 'en' | 'it';
+
+
+export interface MediaItem {
+  filename: string;
+  url: string;
+  board: string;
+  tim: number;
+  thumbnail: string | null;
+}

@@ -1,38 +1,17 @@
 import { CHAN } from "@/const/const";
-import { isUrl } from "@/utils/utils";
-import { getChan } from "./getChan";
-
-export async function fetchData(url: string) {
-  try {
-    const urlString = String(url);
-    console.log(urlString);
-    let endpoint: string = "";
-    console.log("fetching in fetchData");
-    if (urlString.includes(CHAN)) {
-      endpoint = `http://localhost:4000/trpc/media.getChanMediaList?input={"link":"${urlString}"}`;
-    } else {
-      throw new Error("Unsupported platform link.");
-    }
-
-    const response = await fetch(endpoint);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("almost returning data", data);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-}
+import { chanTransform } from "@/utils/transformLink";
 
 export async function fetchMedia(url: string) {
   try {
-    if (isUrl(url)) {
-      if (url.includes(CHAN)) {
-        const mediaList = await getChan(url);
-        return mediaList;
-      }
+    if (url.includes(CHAN)) {
+      const modifiedLink = chanTransform(url);
+      console.log(modifiedLink);
+      const response = await fetch(
+        `http://localhost:4000/chan/${encodeURIComponent(modifiedLink)}`
+      );
+      const data = await response.json();
+      console.log(data);
+      return data;
     } else {
       throw new Error("not a valid url");
     }

@@ -2,7 +2,7 @@ import ShineBorder from "@/components/ui/shine-border";
 import { useEffect, useRef, useState } from "react";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import { ArrowRight, LoaderCircle } from "lucide-react";
-import { fetchData, fetchMedia } from "@/services/fetchService";
+import { fetchMedia } from "@/services/fetchService";
 
 interface SearchBoxProps {
   className?: string;
@@ -27,7 +27,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
       // const data = await fetchData(search);
       const data = await fetchMedia(search);
       onSearch(data);
-    } catch (_) {
+    } catch (e) {
       setError("Failed to fetch data");
     } finally {
       setLoading(false);

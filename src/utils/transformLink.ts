@@ -8,8 +8,8 @@ export const chanTransform = (threadUrl: string) => {
       throw new Error("invalid or expired thread");
     }
     const cdnUrl: string = `https://a.4cdn.org/${board}/thread/${threadId}.json`;
-    const corsUrl: string = `https://corsproxy.io/?key=0676e644&url=${cdnUrl}`;
-    return { board, link: corsUrl };
+
+    return cdnUrl;
   } catch (e) {
     console.log(e);
     throw new Error("invalid or expired thread url");
