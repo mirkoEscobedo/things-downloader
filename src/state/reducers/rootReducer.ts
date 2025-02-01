@@ -1,9 +1,11 @@
-import { combineReducers } from "@reduxjs/toolkit";
-import transformingButtonReducer from "./transformingButtonSlice";
-import languageReducer from "./languageSlice";
-import downloadHistoryReducer from "./downloadHistorySlice";
-import downloadCardListReducer from "./downloadCardListSlice";
-import downloadReducer from "./downloadSlice";
+import { combineReducers } from '@reduxjs/toolkit';
+import transformingButtonReducer from './transformingButtonSlice';
+import languageReducer from './languageSlice';
+import downloadHistoryReducer from './downloadHistorySlice';
+import downloadCardListReducer from './downloadCardListSlice';
+import downloadReducer from './downloadSlice';
+import selectedToDownloadReducer from './selectedToDownloadSlice';
+import selectFormatReducer from './selectFormatSlice';
 
 const rootReducer = combineReducers({
   isCard: transformingButtonReducer,
@@ -11,6 +13,8 @@ const rootReducer = combineReducers({
   downloadHistory: downloadHistoryReducer,
   downloadCardList: downloadCardListReducer,
   download: downloadReducer,
+  selectToDownload: selectedToDownloadReducer,
+  selectFormat: selectFormatReducer,
 });
 
 export default rootReducer;
