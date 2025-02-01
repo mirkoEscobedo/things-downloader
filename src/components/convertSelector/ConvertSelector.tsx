@@ -7,19 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useAppDispatch } from '@/hooks/hooks';
+import { setFormat } from '@/state/reducers/selectFormatSlice';
 import React from 'react';
 interface ConvertSelectorProps {
   selectText: string;
   name: string;
-  onFormatChange: (value: string) => void;
 }
 const ConvertSelector: React.FC<ConvertSelectorProps> = ({
   selectText,
   name,
-  onFormatChange,
 }) => {
+  const dispatch = useAppDispatch();
   const handleOnFormatChange = (value: string) => {
-    onFormatChange(value);
+    dispatch(setFormat(value));
   };
 
   return (
