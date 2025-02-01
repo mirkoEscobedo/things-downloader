@@ -1,34 +1,34 @@
 import { ElementCardType } from '@/typedef/typedef';
 import React from 'react';
 import DonwloadCard from '../downloadCard/DownloadCard';
+import { useAppSelector } from '@/hooks/hooks';
 
 interface DownloadCardListProsp {
-  dowloadcardList: ElementCardType[];
-  onCheckboxChange: (url: string, checked: boolean) => void;
-  selectedUrls: string[];
+  onCheckboxChange: (toDownload: ElementCardType, checked: boolean) => void;
+  selectedUrls: ElementCardType[];
   onTaskIdGenerated: (taskId: string) => void;
 }
 const DownloadCardList: React.FC<DownloadCardListProsp> = ({
   onCheckboxChange,
-  dowloadcardList,
   selectedUrls,
   onTaskIdGenerated,
 }) => {
+  const downloadCardList = useAppSelector(
+    (state) => state.downloadCardList.value
+  );
   return (
     <>
-      {dowloadcardList.map((downloadCard, index) => (
+      {downloadCardList.map((downloadCard, index) => (
         <DonwloadCard
+          card={downloadCard}
           onTaskIdGenerated={onTaskIdGenerated}
           onCheckboxChange={onCheckboxChange}
-          url={downloadCard.url}
           key={index}
-          elementCardIcon={downloadCard.icon}
-          elementCardThumbnail={
-            downloadCard.thumbnail === null ? '' : downloadCard.thumbnail
-          }
-          elementCardTitle={downloadCard.title}
           onClick={downloadCard.onClick}
-          checked={selectedUrls.includes(downloadCard.url)}
+          checked={selectedUrls.includes({
+            url: downloadCard.url,
+            title: downloadCard.title,
+          })}
         ></DonwloadCard>
       ))}
     </>

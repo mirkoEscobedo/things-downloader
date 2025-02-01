@@ -1,10 +1,7 @@
 import ElementCard from '@/shared/components/element_card/ElementCard';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import React, { useState } from 'react';
-import {
-  callConvertAndDownloadMedia,
-  getNewTask,
-} from '@/services/fetchService';
+import React from 'react';
+import { getNewTask } from '@/services/fetchService';
 import {
   addDownloadToHistory,
   getDownloadHistory,
@@ -14,23 +11,19 @@ import ConvertSelector from '../convertSelector/ConvertSelector';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { setDownloadHistory } from '@/state/reducers/downloadHistorySlice';
 import { setTrue } from '@/state/reducers/downloadSlice';
+import { ElementCardType } from '@/typedef/typedef';
+import { startDownload } from '@/utils/startWorkers';
 
 interface DonwloadCardProps {
-  elementCardTitle?: string;
-  elementCardIcon?: string;
-  elementCardThumbnail?: string;
-  url: string;
+  card: ElementCardType;
   onClick?: () => void;
-  onCheckboxChange: (url: string, checked: boolean) => void;
+  onCheckboxChange: (toDownload: ElementCardType, checked: boolean) => void;
   checked: boolean;
   onTaskIdGenerated: (taskId: string) => void;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
-  elementCardIcon,
-  elementCardTitle,
-  url,
-  elementCardThumbnail,
+  card,
   onClick,
   onCheckboxChange,
   checked,
@@ -38,28 +31,29 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const translations = useAppSelector((state) => state.language.translations);
-  const [selectedFormat, setSelectedFormat] = useState<string>('default');
+  const format = useAppSelector((state) => state.selectFormat.format);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onCheckboxChange(url, event.target.checked);
+    onCheckboxChange(card, event.target.checked);
   };
 
   const handleDownloadSingle = async () => {
     const taskId = await getNewTask();
     console.log(taskId);
     onTaskIdGenerated(taskId);
-    const mediaUrl = [url];
-   dispatch(setTrue()); 
-    await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
+    const cards = [card];
+    dispatch(setTrue());
+    await startDownload(cards, format);
+    // await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
 
     addDownloadToHistory({
-      title: elementCardTitle,
-      icon: elementCardIcon,
-      thumbnail: elementCardThumbnail,
-      url,
+      title: card.title,
+      icon: card.icon,
+      thumbnail: card.thumbnail,
+      url: card.url,
     });
 
-  dispatch(setDownloadHistory(getDownloadHistory()))
+    dispatch(setDownloadHistory(getDownloadHistory()));
   };
 
   return (
@@ -67,17 +61,16 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full">
         <div className="flex items-center justify-center">
           <ElementCard
-            url={url}
-            title={elementCardTitle}
-            icon={elementCardIcon}
-            thumbnail={elementCardThumbnail}
+            url={card.url}
+            title={card.title}
+            icon={card.icon}
+            thumbnail={card.thumbnail == null ? '' : card.thumbnail}
             onClick={onClick}
             extraClasses=""
           ></ElementCard>
         </div>
         <div className="flex items-center justify-center">
           <ConvertSelector
-            onFormatChange={setSelectedFormat}
             name="convertSingle"
             selectText={translations.downloadCardSelectText}
           ></ConvertSelector>
