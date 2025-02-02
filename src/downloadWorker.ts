@@ -1,40 +1,37 @@
+import { ElementCardType } from './typedef/typedef';
 
 self.onmessage = async (e: MessageEvent) => {
-  const { mediaUrls } = e.data;
+  const cards: ElementCardType[] = e.data;
+  let downloadedFiles: { video: Blob; title: string | undefined }[] = [];
   try {
-    const downloadedFiles = await downloadMediaFiles(mediaUrls);
+    for (const card of cards) {
+      const downloaded = await downloadMediaFiles(card);
+      downloadedFiles.push(downloaded);
+    }
+
     self.postMessage(downloadedFiles);
   } catch (err) {
     console.error('failed: ', err);
   }
 };
 
-async function downloadMediaFiles(mediaUrls: string[]): Promise<{blob:Blob,fileName:string}[]> {
-  const downloadedFiles = [];
-  for (const url of mediaUrls) {
-    try {
-      const response = await fetch(url);
-      const fileName = await getName(response, url);
-      const blob = await response.blob();
-      downloadedFiles.push({ blob: blob, fileName });
-      console.log(blob);
-    } catch (error) {
-      console.error('Error downloading file:', error);
+async function downloadMediaFiles(card: ElementCardType) {
+  try {
+    if (
+      !card.url.startsWith('https://i.4cdn.org/') &&
+      !card.url.startsWith('https://a.4cdn.org/')
+    ) {
+      throw new Error(`Invalid link ${card.url}`);
     }
-  }
-  return downloadedFiles;
-}
-async function getName(response: Response, url: string) {
-  const contentDisposition =
-    response.headers.get('Content-Disposition') ||
-    response.headers.get('content-disposition');
-  if (contentDisposition) {
-    const match = contentDisposition.match(
-      /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
-    );
-    if (match?.[1]) {
-      return match[1].replace(/['"]/g, '');
+    new URL(card.url);
+    const url = `http://localhost:4000/proxy/${encodeURIComponent(card.url)}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error, status: ${response.status}`);
     }
+    const videoBlob = await response.blob();
+    return { video: videoBlob, title: card.title };
+  } catch (err) {
+    throw new Error(`Failed to download: ${(card.title, card.url)}`);
   }
-  return url.substring(url.lastIndexOf('/') + 1);
 }
