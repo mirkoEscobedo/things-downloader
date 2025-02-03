@@ -1,23 +1,25 @@
-import GeneralCard from '@/shared/components/general_card/General_Card';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import { ElementCardType } from '@/typedef/typedef';
+import GeneralCard from "@/shared/components/general_card/General_Card";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import { ElementCardType } from "@/typedef/typedef";
 import {
   addDownloadToHistory,
   getDownloadHistory,
-} from '@/utils/downloadHistory';
-import { ProgessView } from '../progress_view/ProgressView';
-import { DownloadIcon, X } from 'lucide-react';
-import ConvertSelector from '../convertSelector/ConvertSelector';
-import DownloadCardList from '../downloadCardList/DownloadCardList';
-import './resultCard.css';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { setDownloadHistory } from '@/state/reducers/downloadHistorySlice';
+} from "@/utils/downloadHistory";
+import { ProgessView } from "../progress_view/ProgressView";
+import { DownloadIcon, X } from "lucide-react";
+import ConvertSelector from "../convertSelector/ConvertSelector";
+import DownloadCardList from "../downloadCardList/DownloadCardList";
+import "./resultCard.css";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 import {
   resetList,
   setSelectedToDownload,
-} from '@/state/reducers/selectedToDownloadSlice';
-import { startDownload } from '@/utils/startWorkers';
+} from "@/state/reducers/selectedToDownloadSlice";
+import { startDownload } from "@/utils/startWorkers";
+import { useFFmpeg } from "@/hooks/useFFmpeg";
 
+const { ffmpeg: ffmpegRef, isLoaded } = useFFmpeg();
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -43,7 +45,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
 
   const handleDownloadAll = async () => {
-    await startDownload(selectedToDownload, format);
+    await startDownload(selectedToDownload, format, ffmpegRef);
     selectedToDownload.forEach((toDownload) => {
       const card = downloadCardList.find((card) => card.url === toDownload.url);
       if (card) {
@@ -59,7 +61,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
 
   return (
     <>
-      <GeneralCard className={`mt-6 justify-self-center ${className || ''}`}>
+      <GeneralCard className={`mt-6 justify-self-center ${className || ""}`}>
         {downloadCardList.length > 1 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full mt-4 mb-2">
             <div className="flex items-center justify-center text-xl">
@@ -94,7 +96,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
           </div>
         )}
-        {isDownloading && <ProgessView taskId={''} />}
+        {isDownloading && <ProgessView taskId={""} />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
             selectedUrls={selectedToDownload}

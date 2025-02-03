@@ -1,41 +1,64 @@
-import { ElementCardType } from '@/typedef/typedef';
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { ElementCardType } from "@/typedef/typedef";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
 export async function startDownload(
   toDownload: ElementCardType[],
-  format: string
+  format: string | null,
+  ffmpegRef: FFmpeg
 ) {
-  const worker = new Worker(new URL('../downloadWorker', import.meta.url));
-  let downloaded: { video: Blob; title: string | undefined }[] = [];
+  const worker = new Worker(new URL("../downloadWorker", import.meta.url));
+  let downloaded: { blob: Blob; title: string | undefined }[] = [];
   worker.postMessage({ toDownload });
   worker.onmessage = (e) => {
     downloaded = e.data;
   };
   console.log(downloaded);
-  if (format !== 'default'){
-    const converted = downloaded.map((element)=> startConversion(element,format,))
+  let converted;
+  if (format && format !== "default") {
+    converted = downloaded.map(
+      async (element) => await startConversion(element, format, ffmpegRef)
+    );
   }
+  
 }
 
 async function startConversion(
-  media: { blob: Blob; fileName: string },
+  media: { blob: Blob; title: string | undefined },
   format: string,
-  ffmpegRef: React.MutableRefObject<FFmpeg>
+  ffmpegRef: FFmpeg
 ) {
-  const { blob, fileName } = media;
+  let { blob, title } = media;
+  if (title === undefined) {
+    title = "input.webm";
+  }
   const video = await fetchFile(blob);
-  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
-  const ffmpeg = ffmpegRef.current;
+  const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm";
+  const ffmpeg = ffmpegRef;
 
   await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
   });
 
-  await ffmpeg.writeFile(fileName, video);
-  await ffmpeg.exec(['-i', 'input.webm', 'output.mp4']);
-  const data = await ffmpeg.readFile('output.mp4');
-  videoRef.current.src = URL.createObjectURL(
-    new Blob([data.buffer], { type: 'video/mp4' })
-  );
+  await ffmpeg.writeFile(title, video);
+  const outputName = title.replace(/\.[^/.]+$/, "") + `.${format}`;
+  await ffmpeg.exec(["-i", title, outputName]);
+
+  const data = await ffmpeg.readFile(outputName);
+  const mimeTypes: Record<string, string> = {
+    mp4: "video/mp4",
+    webm: "video/webm",
+    mp3: "audio/mpeg",
+    ogg: "audio/oggg",
+    wav: "audio/wav",
+    acc: "audio/acc",
+    flac: "audio/flac",
+  };
+  const lowerFormat = format.toLowerCase();
+
+  const mimeType = mimeTypes[lowerFormat] || "application/octet-stream";
+  const outputBlob = new Blob([data], { type: mimeType });
+  console.log({ blob: outputBlob, fileName: outputName, mimeType });
+
+  return { blob: outputBlob, fileName: outputName, mimeType };
 }
