@@ -36,13 +36,22 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   };
 
   const handleDownloadSingle = async () => {
-    // const taskId = await getNewTask();
-    // console.log(taskId);
-    // onTaskIdGenerated(taskId);
     const cards = [card];
     dispatch(setTrue());
-    await startDownload(cards, new FFmpeg(), format);
-    // await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
+    try {
+      const result = await startDownload(cards, new FFmpeg(), format);
+      const url = URL.createObjectURL(result.blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      console.log("Download successfull: ", url);
+    } catch (err) {
+      console.error("Download Failed: ", err);
+    }
 
     addDownloadToHistory({
       title: card.title,
@@ -56,7 +65,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center justify-center w-full">
         <div className="flex items-center justify-center">
           <ElementCard
             url={card.url}
@@ -67,12 +76,12 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
             extraClasses=""
           ></ElementCard>
         </div>
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <ConvertSelector
             name="convertSingle"
             selectText={translations.downloadCardSelectText}
           ></ConvertSelector>
-        </div>
+        </div> */}
         <div className="flex items-center justify-center">
           <input
             className="mr-4 size-5"
