@@ -97,7 +97,6 @@ const ResultCard: React.FC<ResultCardProps> = ({
         {isDownloading && <ProgessView taskId={''} />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
-            onTaskIdGenerated={() => {}}
             selectedUrls={selectedToDownload}
             onCheckboxChange={handleCheckboxChange}
           ></DownloadCardList>

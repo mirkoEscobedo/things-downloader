@@ -1,7 +1,6 @@
 import ElementCard from '@/shared/components/element_card/ElementCard';
 import GeneralButton from '@/shared/components/generalButton/GeneralButton';
 import React from 'react';
-import { getNewTask } from '@/services/fetchService';
 import {
   addDownloadToHistory,
   getDownloadHistory,
@@ -19,7 +18,6 @@ interface DonwloadCardProps {
   onClick?: () => void;
   onCheckboxChange: (toDownload: ElementCardType, checked: boolean) => void;
   checked: boolean;
-  onTaskIdGenerated: (taskId: string) => void;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
@@ -27,7 +25,6 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   onClick,
   onCheckboxChange,
   checked,
-  onTaskIdGenerated,
 }) => {
   const dispatch = useAppDispatch();
   const translations = useAppSelector((state) => state.language.translations);
@@ -38,9 +35,9 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
   };
 
   const handleDownloadSingle = async () => {
-    const taskId = await getNewTask();
-    console.log(taskId);
-    onTaskIdGenerated(taskId);
+    // const taskId = await getNewTask();
+    // console.log(taskId);
+    // onTaskIdGenerated(taskId);
     const cards = [card];
     dispatch(setTrue());
     await startDownload(cards, format);

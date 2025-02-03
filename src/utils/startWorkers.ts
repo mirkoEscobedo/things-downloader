@@ -5,22 +5,20 @@ export async function startDownload(
   toDownload: ElementCardType[],
   format: string
 ) {
-  let blobList: Blob[] = [];
   const worker = new Worker(new URL('../downloadWorker', import.meta.url));
-  const mediaUrls = toDownload.map((card) => card.url);
-  console.log(mediaUrls);
-  //TODO: add proxy route for downloading
-  //TODO: fix selector and checking logic
-  worker.postMessage({ mediaUrls });
+  let downloaded: { video: Blob; title: string | undefined }[] = [];
+  worker.postMessage({ toDownload });
   worker.onmessage = (e) => {
-    blobList = e.data;
+    downloaded = e.data;
   };
-  console.log(blobList);
-  return blobList;
+  console.log(downloaded);
+  if (format !== 'default'){
+    const converted = downloaded.map((element)=> startConversion(element,format,))
+  }
 }
 
 async function startConversion(
-  media: any,
+  media: { blob: Blob; fileName: string },
   format: string,
   ffmpegRef: React.MutableRefObject<FFmpeg>
 ) {
