@@ -1,4 +1,4 @@
-import { ElementCardType } from "@/typedef/typedef";
+import { ElementCardType, ProcessedFiles } from "@/typedef/typedef";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import JSZip from "jszip";
@@ -7,10 +7,10 @@ export async function startDownload(
   toDownload: ElementCardType[],
   ffmpegRef: FFmpeg,
   format?: string
-): Promise<Blob | { blob: Blob; fileName: string; mimeType: string }> {
+): Promise<ProcessedFiles> {
   return new Promise((resolve, rejects) => {
     const worker = new Worker(new URL("../downloadWorker", import.meta.url));
-    let converted: { blob: Blob; fileName: string; mimeType: string }[] = [];
+    let converted: ProcessedFiles[] = [];
 
     worker.onmessage = async (e) => {
       const downloaded: { blob: Blob; title: string | undefined }[] = e.data;
@@ -28,7 +28,7 @@ export async function startDownload(
           });
         }
       }
-      let processedFiles;
+      let processedFiles:ProcessedFiles;
       if (converted.length > 1) {
         processedFiles = await zipFiles(converted);
       } else {
@@ -70,7 +70,7 @@ async function startConversion(
     mp3: "audio/mpeg",
     ogg: "audio/ogg",
     wav: "audio/wav",
-    acc: "audio/acc",
+    aac: "audio/aac",
     flac: "audio/flac",
   };
   const lowerFormat = format.toLowerCase();
@@ -82,9 +82,7 @@ async function startConversion(
   return { blob: outputBlob, fileName: outputName, mimeType };
 }
 
-async function zipFiles(
-  files: { blob: Blob; fileName: string; mimeType: string }[]
-): Promise<{ blob: Blob; fileName: string; mimeType: string }> {
+async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
   const zip = new JSZip();
   for (const file of files) {
     zip.file(file.fileName, file.blob);

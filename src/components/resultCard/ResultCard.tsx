@@ -17,9 +17,10 @@ import {
   setSelectedToDownload,
 } from "@/state/reducers/selectedToDownloadSlice";
 import { startDownload } from "@/utils/startWorkers";
-import { useFFmpeg } from "@/hooks/useFFmpeg";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+// import { useFFmpeg } from "@/hooks/useFFmpeg";
 
-const { ffmpeg: ffmpegRef, isLoaded } = useFFmpeg();
+// const { ffmpeg: ffmpegRef, isLoaded } = useFFmpeg();
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -45,7 +46,24 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
 
   const handleDownloadAll = async () => {
-    await startDownload(selectedToDownload, ffmpegRef, format);
+    try {
+      const result = await startDownload(
+        selectedToDownload,
+        new FFmpeg(),
+        format
+      );
+      const url = URL.createObjectURL(result.blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      console.log("Download successfull");
+    } catch (err) {
+      console.error("Download Failed: ", err);
+    }
     selectedToDownload.forEach((toDownload) => {
       const card = downloadCardList.find((card) => card.url === toDownload.url);
       if (card) {

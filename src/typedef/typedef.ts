@@ -1,4 +1,4 @@
-import { SVGProps } from 'react';
+import { SVGProps } from "react";
 
 export type ElementCardType = {
   title?: string;
@@ -14,7 +14,7 @@ export interface logoProps extends SVGProps<SVGSVGElement> {
   itemHeight?: string;
 }
 
-export type Language = 'en' | 'it';
+export type Language = "en" | "it";
 
 export interface MediaItem {
   filename: string;
@@ -24,3 +24,8 @@ export interface MediaItem {
   thumbnail: string | null;
 }
 
+export type ProcessedFiles = {
+  blob: Blob;
+  fileName: string;
+  mimeType: string;
+};

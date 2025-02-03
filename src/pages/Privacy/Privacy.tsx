@@ -1,10 +1,10 @@
-import { useLanguage } from "@/context/LanguageContext";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Privacy.css";
+import { useAppSelector } from "@/hooks/hooks";
 
 const Privacy: React.FC = () => {
-  const { translations } = useLanguage();
+  const translations = useAppSelector((state) => state.language.translations);
   return (
     <>
       <div>
