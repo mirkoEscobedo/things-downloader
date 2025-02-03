@@ -1,25 +1,40 @@
 import { ElementCardType } from "@/typedef/typedef";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import JSZip from "jszip";
+
 export async function startDownload(
   toDownload: ElementCardType[],
-  format: string | null,
-  ffmpegRef: FFmpeg
+  ffmpegRef: FFmpeg,
+  format?: string
 ) {
   const worker = new Worker(new URL("../downloadWorker", import.meta.url));
-  let downloaded: { blob: Blob; title: string | undefined }[] = [];
+  let converted: { blob: Blob; fileName: string; mimeType: string }[] = [];
   worker.postMessage({ toDownload });
-  worker.onmessage = (e) => {
-    downloaded = e.data;
+  worker.onmessage = async (e) => {
+    const downloaded: { blob: Blob; title: string | undefined }[] = e.data;
+    if (format && format !== "default") {
+      for (const element of downloaded) {
+        const result = await startConversion(element, format, ffmpegRef);
+        converted.push(result);
+      }
+    } else {
+      for (const element of downloaded) {
+        converted.push({
+          blob: element.blob,
+          fileName: element.title ? element.title : "input.webm",
+          mimeType: element.blob.type,
+        });
+      }
+    }
+    let processedFiles;
+    if (converted.length > 1) {
+      processedFiles = await zipFiles(converted);
+    } else {
+      processedFiles = converted[0];
+    }
+    return processedFiles;
   };
-  console.log(downloaded);
-  let converted;
-  if (format && format !== "default") {
-    converted = downloaded.map(
-      async (element) => await startConversion(element, format, ffmpegRef)
-    );
-  }
-  
 }
 
 async function startConversion(
@@ -61,4 +76,15 @@ async function startConversion(
   console.log({ blob: outputBlob, fileName: outputName, mimeType });
 
   return { blob: outputBlob, fileName: outputName, mimeType };
+}
+
+async function zipFiles(
+  files: { blob: Blob; fileName: string; mimeType: string }[]
+): Promise<Blob> {
+  const zip = new JSZip();
+  for (const file of files) {
+    zip.file(file.fileName, file.blob);
+  }
+  const zippedBlob = await zip.generateAsync({ type: "blob" });
+  return zippedBlob;
 }
