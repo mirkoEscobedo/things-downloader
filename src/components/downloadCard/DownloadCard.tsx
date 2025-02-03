@@ -6,7 +6,6 @@ import {
   getDownloadHistory,
 } from "@/utils/downloadHistory";
 import { DownloadIcon } from "lucide-react";
-import ConvertSelector from "../convertSelector/ConvertSelector";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 import { setTrue } from "@/state/reducers/downloadSlice";
@@ -76,12 +75,6 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
             extraClasses=""
           ></ElementCard>
         </div>
-        {/* <div className="flex items-center justify-center">
-          <ConvertSelector
-            name="convertSingle"
-            selectText={translations.downloadCardSelectText}
-          ></ConvertSelector>
-        </div> */}
         <div className="flex items-center justify-center">
           <input
             className="mr-4 size-5"

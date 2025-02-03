@@ -18,9 +18,7 @@ import {
 } from "@/state/reducers/selectedToDownloadSlice";
 import { startDownload } from "@/utils/startWorkers";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-// import { useFFmpeg } from "@/hooks/useFFmpeg";
 
-// const { ffmpeg: ffmpegRef, isLoaded } = useFFmpeg();
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
   className?: string;
@@ -101,7 +99,6 @@ const ResultCard: React.FC<ResultCardProps> = ({
             <div className="flex items-center justify-center">
               {selectedToDownload.length > 0 && (
                 <GeneralButton className="mr-2" onClick={handleResetSelection}>
-                  {/* {translations.resetCheckbox} */}
                   <X></X>
                 </GeneralButton>
               )}
