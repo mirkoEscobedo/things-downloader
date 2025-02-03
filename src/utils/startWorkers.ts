@@ -13,7 +13,7 @@ export async function startDownload(
     let converted: ProcessedFiles[] = [];
 
     worker.onmessage = async (e) => {
-      const downloaded: { blob: Blob; title: string | undefined }[] = e.data;
+      const downloaded: { video: Blob; title: string | undefined }[] = e.data;
       if (format && format !== "default") {
         for (const element of downloaded) {
           const result = await startConversion(element, format, ffmpegRef);
@@ -21,14 +21,15 @@ export async function startDownload(
         }
       } else {
         for (const element of downloaded) {
+          console.log("element from worker", element);
           converted.push({
-            blob: element.blob,
+            blob: element.video,
             fileName: element.title ? element.title : "input.webm",
-            mimeType: element.blob.type,
+            mimeType: element.video.type,
           });
         }
       }
-      let processedFiles:ProcessedFiles;
+      let processedFiles: ProcessedFiles;
       if (converted.length > 1) {
         processedFiles = await zipFiles(converted);
       } else {
@@ -42,15 +43,15 @@ export async function startDownload(
 }
 
 async function startConversion(
-  media: { blob: Blob; title: string | undefined },
+  media: { video: Blob; title: string | undefined },
   format: string,
   ffmpegRef: FFmpeg
 ) {
-  let { blob, title } = media;
+  let { video, title } = media;
   if (title === undefined) {
     title = "input.webm";
   }
-  const video = await fetchFile(blob);
+  const convertedVid = await fetchFile(video);
   const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm";
   const ffmpeg = ffmpegRef;
 
@@ -59,7 +60,7 @@ async function startConversion(
     wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
   });
 
-  await ffmpeg.writeFile(title, video);
+  await ffmpeg.writeFile(title, convertedVid);
   const outputName = title.replace(/\.[^/.]+$/, "") + `.${format}`;
   await ffmpeg.exec(["-i", title, outputName]);
 
