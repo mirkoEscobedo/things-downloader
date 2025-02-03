@@ -1,17 +1,18 @@
-import ElementCard from '@/shared/components/element_card/ElementCard';
-import GeneralButton from '@/shared/components/generalButton/GeneralButton';
-import React from 'react';
+import ElementCard from "@/shared/components/element_card/ElementCard";
+import GeneralButton from "@/shared/components/generalButton/GeneralButton";
+import React from "react";
 import {
   addDownloadToHistory,
   getDownloadHistory,
-} from '@/utils/downloadHistory';
-import { DownloadIcon } from 'lucide-react';
-import ConvertSelector from '../convertSelector/ConvertSelector';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { setDownloadHistory } from '@/state/reducers/downloadHistorySlice';
-import { setTrue } from '@/state/reducers/downloadSlice';
-import { ElementCardType } from '@/typedef/typedef';
-import { startDownload } from '@/utils/startWorkers';
+} from "@/utils/downloadHistory";
+import { DownloadIcon } from "lucide-react";
+import ConvertSelector from "../convertSelector/ConvertSelector";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
+import { setTrue } from "@/state/reducers/downloadSlice";
+import { ElementCardType } from "@/typedef/typedef";
+import { startDownload } from "@/utils/startWorkers";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
 
 interface DonwloadCardProps {
   card: ElementCardType;
@@ -40,7 +41,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
     // onTaskIdGenerated(taskId);
     const cards = [card];
     dispatch(setTrue());
-    await startDownload(cards, format);
+    await startDownload(cards, new FFmpeg(), format);
     // await callConvertAndDownloadMedia(taskId, mediaUrl, selectedFormat);
 
     addDownloadToHistory({
@@ -61,7 +62,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
             url={card.url}
             title={card.title}
             icon={card.icon}
-            thumbnail={card.thumbnail == null ? '' : card.thumbnail}
+            thumbnail={card.thumbnail == null ? "" : card.thumbnail}
             onClick={onClick}
             extraClasses=""
           ></ElementCard>
