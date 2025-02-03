@@ -45,7 +45,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
   };
 
   const handleDownloadAll = async () => {
-    await startDownload(selectedToDownload, format, ffmpegRef);
+    await startDownload(selectedToDownload, ffmpegRef, format);
     selectedToDownload.forEach((toDownload) => {
       const card = downloadCardList.find((card) => card.url === toDownload.url);
       if (card) {
