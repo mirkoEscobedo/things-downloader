@@ -25,7 +25,9 @@ const ResultCard: React.FC<ResultCardProps> = ({
   className,
 }) => {
   const dispatch = useAppDispatch();
-  const isDownloading = useAppSelector((state) => state.download.value);
+  const isDownloading = useAppSelector(
+    (state) => state.downloadProgress.isDownloading
+  );
   const translations = useAppSelector((state) => state.language.translations);
   const selectedToDownload = useAppSelector(
     (state) => state.selectToDownload.list
@@ -108,7 +110,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
           </div>
         )}
-        {isDownloading && <ProgessView taskId={""} />}
+        {isDownloading && <ProgessView />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
             selectedUrls={selectedToDownload}

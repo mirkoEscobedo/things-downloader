@@ -65,7 +65,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center justify-center w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between w-full">
         <div className="flex items-center justify-center">
           <ElementCard
             url={card.url}

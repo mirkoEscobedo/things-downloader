@@ -1,3 +1,9 @@
+import {
+  finishDownloadProgress,
+  startDownloadProgress,
+  updateProgressProgress,
+} from "@/state/reducers/progressSlice";
+import store from "@/state/store";
 import { ElementCardType, ProcessedFiles } from "@/typedef/typedef";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -8,12 +14,16 @@ export async function startDownload(
   ffmpegRef: FFmpeg,
   format?: string
 ): Promise<ProcessedFiles> {
+  store.dispatch(startDownloadProgress());
   return new Promise((resolve, rejects) => {
     const worker = new Worker(new URL("../downloadWorker", import.meta.url));
     let converted: ProcessedFiles[] = [];
 
     worker.onmessage = async (e) => {
       const downloaded: { video: Blob; title: string | undefined }[] = e.data;
+      store.dispatch(
+        updateProgressProgress({ status: "Compressing", progress: 30 })
+      );
       if (format && format !== "default") {
         for (const element of downloaded) {
           const result = await startConversion(element, format, ffmpegRef);
@@ -29,12 +39,16 @@ export async function startDownload(
           });
         }
       }
+      store.dispatch(
+        updateProgressProgress({ status: "Archiving", progress: 70 })
+      );
       let processedFiles: ProcessedFiles;
       if (converted.length > 1) {
         processedFiles = await zipFiles(converted);
       } else {
         processedFiles = converted[0];
       }
+      store.dispatch(finishDownloadProgress());
       resolve(processedFiles);
     };
     worker.onerror = (error) => rejects(error);
