@@ -12,10 +12,7 @@ import DownloadCardList from "../downloadCardList/DownloadCardList";
 import "./resultCard.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
-import {
-  resetList,
-  setSelectedToDownload,
-} from "@/state/reducers/selectedToDownloadSlice";
+import { resetList } from "@/state/reducers/selectedToDownloadSlice";
 import { startDownload } from "@/utils/startWorkers";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 
@@ -35,18 +32,10 @@ const ResultCard: React.FC<ResultCardProps> = ({
   );
   const format = useAppSelector((state) => state.selectFormat.format);
 
-  // const handleCheckboxChange = (
-  //   toDownload: ElementCardType,
-  //   checked: boolean
-  // ) => {
-  //   dispatch(setSelectedToDownload({ toDownload, checked }));
-  //   console.log(selectedToDownload);
-  // };
-
   const handleDownloadAll = async () => {
     try {
       const result = await startDownload(
-        selectedToDownload,
+        selectedToDownload.length > 0 ? selectedToDownload : downloadCardList,
         new FFmpeg(),
         format
       );
@@ -58,17 +47,25 @@ const ResultCard: React.FC<ResultCardProps> = ({
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      selectedToDownload.length > 0
+        ? selectedToDownload.forEach((toDownload) => {
+            const card = downloadCardList.find(
+              (card) => card.url === toDownload.url
+            );
+            if (card) {
+              addDownloadToHistory(card);
+            }
+            dispatch(setDownloadHistory(getDownloadHistory()));
+          })
+        : downloadCardList.forEach((element) => {
+            addDownloadToHistory(element);
+            dispatch(setDownloadHistory(getDownloadHistory()));
+          });
+
       console.log("Download successfull");
     } catch (err) {
       console.error("Download Failed: ", err);
     }
-    selectedToDownload.forEach((toDownload) => {
-      const card = downloadCardList.find((card) => card.url === toDownload.url);
-      if (card) {
-        addDownloadToHistory(card);
-      }
-      dispatch(setDownloadHistory(getDownloadHistory()));
-    });
   };
 
   const handleResetSelection = () => {
@@ -115,8 +112,6 @@ const ResultCard: React.FC<ResultCardProps> = ({
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
             selectedUrls={selectedToDownload}
-            // onCheckboxChange={handleCheckboxChange}
-            //TODO:fix checkbox logic to uncheck them all and change the download all to download selected
           ></DownloadCardList>
         </div>
       </GeneralCard>

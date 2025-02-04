@@ -19,18 +19,16 @@ interface DonwloadCardProps {
   onClick?: () => void;
 }
 
-const DonwloadCard: React.FC<DonwloadCardProps> = ({
-  card,
-  onClick,
-}) => {
+const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
   const dispatch = useAppDispatch();
   const translations = useAppSelector((state) => state.language.translations);
   const format = useAppSelector((state) => state.selectFormat.format);
   const [checked, setChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    dispatch(setSelectedToDownload({ toDownload: card, checked }));
+    const newChecked = event.target.checked;
+    setChecked(newChecked);
+    dispatch(setSelectedToDownload({ toDownload: card, checked: newChecked }));
   };
 
   const handleDownloadSingle = async () => {
@@ -47,18 +45,17 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       console.log("Download successfull: ", url);
+      addDownloadToHistory({
+        title: card.title,
+        icon: card.icon,
+        thumbnail: card.thumbnail,
+        url: card.url,
+      });
+
+      dispatch(setDownloadHistory(getDownloadHistory()));
     } catch (err) {
       console.error("Download Failed: ", err);
     }
-
-    addDownloadToHistory({
-      title: card.title,
-      icon: card.icon,
-      thumbnail: card.thumbnail,
-      url: card.url,
-    });
-
-    dispatch(setDownloadHistory(getDownloadHistory()));
   };
 
   return (

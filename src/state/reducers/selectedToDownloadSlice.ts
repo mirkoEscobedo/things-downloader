@@ -1,5 +1,5 @@
-import { ElementCardType } from '@/typedef/typedef';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ElementCardType } from "@/typedef/typedef";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SelectedToDownloadState {
   list: ElementCardType[];
@@ -12,7 +12,7 @@ const initialState: SelectedToDownloadState = {
 };
 
 const selectedToDownloadSlice = createSlice({
-  name: 'selectedToDownload',
+  name: "selectedToDownload",
   initialState,
   reducers: {
     resetList: (state) => {
@@ -22,14 +22,24 @@ const selectedToDownloadSlice = createSlice({
       state,
       action: PayloadAction<{ toDownload: ElementCardType; checked: boolean }>
     ) => {
-      if (state.checked) {
-        state.list = [...state.list, action.payload.toDownload];
+      const { toDownload, checked } = action.payload;
+      if (checked) {
+        const inList = state.list.some((card) => card.url === toDownload.url);
+        if (!inList) {
+          state.list.push(toDownload);
+        }
+      } else {
+        state.list = state.list.filter(
+          (card) => card !== action.payload.toDownload
+        );
       }
-      state.list.filter((card) => card !== action.payload.toDownload);
+    },
+    setChecked: (state, action: PayloadAction<boolean>) => {
+      state.checked = action.payload;
     },
   },
 });
 
-export const { setSelectedToDownload, resetList } =
+export const { setSelectedToDownload, resetList, setChecked } =
   selectedToDownloadSlice.actions;
 export default selectedToDownloadSlice.reducer;
