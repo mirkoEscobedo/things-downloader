@@ -1,6 +1,5 @@
 import ElementCard from "@/shared/components/element_card/ElementCard";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import React, { useState } from "react";
 import {
   addDownloadToHistory,
   getDownloadHistory,
@@ -12,7 +11,10 @@ import { setTrue } from "@/state/reducers/downloadSlice";
 import { ElementCardType } from "@/typedef/typedef";
 import { startDownload } from "@/utils/startWorkers";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { setSelectedToDownload } from "@/state/reducers/selectedToDownloadSlice";
+import {
+  addSelectedToDownload,
+  removeSelectedToDownload,
+} from "@/state/reducers/selectedToDownloadSlice";
 
 interface DonwloadCardProps {
   card: ElementCardType;
@@ -23,12 +25,15 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
   const dispatch = useAppDispatch();
   const translations = useAppSelector((state) => state.language.translations);
   const format = useAppSelector((state) => state.selectFormat.format);
-  const [checked, setChecked] = useState<boolean>(false);
-
+  const selectedCards = useAppSelector((state) => state.selectToDownload.list);
+  const isChecked = selectedCards.some((item) => item.url === card.url);
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newChecked = event.target.checked;
-    setChecked(newChecked);
-    dispatch(setSelectedToDownload({ toDownload: card, checked: newChecked }));
+    if (newChecked) {
+      dispatch(addSelectedToDownload(card));
+    } else {
+      dispatch(removeSelectedToDownload(card.url));
+    }
   };
 
   const handleDownloadSingle = async () => {
@@ -76,7 +81,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
             className="mr-4 size-5"
             type="checkbox"
             onChange={handleCheckboxChange}
-            checked={checked}
+            checked={isChecked}
           ></input>
           <GeneralButton onClick={handleDownloadSingle} className="gap-1">
             <DownloadIcon></DownloadIcon>

@@ -3,12 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SelectedToDownloadState {
   list: ElementCardType[];
-  checked: boolean;
 }
 
 const initialState: SelectedToDownloadState = {
   list: [],
-  checked: false,
 };
 
 const selectedToDownloadSlice = createSlice({
@@ -18,28 +16,22 @@ const selectedToDownloadSlice = createSlice({
     resetList: (state) => {
       state.list = [];
     },
-    setSelectedToDownload: (
-      state,
-      action: PayloadAction<{ toDownload: ElementCardType; checked: boolean }>
-    ) => {
-      const { toDownload, checked } = action.payload;
-      if (checked) {
-        const inList = state.list.some((card) => card.url === toDownload.url);
-        if (!inList) {
-          state.list.push(toDownload);
-        }
-      } else {
-        state.list = state.list.filter(
-          (card) => card !== action.payload.toDownload
-        );
+    addSelectedToDownload: (state, action: PayloadAction<ElementCardType>) => {
+      const cardToAdd = action.payload;
+      const alreadySelected = state.list.some(
+        (Item) => Item.url === cardToAdd.url
+      );
+      if (!alreadySelected) {
+        state.list.push(cardToAdd);
       }
     },
-    setChecked: (state, action: PayloadAction<boolean>) => {
-      state.checked = action.payload;
+    removeSelectedToDownload: (state, action: PayloadAction<string>) => {
+      const urlToRemove = action.payload;
+      state.list = state.list.filter((item) => item.url !== urlToRemove);
     },
   },
 });
 
-export const { setSelectedToDownload, resetList, setChecked } =
+export const { addSelectedToDownload, removeSelectedToDownload, resetList } =
   selectedToDownloadSlice.actions;
 export default selectedToDownloadSlice.reducer;
