@@ -35,13 +35,13 @@ const ResultCard: React.FC<ResultCardProps> = ({
   );
   const format = useAppSelector((state) => state.selectFormat.format);
 
-  const handleCheckboxChange = (
-    toDownload: ElementCardType,
-    checked: boolean
-  ) => {
-    dispatch(setSelectedToDownload({ toDownload, checked }));
-    console.log(selectedToDownload);
-  };
+  // const handleCheckboxChange = (
+  //   toDownload: ElementCardType,
+  //   checked: boolean
+  // ) => {
+  //   dispatch(setSelectedToDownload({ toDownload, checked }));
+  //   console.log(selectedToDownload);
+  // };
 
   const handleDownloadAll = async () => {
     try {
@@ -115,7 +115,8 @@ const ResultCard: React.FC<ResultCardProps> = ({
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
             selectedUrls={selectedToDownload}
-            onCheckboxChange={handleCheckboxChange}
+            // onCheckboxChange={handleCheckboxChange}
+            //TODO:fix checkbox logic to uncheck them all and change the download all to download selected
           ></DownloadCardList>
         </div>
       </GeneralCard>

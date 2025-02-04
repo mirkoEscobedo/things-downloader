@@ -1,6 +1,6 @@
 import ElementCard from "@/shared/components/element_card/ElementCard";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import React from "react";
+import React, { useState } from "react";
 import {
   addDownloadToHistory,
   getDownloadHistory,
@@ -12,26 +12,25 @@ import { setTrue } from "@/state/reducers/downloadSlice";
 import { ElementCardType } from "@/typedef/typedef";
 import { startDownload } from "@/utils/startWorkers";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { setSelectedToDownload } from "@/state/reducers/selectedToDownloadSlice";
 
 interface DonwloadCardProps {
   card: ElementCardType;
   onClick?: () => void;
-  onCheckboxChange: (toDownload: ElementCardType, checked: boolean) => void;
-  checked: boolean;
 }
 
 const DonwloadCard: React.FC<DonwloadCardProps> = ({
   card,
   onClick,
-  onCheckboxChange,
-  checked,
 }) => {
   const dispatch = useAppDispatch();
   const translations = useAppSelector((state) => state.language.translations);
   const format = useAppSelector((state) => state.selectFormat.format);
+  const [checked, setChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onCheckboxChange(card, event.target.checked);
+    setChecked(event.target.checked);
+    dispatch(setSelectedToDownload({ toDownload: card, checked }));
   };
 
   const handleDownloadSingle = async () => {
