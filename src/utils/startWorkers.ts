@@ -71,10 +71,12 @@ export async function startDownload(
       }
       store.dispatch(finishDownloadProgress());
       resolve(processedFiles);
+      worker.terminate();
     };
     worker.onerror = (error) => {
       store.dispatch(finishDownloadProgress());
       rejects(error);
+      worker.terminate();
     };
     worker.postMessage({ toDownload });
   });
