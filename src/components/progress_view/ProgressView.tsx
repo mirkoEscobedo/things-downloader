@@ -1,44 +1,12 @@
-import { useEffect, useState } from "react";
 import { FakeAd } from "../fake_ad/FakeAd";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { setFalse } from "@/state/reducers/downloadSlice";
+import { useAppSelector } from "@/hooks/hooks";
 
-export const ProgessView = ({ taskId }: { taskId: string }) => {
-  const dispatch = useAppDispatch();
-  const isDownloading = useAppSelector((state) => state.download.value);
-  const [progress, setProgress] = useState(0);
-  const [status, setStatus] = useState("Pending");
-
-  useEffect(() => {
-    if (!taskId) return;
-
-    const eventSource = new EventSource(
-      `http://localhost:4000/progress/${taskId}`
-    );
-
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        setProgress(data.progress);
-        setStatus(data.status);
-
-        if (data.progress === 100 || data.status === "Done") {
-          dispatch(setFalse());
-          eventSource.close();
-        }
-      } catch (error) {
-        console.error("error parsing progress data: ", error);
-      }
-    };
-    eventSource.onerror = () => {
-      console.error("an error has occurred while receiving data: ");
-      eventSource.close();
-    };
-    return () => {
-      eventSource.close();
-    };
-  }, [taskId]);
-
+export const ProgessView = () => {
+  const isDownloading = useAppSelector(
+    (state) => state.downloadProgress.isDownloading
+  );
+  const progress = useAppSelector((state) => state.downloadProgress.progress);
+  const status = useAppSelector((state) => state.downloadProgress.status);
   if (!isDownloading) {
     return null;
   }
@@ -51,7 +19,7 @@ export const ProgessView = ({ taskId }: { taskId: string }) => {
           style={{ width: `${progress}%` }}
         ></div>
       </div>
-      <div className="mt-2 text-sm text-gray-800">
+      <div className="mt-2 text-sm text-neutral-50">
         {status} - {progress}%
       </div>
     </div>

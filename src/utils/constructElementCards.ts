@@ -1,38 +1,28 @@
-import { ElementCardType } from '@/typedef/typedef';
+import { ElementCardType, MediaItem } from "@/typedef/typedef";
 
-
-interface MediaItem {
-  filename: string;
-  url: string;
-  board: string;
-  tim: string;
-  thumbnail: string | null;
-}
-
-interface MediaResponse {
-  result: {
-    data: MediaItem[];
-  };
-}
 
 export function constructElementCards(
-  response: MediaResponse
+  response: MediaItem[]
 ): ElementCardType[] {
-  const { data } = response.result;
 
-  const cards: ElementCardType[] = data.map((item) => {
-    let icon = 'default';
+  const cards: ElementCardType[] = response.map((item) => {
+    let icon = "default";
 
-    if (item.url.includes('4cdn')) {
-      icon = '4chan';
+    if (item.url.includes("4cdn")) {
+      icon = "4chan";
     } else if (
-      item.url.includes('youtube.com') ||
-      item.url.includes('youtu.be')
+      item.url.includes("youtube.com") ||
+      item.url.includes("youtu.be")
     ) {
-      icon = 'youtube';
+      icon = "youtube";
     }
 
-    return { title: item.filename, thumbnail: item.thumbnail, icon, url: item.url };
+    return {
+      title: item.filename,
+      thumbnail: item.thumbnail,
+      icon,
+      url: item.url,
+    };
   });
 
   return cards;

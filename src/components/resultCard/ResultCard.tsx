@@ -1,7 +1,3 @@
-import {
-  callConvertAndDownloadMedia,
-  getNewTask,
-} from "@/services/fetchService";
 import GeneralCard from "@/shared/components/general_card/General_Card";
 import GeneralButton from "@/shared/components/generalButton/GeneralButton";
 import { ElementCardType } from "@/typedef/typedef";
@@ -9,15 +5,16 @@ import {
   addDownloadToHistory,
   getDownloadHistory,
 } from "@/utils/downloadHistory";
-import { useState } from "react";
 import { ProgessView } from "../progress_view/ProgressView";
 import { DownloadIcon, X } from "lucide-react";
 import ConvertSelector from "../convertSelector/ConvertSelector";
 import DownloadCardList from "../downloadCardList/DownloadCardList";
 import "./resultCard.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { setTrue } from "@/state/reducers/downloadSlice";
 import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
+import { resetList } from "@/state/reducers/selectedToDownloadSlice";
+import { startDownload } from "@/utils/startWorkers";
+import FFmpegSingleton from "@/utils/ffmpegSingleton";
 
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
@@ -28,48 +25,54 @@ const ResultCard: React.FC<ResultCardProps> = ({
   className,
 }) => {
   const dispatch = useAppDispatch();
-  const isDownloading = useAppSelector((state) => state.download.value);
+  const isDownloading = useAppSelector(
+    (state) => state.downloadProgress.isDownloading
+  );
   const translations = useAppSelector((state) => state.language.translations);
-  const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
-  const [selectedFormat, setSelectedFormat] = useState<string>("default");
-  const [taskId, setTaskId] = useState("");
-
-  const handleCheckboxChange = (url: string, checked: boolean) => {
-    setSelectedUrls((prev) => {
-      if (checked) {
-        return [...prev, url];
-      } else {
-        return prev.filter((selectedUrls) => selectedUrls !== url);
-      }
-    });
-  };
+  const selectedToDownload = useAppSelector(
+    (state) => state.selectToDownload.list
+  );
+  const format = useAppSelector((state) => state.selectFormat.format);
+  const ffmpeg = FFmpegSingleton.getFFmpeg();
 
   const handleDownloadAll = async () => {
-    const taskId = await getNewTask();
-    console.log(taskId);
-    setTaskId(taskId);
-    const urlsToDownload =
-      selectedUrls.length > 0
-        ? selectedUrls
-        : downloadCardList.map((card) => card.url);
-    dispatch(setTrue());
-    await callConvertAndDownloadMedia(taskId, urlsToDownload, selectedFormat);
+    try {
+      const result = await startDownload(
+        selectedToDownload.length > 0 ? selectedToDownload : downloadCardList,
+        ffmpeg,
+        format
+      );
+      const url = URL.createObjectURL(result.blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      selectedToDownload.length > 0
+        ? selectedToDownload.forEach((toDownload) => {
+            const card = downloadCardList.find(
+              (card) => card.url === toDownload.url
+            );
+            if (card) {
+              addDownloadToHistory(card);
+            }
+            dispatch(setDownloadHistory(getDownloadHistory()));
+          })
+        : downloadCardList.forEach((element) => {
+            addDownloadToHistory(element);
+            dispatch(setDownloadHistory(getDownloadHistory()));
+          });
 
-    selectedUrls.forEach((url) => {
-      const card = downloadCardList.find((card) => card.url === url);
-      if (card) {
-        addDownloadToHistory(card);
-      }
-      dispatch(setDownloadHistory(getDownloadHistory()));
-    });
+      console.log("Download successfull");
+    } catch (err) {
+      console.error("Download Failed: ", err);
+    }
   };
 
-  function handleTaskIdGenerated(taskId: string) {
-    setTaskId(taskId);
-  }
-
   const handleResetSelection = () => {
-    setSelectedUrls([]);
+    dispatch(resetList());
   };
 
   return (
@@ -85,38 +88,33 @@ const ResultCard: React.FC<ResultCardProps> = ({
             </div>
             <div className="flex items-center justify-center">
               <ConvertSelector
-                onFormatChange={setSelectedFormat}
                 name="convertAll"
                 selectText={
-                  selectedUrls.length > 0
+                  selectedToDownload.length > 0
                     ? translations.resultCardConvertSelected
                     : translations.resultCardConvertAll
                 }
               ></ConvertSelector>
             </div>
             <div className="flex items-center justify-center">
-              {selectedUrls.length > 0 && (
+              {selectedToDownload.length > 0 && (
                 <GeneralButton className="mr-2" onClick={handleResetSelection}>
-                  {/* {translations.resetCheckbox} */}
                   <X></X>
                 </GeneralButton>
               )}
               <GeneralButton onClick={handleDownloadAll} className="gap-1">
                 <DownloadIcon></DownloadIcon>
-                {selectedUrls.length > 0
+                {selectedToDownload.length > 0
                   ? translations.resultCardDownloadSelected
                   : translations.resultCardDownloadAll}
               </GeneralButton>
             </div>
           </div>
         )}
-        {isDownloading && <ProgessView taskId={taskId!} />}
+        {isDownloading && <ProgessView />}
         <div className="overflow-y-auto max-h-[600px] scrollbar scrollbar-thumb-neutral-600 scrollbar-track-neutral-800 scrollbar-thumb-rounded no-scrollbar">
           <DownloadCardList
-            onTaskIdGenerated={handleTaskIdGenerated}
-            selectedUrls={selectedUrls}
-            onCheckboxChange={handleCheckboxChange}
-            dowloadcardList={downloadCardList}
+            selectedUrls={selectedToDownload}
           ></DownloadCardList>
         </div>
       </GeneralCard>

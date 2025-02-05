@@ -29,4 +29,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: { exclude: ["@ffmpeg/ffmpeg", "@ffmpeg/core", "@ffmpeg/util"] },
 });
