@@ -38,10 +38,11 @@ export async function startDownload(
               const overallRatio =
                 (completedItems + fileProgressFraction) / totalItems;
               const overallPercent = 10 + overallRatio * 60;
+              const roundedPercent = Math.round(overallPercent);
               store.dispatch(
                 updateProgressProgress({
                   status: `Converting (${completedItems + 1}/${totalItems})`,
-                  progress: overallPercent,
+                  progress: roundedPercent,
                 })
               );
             }
@@ -144,8 +145,9 @@ async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
   }
   const zippedBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
     const progress = 70 + (metadata.percent / 100) * 30;
+    const roundedProgress = Math.round(progress);
     store.dispatch(
-      updateProgressProgress({ status: "Archiving", progress: progress })
+      updateProgressProgress({ status: "Archiving", progress: roundedProgress })
     );
   });
   return {
