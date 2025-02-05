@@ -7,7 +7,7 @@ import store from "@/state/store";
 import { ElementCardType, ProcessedFiles } from "@/typedef/typedef";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
-import JSZip from "jszip";
+import zipSingleton from "./zipSingleton";
 
 export async function startDownload(
   toDownload: ElementCardType[],
@@ -101,7 +101,7 @@ async function startConversion(
 }
 
 async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
-  const zip = new JSZip();
+  const zip = zipSingleton.getZip();
   for (const file of files) {
     zip.file(file.fileName, file.blob);
   }
