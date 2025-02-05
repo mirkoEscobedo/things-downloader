@@ -19,7 +19,7 @@ export const ProgessView = () => {
           style={{ width: `${progress}%` }}
         ></div>
       </div>
-      <div className="mt-2 text-sm text-gray-800">
+      <div className="mt-2 text-sm text-neutral-50">
         {status} - {progress}%
       </div>
     </div>

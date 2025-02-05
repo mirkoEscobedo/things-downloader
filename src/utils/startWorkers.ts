@@ -15,6 +15,7 @@ export async function startDownload(
   format?: string
 ): Promise<ProcessedFiles> {
   store.dispatch(startDownloadProgress());
+
   return new Promise((resolve, rejects) => {
     const worker = new Worker(new URL("../downloadWorker", import.meta.url));
     let converted: ProcessedFiles[] = [];
@@ -22,12 +23,31 @@ export async function startDownload(
     worker.onmessage = async (e) => {
       const downloaded: { video: Blob; title: string | undefined }[] = e.data;
       store.dispatch(
-        updateProgressProgress({ status: "Compressing", progress: 30 })
+        updateProgressProgress({ status: "Converting", progress: 10 })
       );
       if (format && format !== "default") {
+        const totalItems = downloaded.length;
+        let completedItems = 0;
         for (const element of downloaded) {
-          const result = await startConversion(element, format, ffmpegRef);
+          const result = await startConversion(
+            element,
+            format,
+            ffmpegRef,
+            (ratio) => {
+              const fileProgressFraction = ratio / totalItems;
+              const overallRatio =
+                (completedItems + fileProgressFraction) / totalItems;
+              const overallPercent = 10 + overallRatio * 60;
+              store.dispatch(
+                updateProgressProgress({
+                  status: `Converting (${completedItems + 1}/${totalItems})`,
+                  progress: overallPercent,
+                })
+              );
+            }
+          );
           converted.push(result);
+          completedItems++;
         }
       } else {
         for (const element of downloaded) {
@@ -62,42 +82,59 @@ export async function startDownload(
 async function startConversion(
   media: { video: Blob; title: string | undefined },
   format: string,
-  ffmpegRef: FFmpeg
+  ffmpegRef: FFmpeg,
+  onProgress?: (ratio: number) => void
 ) {
   let { video, title } = media;
   if (title === undefined) {
     title = "input.webm";
   }
-  const convertedVid = await fetchFile(video);
+
+  const handleProgress = ({
+    progress,
+    time,
+  }: {
+    progress: number;
+    time: number;
+  }) => {
+    if (onProgress) {
+      onProgress(progress);
+    }
+  };
+
   const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm";
   const ffmpeg = ffmpegRef;
-
+  ffmpeg.on("progress", handleProgress);
   await ffmpeg.load({
     coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
     wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
   });
+  try {
+    const convertedVid = await fetchFile(video);
+    await ffmpeg.writeFile(title, convertedVid);
+    const outputName = title.replace(/\.[^/.]+$/, "") + `.${format}`;
+    await ffmpeg.exec(["-i", title, outputName]);
 
-  await ffmpeg.writeFile(title, convertedVid);
-  const outputName = title.replace(/\.[^/.]+$/, "") + `.${format}`;
-  await ffmpeg.exec(["-i", title, outputName]);
+    const data = await ffmpeg.readFile(outputName);
+    const mimeTypes: Record<string, string> = {
+      mp4: "video/mp4",
+      webm: "video/webm",
+      mp3: "audio/mpeg",
+      ogg: "audio/ogg",
+      wav: "audio/wav",
+      aac: "audio/aac",
+      flac: "audio/flac",
+    };
+    const lowerFormat = format.toLowerCase();
 
-  const data = await ffmpeg.readFile(outputName);
-  const mimeTypes: Record<string, string> = {
-    mp4: "video/mp4",
-    webm: "video/webm",
-    mp3: "audio/mpeg",
-    ogg: "audio/ogg",
-    wav: "audio/wav",
-    aac: "audio/aac",
-    flac: "audio/flac",
-  };
-  const lowerFormat = format.toLowerCase();
+    const mimeType = mimeTypes[lowerFormat] || "application/octet-stream";
+    const outputBlob = new Blob([data], { type: mimeType });
+    console.log({ blob: outputBlob, fileName: outputName, mimeType });
 
-  const mimeType = mimeTypes[lowerFormat] || "application/octet-stream";
-  const outputBlob = new Blob([data], { type: mimeType });
-  console.log({ blob: outputBlob, fileName: outputName, mimeType });
-
-  return { blob: outputBlob, fileName: outputName, mimeType };
+    return { blob: outputBlob, fileName: outputName, mimeType };
+  } finally {
+    ffmpeg.off("progress", handleProgress);
+  }
 }
 
 async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
@@ -105,7 +142,12 @@ async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
   for (const file of files) {
     zip.file(file.fileName, file.blob);
   }
-  const zippedBlob = await zip.generateAsync({ type: "blob" });
+  const zippedBlob = await zip.generateAsync({ type: "blob" }, (metadata) => {
+    const progress = 70 + (metadata.percent / 100) * 30;
+    store.dispatch(
+      updateProgressProgress({ status: "Archiving", progress: progress })
+    );
+  });
   return {
     blob: zippedBlob,
     fileName: "output.zip",
