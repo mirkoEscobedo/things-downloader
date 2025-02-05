@@ -10,11 +10,11 @@ import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 import { setTrue } from "@/state/reducers/downloadSlice";
 import { ElementCardType } from "@/typedef/typedef";
 import { startDownload } from "@/utils/startWorkers";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
 import {
   addSelectedToDownload,
   removeSelectedToDownload,
 } from "@/state/reducers/selectedToDownloadSlice";
+import FFmpegSingleton from "@/utils/ffmpegSingleton";
 
 interface DonwloadCardProps {
   card: ElementCardType;
@@ -27,6 +27,8 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
   const format = useAppSelector((state) => state.selectFormat.format);
   const selectedCards = useAppSelector((state) => state.selectToDownload.list);
   const isChecked = selectedCards.some((item) => item.url === card.url);
+  const ffmpeg = FFmpegSingleton.getFFmpeg();
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newChecked = event.target.checked;
     if (newChecked) {
@@ -40,7 +42,7 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
     const cards = [card];
     dispatch(setTrue());
     try {
-      const result = await startDownload(cards, new FFmpeg(), format);
+      const result = await startDownload(cards, ffmpeg, format);
       const url = URL.createObjectURL(result.blob);
       const a = document.createElement("a");
       a.href = url;

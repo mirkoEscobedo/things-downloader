@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setDownloadHistory } from "@/state/reducers/downloadHistorySlice";
 import { resetList } from "@/state/reducers/selectedToDownloadSlice";
 import { startDownload } from "@/utils/startWorkers";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
+import FFmpegSingleton from "@/utils/ffmpegSingleton";
 
 interface ResultCardProps {
   downloadCardList: ElementCardType[];
@@ -33,12 +33,13 @@ const ResultCard: React.FC<ResultCardProps> = ({
     (state) => state.selectToDownload.list
   );
   const format = useAppSelector((state) => state.selectFormat.format);
+  const ffmpeg = FFmpegSingleton.getFFmpeg();
 
   const handleDownloadAll = async () => {
     try {
       const result = await startDownload(
         selectedToDownload.length > 0 ? selectedToDownload : downloadCardList,
-        new FFmpeg(),
+        ffmpeg,
         format
       );
       const url = URL.createObjectURL(result.blob);
