@@ -31,3 +31,9 @@ export type ProcessedFiles = {
   fileName: string;
   mimeType: string;
 };
+
+export type DownloadResponse = {
+  video: Blob;
+  title: string | undefined;
+  ext: string;
+};

@@ -4,9 +4,13 @@ import {
   updateProgressProgress,
 } from '@/state/reducers/progressSlice';
 import store from '@/state/store';
-import { ElementCardType, ProcessedFiles } from '@/typedef/typedef';
+import {
+  DownloadResponse,
+  ElementCardType,
+  ProcessedFiles,
+} from '@/typedef/typedef';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { fetchFile } from '@ffmpeg/util';
 import zipSingleton from './zipSingleton';
 
 export async function startDownload(
@@ -21,11 +25,7 @@ export async function startDownload(
     let converted: ProcessedFiles[] = [];
 
     worker.onmessage = async (e) => {
-      const downloaded: {
-        video: Blob;
-        title: string | undefined;
-        ext: string;
-      }[] = e.data;
+      const downloaded: DownloadResponse[] = e.data;
       store.dispatch(
         updateProgressProgress({ status: 'Converting', progress: 10 })
       );
@@ -96,25 +96,15 @@ async function startConversion(
     title = 'input.webm';
   }
 
-  const handleProgress = ({
-    progress,
-    time,
-  }: {
-    progress: number;
-    time: number;
-  }) => {
+  const handleProgress = ({ progress }: { progress: number; time: number }) => {
     if (onProgress) {
       onProgress(progress);
     }
   };
 
-  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
   const ffmpeg = ffmpegRef;
   ffmpeg.on('progress', handleProgress);
-  await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-  });
+
   try {
     const convertedVid = await fetchFile(video);
     await ffmpeg.writeFile(title, convertedVid);
