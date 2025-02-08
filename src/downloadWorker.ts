@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import { ElementCardType } from './typedef/typedef';
 
 self.onmessage = async (e: MessageEvent) => {
