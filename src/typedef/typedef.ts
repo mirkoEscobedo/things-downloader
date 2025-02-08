@@ -30,6 +30,7 @@ export type ProcessedFiles = {
   blob: Blob;
   fileName: string;
   mimeType: string;
+  ext: string;
 };
 
 export type DownloadResponse = {

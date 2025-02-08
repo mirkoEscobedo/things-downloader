@@ -11,7 +11,7 @@ import {
 } from '@/typedef/typedef';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile } from '@ffmpeg/util';
-import zipSingleton from './zipSingleton';
+import JSZip from 'jszip';
 
 export async function startDownload(
   toDownload: ElementCardType[],
@@ -61,6 +61,7 @@ export async function startDownload(
             blob: element.video,
             fileName: element.title ? element.title : 'input.webm',
             mimeType: element.video.type,
+            ext: element.ext,
           });
         }
       }
@@ -132,16 +133,22 @@ async function startConversion(
     const outputBlob = new Blob([data], { type: mimeType });
     console.log({ blob: outputBlob, fileName: outputName, mimeType });
 
-    return { blob: outputBlob, fileName: outputName, mimeType };
+    return { blob: outputBlob, fileName: outputName, mimeType, ext };
   } finally {
     ffmpeg.off('progress', handleProgress);
   }
 }
 
 async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
-  const zip = zipSingleton.getZip();
+  const zip = new JSZip();
+
   for (const file of files) {
-    zip.file(file.fileName, file.blob);
+    let fileName = file.fileName;
+    if (!fileName.includes('.')) {
+      const extension = file.ext || file.mimeType.split('/')[1];
+      fileName = `${fileName}.${extension}`;
+    }
+    zip.file(fileName, file.blob);
   }
   const zippedBlob = await zip.generateAsync({ type: 'blob' }, (metadata) => {
     const progress = 70 + (metadata.percent / 100) * 30;
@@ -154,5 +161,6 @@ async function zipFiles(files: ProcessedFiles[]): Promise<ProcessedFiles> {
     blob: zippedBlob,
     fileName: 'output.zip',
     mimeType: 'application/zip',
+    ext: '.zip',
   };
 }
