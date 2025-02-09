@@ -65,7 +65,7 @@ const ResultCard: React.FC<ResultCardProps> = ({
             dispatch(setDownloadHistory(getDownloadHistory()));
           });
 
-      console.log('Download successfull');
+      // console.log('Download successfull');
     } catch (err) {
       console.error('Download Failed: ', err);
     }
