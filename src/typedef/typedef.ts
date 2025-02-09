@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 export type ElementCardType = {
   title?: string;
@@ -7,6 +7,7 @@ export type ElementCardType = {
   icon?: string;
   onClick?: () => void;
   url: string;
+  ext: string;
 };
 
 export interface logoProps extends SVGProps<SVGSVGElement> {
@@ -14,7 +15,7 @@ export interface logoProps extends SVGProps<SVGSVGElement> {
   itemHeight?: string;
 }
 
-export type Language = "en" | "it";
+export type Language = 'en' | 'it';
 
 export interface MediaItem {
   filename: string;
@@ -22,10 +23,18 @@ export interface MediaItem {
   board: string;
   tim: number;
   thumbnail: string | null;
+  ext: string;
 }
 
 export type ProcessedFiles = {
   blob: Blob;
   fileName: string;
   mimeType: string;
+  ext: string;
+};
+
+export type DownloadResponse = {
+  video: Blob;
+  title: string | undefined;
+  ext: string;
 };
