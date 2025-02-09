@@ -109,7 +109,7 @@ export async function startDownload(
               console.error('Skipping undefined video element:', element);
               continue;
             }
-            console.log('element from worker', element);
+            // console.log('element from worker', element);
             converted.push({
               blob: element.video,
               fileName: element.title ? element.title : 'input.webm',
