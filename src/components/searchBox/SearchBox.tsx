@@ -1,8 +1,8 @@
-import ShineBorder from "@/components/ui/shine-border";
-import { useEffect, useRef, useState } from "react";
-import GeneralButton from "@/shared/components/generalButton/GeneralButton";
-import { ArrowRight, LoaderCircle } from "lucide-react";
-import { fetchMedia } from "@/services/fetchService";
+import ShineBorder from '@/components/ui/shine-border';
+import { useEffect, useRef, useState } from 'react';
+import GeneralButton from '@/shared/components/generalButton/GeneralButton';
+import { ArrowRight, LoaderCircle } from 'lucide-react';
+import { fetchMedia } from '@/services/fetchService';
 
 interface SearchBoxProps {
   className?: string;
@@ -10,7 +10,7 @@ interface SearchBoxProps {
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
 
@@ -28,7 +28,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
       const data = await fetchMedia(search);
       onSearch(data);
     } catch (e) {
-      setError("Failed to fetch data");
+      setError('Failed to fetch data');
     } finally {
       setLoading(false);
     }
@@ -41,10 +41,11 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
       >
         <ShineBorder
           className="flex p-0 w-full"
-          color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+          color={['#A07CFE', '#FE8FB5', '#FFBE7B']}
           borderWidth={2}
         >
           <input
+            name="search-input"
             ref={inputRef}
             className="z-10 flex-1 px-4 py-2 text-lg outline-none bg-transparent"
             type="url"
@@ -70,8 +71,3 @@ const SearchBox: React.FC<SearchBoxProps> = ({ className, onSearch }) => {
 };
 
 export default SearchBox;
-
-// export const elementToRender: ElementCardType[] = [
-//   { title: 'kitti cat', icon: 'youtube' },
-//   { title: 'kitti cat', icon: 'youtube' },
-// ];
