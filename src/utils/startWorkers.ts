@@ -38,7 +38,7 @@ export async function startDownload(
           updateProgressProgress({ status: 'Downloading...', progress })
         );
       } else if (type === 'status') {
-        store.dispatch(updateProgressProgress({ status, progress: 0 })); // Keep progress intact
+        store.dispatch(updateProgressProgress({ status })); // Keep progress intact
       } else if (type === 'error') {
         console.error('Download Error:', message);
         store.dispatch(

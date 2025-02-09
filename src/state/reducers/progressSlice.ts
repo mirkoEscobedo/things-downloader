@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProgressState {
   isDownloading: boolean;
@@ -9,35 +9,43 @@ interface ProgressState {
 const initialState: ProgressState = {
   isDownloading: false,
   progress: 0,
-  status: "Pending",
+  status: 'Pending',
 };
 
 export const progressSlice = createSlice({
-  name: "downloadProgress",
+  name: 'downloadProgress',
   initialState,
   reducers: {
     startDownloadProgress: (state) => {
       state.isDownloading = true;
-      state.status = "Downloading";
+      state.status = 'Downloading';
       state.progress = 0;
     },
     updateProgressProgress: (
       state,
-      action: PayloadAction<{ status: string; progress: number }>
+      action: PayloadAction<{ status?: string; progress?: number }>
     ) => {
       const { status, progress } = action.payload;
-      state.progress = progress;
-      state.status = status;
+      if (progress) {
+        state.progress = progress;
+      } else {
+        state.progress = state.progress;
+      }
+      if (status) {
+        state.status = status;
+      } else {
+        state.status = state.status;
+      }
     },
     finishDownloadProgress: (state) => {
       state.isDownloading = false;
       state.progress = 100;
-      state.status = "Finished";
+      state.status = 'Finished';
     },
     resetDownloadProgress: (state) => {
       state.isDownloading = false;
       state.progress = 0;
-      state.status = "Pending";
+      state.status = 'Pending';
     },
   },
 });
