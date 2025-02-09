@@ -65,7 +65,7 @@ async function downloadMediaFiles(
       new URL(card.url);
       const url = `http://localhost:4000/proxy/${encodeURIComponent(card.url)}`;
       const response = await fetch(url);
-      console.log(response);
+      // console.log(response);
       if (response.status === 429 || response.status === 500) {
         const retryAfter = response.headers.get('Retry-After');
         let waitTime = retryAfter
