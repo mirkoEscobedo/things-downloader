@@ -20,13 +20,19 @@ const ConvertSelector: React.FC<ConvertSelectorProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const format = useAppSelector((state) => state.selectFormat.format);
+  const isDownloading = useAppSelector(
+    (state) => state.downloadProgress.isDownloading
+  );
   const handleOnFormatChange = (value: string) => {
     dispatch(setFormat(value));
     console.log(format);
   };
 
   return (
-    <Select name={name} onValueChange={handleOnFormatChange}>
+    <Select
+      name={name}
+      onValueChange={isDownloading ? () => {} : handleOnFormatChange}
+    >
       <SelectTrigger className="w-[280px] bg-neutral-900 text-white">
         <SelectValue className="text-white" placeholder={selectText} />
       </SelectTrigger>

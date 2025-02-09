@@ -16,7 +16,7 @@ self.onmessage = async (e: MessageEvent) => {
       self.postMessage({
         type: 'status',
         status: `Downloading ${completedItems + 1}/${totalItems}`,
-        progress: Math.round((completedItems / totalItems) * 100),
+        progress: Math.round((completedItems / totalItems) * 40),
       });
       try {
         const downloaded = await downloadMediaFiles(card);
@@ -31,7 +31,7 @@ self.onmessage = async (e: MessageEvent) => {
       }
 
       completedItems++;
-      const progress = Math.round((completedItems / totalItems) * 100);
+      const progress = Math.round((completedItems / totalItems) * 40);
       self.postMessage({
         type: 'progress',
         status: 'Downloading...',

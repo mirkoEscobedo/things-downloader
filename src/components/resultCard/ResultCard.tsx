@@ -102,7 +102,10 @@ const ResultCard: React.FC<ResultCardProps> = ({
                   <X></X>
                 </GeneralButton>
               )}
-              <GeneralButton onClick={handleDownloadAll} className="gap-1">
+              <GeneralButton
+                onClick={isDownloading ? () => {} : handleDownloadAll}
+                className="gap-1"
+              >
                 <DownloadIcon></DownloadIcon>
                 {selectedToDownload.length > 0
                   ? translations.resultCardDownloadSelected

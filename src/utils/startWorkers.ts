@@ -75,7 +75,7 @@ export async function startDownload(
         }
 
         store.dispatch(
-          updateProgressProgress({ status: 'Converting', progress: 10 })
+          updateProgressProgress({ status: 'Converting', progress: 40 })
         );
 
         if (format && format !== 'default') {
@@ -90,7 +90,7 @@ export async function startDownload(
                 const fileProgressFraction = ratio / totalItems;
                 const overallRatio =
                   (completedItems + fileProgressFraction) / totalItems;
-                const overallPercent = 10 + overallRatio * 60;
+                const overallPercent = 40 + overallRatio * 70;
                 const roundedPercent = Math.round(overallPercent);
                 store.dispatch(
                   updateProgressProgress({

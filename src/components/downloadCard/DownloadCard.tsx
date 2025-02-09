@@ -26,6 +26,9 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
   const translations = useAppSelector((state) => state.language.translations);
   const format = useAppSelector((state) => state.selectFormat.format);
   const selectedCards = useAppSelector((state) => state.selectToDownload.list);
+  const isDownloading = useAppSelector(
+    (state) => state.downloadProgress.isDownloading
+  );
   const isChecked = selectedCards.some((item) => item.url === card.url);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +90,10 @@ const DonwloadCard: React.FC<DonwloadCardProps> = ({ card, onClick }) => {
             onChange={handleCheckboxChange}
             checked={isChecked}
           ></input>
-          <GeneralButton onClick={handleDownloadSingle} className="gap-1">
+          <GeneralButton
+            onClick={isDownloading ? () => {} : handleDownloadSingle}
+            className="gap-1"
+          >
             <DownloadIcon></DownloadIcon>
             {translations.downloadCardButtonText}
           </GeneralButton>
