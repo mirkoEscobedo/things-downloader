@@ -5,7 +5,7 @@ export async function fetchMedia(url: string) {
   try {
     if (url.includes(CHAN)) {
       const modifiedLink = chanTransform(url);
-      console.log(modifiedLink);
+      // console.log(modifiedLink);
       const response = await fetch(
         `http://localhost:4000/chan/${encodeURIComponent(modifiedLink)}`
       );

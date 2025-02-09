@@ -7,16 +7,44 @@ self.onmessage = async (e: MessageEvent) => {
     title?: string;
     ext: string;
   }[] = [];
+
+  const totalItems = cards.length;
+  let completedItems = 0;
+
   try {
     for (const card of cards) {
-      const downloaded = await downloadMediaFiles(card);
-      const downloadedAndExt = { ...downloaded, ext: card.ext };
-      downloadedFiles.push(downloadedAndExt);
-    }
+      self.postMessage({
+        type: 'status',
+        status: `Downloading ${completedItems + 1}/${totalItems}`,
+        progress: Math.round((completedItems / totalItems) * 100),
+      });
+      try {
+        const downloaded = await downloadMediaFiles(card);
+        if (downloaded && downloaded.video) {
+          const downloadedAndExt = { ...downloaded, ext: card.ext };
+          downloadedFiles.push(downloadedAndExt);
+        } else {
+          console.warn(`Skipping failed download for ${card.title}`);
+        }
+      } catch (err) {
+        console.error(`Download failed for ${card.title}:`, err);
+      }
 
-    self.postMessage(downloadedFiles);
+      completedItems++;
+      const progress = Math.round((completedItems / totalItems) * 100);
+      self.postMessage({
+        type: 'progress',
+        status: 'Downloading...',
+        progress,
+      });
+    }
+    self.postMessage({
+      type: 'complete',
+      data: Array.isArray(downloadedFiles) ? downloadedFiles : [],
+    });
   } catch (err) {
     console.error('failed: ', err);
+    self.postMessage({ type: 'error', message: err, progress: 0 });
   }
 };
 
@@ -25,7 +53,7 @@ async function downloadMediaFiles(
   retries: number = 5,
   baseDelay: number = 2000
 ) {
-  console.log(card);
+  // console.log(card);
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       if (
@@ -62,7 +90,7 @@ async function downloadMediaFiles(
       if (attempt < retries) {
         let waitTime = baseDelay * 2 ** attempt;
         waitTime += Math.random() * 1000;
-        console.log(`Retrying in ${waitTime}ms...`);
+        // console.log(`Retrying in ${waitTime}ms...`);
         await new Promise((resolve) => setTimeout(resolve, waitTime));
       } else {
         console.error(

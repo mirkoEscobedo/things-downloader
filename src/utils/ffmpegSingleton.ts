@@ -23,7 +23,7 @@ class FFmpegSingleton {
 
   public static async initialize() {
     if (FFmpegSingleton.isLoaded) return;
-    console.log('FFmpeg loading');
+    // console.log('FFmpeg loading');
     const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
     const ffmpeg = FFmpegSingleton.ffmpeg;
     await ffmpeg.load({
@@ -34,7 +34,7 @@ class FFmpegSingleton {
       ),
     });
     FFmpegSingleton.isLoaded = true;
-    console.log('FFmpeg successfully loaded');
+    // console.log('FFmpeg successfully loaded');
   }
 }
 

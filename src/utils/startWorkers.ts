@@ -20,68 +20,123 @@ export async function startDownload(
 ): Promise<ProcessedFiles> {
   store.dispatch(startDownloadProgress());
 
-  return new Promise((resolve, rejects) => {
+  return new Promise((resolve, reject) => {
     const worker = new Worker(new URL('../downloadWorker', import.meta.url));
     let converted: ProcessedFiles[] = [];
 
-    worker.onmessage = async (e) => {
-      const downloaded: DownloadResponse[] = e.data;
-      store.dispatch(
-        updateProgressProgress({ status: 'Converting', progress: 10 })
-      );
-      if (format && format !== 'default') {
-        const totalItems = downloaded.length;
-        let completedItems = 0;
-        for (const element of downloaded) {
-          const result = await startConversion(
-            element,
-            format,
-            ffmpegRef,
-            (ratio) => {
-              const fileProgressFraction = ratio / totalItems;
-              const overallRatio =
-                (completedItems + fileProgressFraction) / totalItems;
-              const overallPercent = 10 + overallRatio * 60;
-              const roundedPercent = Math.round(overallPercent);
-              store.dispatch(
-                updateProgressProgress({
-                  status: `Converting (${completedItems + 1}/${totalItems})`,
-                  progress: roundedPercent,
-                })
-              );
-            }
+    worker.onmessage = async ({ data: eventData }) => {
+      // console.log('received event from worker', eventData);
+
+      if (!eventData || typeof eventData !== 'object') {
+        console.error('Received invalid event data from worker', eventData);
+        return;
+      }
+      const { type, progress, status, data, message } = eventData;
+
+      if (type === 'progress') {
+        store.dispatch(
+          updateProgressProgress({ status: 'Downloading...', progress })
+        );
+      } else if (type === 'status') {
+        store.dispatch(updateProgressProgress({ status, progress: 0 })); // Keep progress intact
+      } else if (type === 'error') {
+        console.error('Download Error:', message);
+        store.dispatch(
+          updateProgressProgress({ status: `Error: ${message}`, progress: 0 })
+        );
+        worker.terminate();
+        reject(new Error(message)); // Properly reject the promise
+        return;
+      } else if (type === 'complete') {
+        if (!Array.isArray(data) || data.length === 0) {
+          console.error('Worker returned invalid data format:', data);
+          worker.terminate();
+          reject(new Error('Invalid data from worker'));
+          return;
+        }
+
+        // console.log('valid downloaded files:', data);
+
+        const downloaded: DownloadResponse[] = data.filter(
+          (item) => item !== undefined && item.video
+        );
+
+        if (downloaded.length === 0) {
+          console.error('All download failed, no valid files to process.');
+          store.dispatch(
+            updateProgressProgress({
+              status: 'All download failed',
+              progress: 0,
+            })
           );
-          converted.push(result);
-          completedItems++;
+          worker.terminate();
+          reject(new Error('No Valid downloads found'));
+          return;
         }
-      } else {
-        for (const element of downloaded) {
-          console.log('element from worker', element);
-          converted.push({
-            blob: element.video,
-            fileName: element.title ? element.title : 'input.webm',
-            mimeType: element.video.type,
-            ext: element.ext,
-          });
+
+        store.dispatch(
+          updateProgressProgress({ status: 'Converting', progress: 10 })
+        );
+
+        if (format && format !== 'default') {
+          const totalItems = downloaded.length;
+          let completedItems = 0;
+          for (const element of downloaded) {
+            const result = await startConversion(
+              element,
+              format,
+              ffmpegRef,
+              (ratio) => {
+                const fileProgressFraction = ratio / totalItems;
+                const overallRatio =
+                  (completedItems + fileProgressFraction) / totalItems;
+                const overallPercent = 10 + overallRatio * 60;
+                const roundedPercent = Math.round(overallPercent);
+                store.dispatch(
+                  updateProgressProgress({
+                    status: `Converting (${completedItems + 1}/${totalItems})`,
+                    progress: roundedPercent,
+                  })
+                );
+              }
+            );
+            converted.push(result);
+            completedItems++;
+          }
+        } else {
+          for (const element of downloaded) {
+            if (!element.video) {
+              console.error('Skipping undefined video element:', element);
+              continue;
+            }
+            console.log('element from worker', element);
+            converted.push({
+              blob: element.video,
+              fileName: element.title ? element.title : 'input.webm',
+              mimeType: element.video.type,
+              ext: element.ext,
+            });
+          }
         }
+        store.dispatch(
+          updateProgressProgress({ status: 'Archiving', progress: 70 })
+        );
+        let processedFiles: ProcessedFiles;
+        if (converted.length > 1) {
+          processedFiles = await zipFiles(converted);
+        } else {
+          processedFiles = converted[0];
+        }
+        store.dispatch(finishDownloadProgress());
+        resolve(processedFiles);
       }
-      store.dispatch(
-        updateProgressProgress({ status: 'Archiving', progress: 70 })
-      );
-      let processedFiles: ProcessedFiles;
-      if (converted.length > 1) {
-        processedFiles = await zipFiles(converted);
-      } else {
-        processedFiles = converted[0];
-      }
-      store.dispatch(finishDownloadProgress());
-      resolve(processedFiles);
+      worker.onerror = (error) => {
+        store.dispatch(finishDownloadProgress());
+        reject(error);
+        worker.terminate();
+      };
     };
-    worker.onerror = (error) => {
-      store.dispatch(finishDownloadProgress());
-      rejects(error);
-      worker.terminate();
-    };
+
     worker.postMessage({ toDownload });
   });
 }
